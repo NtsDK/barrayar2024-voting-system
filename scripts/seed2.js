@@ -3,176 +3,194 @@
 // import postgres from 'postgres'
 const postgres = require("postgres")
 const {
-  invoices,
-  customers,
-  revenue,
-  users,
-} = require('../app/lib/placeholder-data.js');
+  idMapping,
+  persons,
+  vorHouses,
+  votingQuestions,
+  councilVotings,
+} = require('../app/lib/placeholder-data2.js');
 const bcrypt = require('bcrypt');
 
-async function seedUsers(client) {
+async function seedPersons(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-    // Create the "invoices" table if it doesn't exist
+    // Create the "persons" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS users (
+      CREATE TABLE IF NOT EXISTS persons (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
+        comment TEXT NOT NULL
       );
     `;
 
-    console.log(`Created "users" table`);
+    console.log(`Created "persons" table`);
 
-    // Insert data into the "users" table
-    const insertedUsers = await Promise.all(
-      users.map(async (user) => {
-        const hashedPassword = await bcrypt.hash(user.password, 10);
+    // Insert data into the "persons" table
+    const insertedPersons = await Promise.all(
+      persons.map(async (person) => {
+        // const hashedPassword = await bcrypt.hash(user.password, 10);
         return client.sql`
-        INSERT INTO users (id, name, email, password)
-        VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword})
+        INSERT INTO persons (id, name, comment)
+        VALUES (${idMapping[person.id]}, ${person.name}, ${person.comment})
         ON CONFLICT (id) DO NOTHING;
       `;
       }),
     );
 
-    console.log(`Seeded ${insertedUsers.length} users`);
+    console.log(`Seeded ${insertedPersons.length} persons`);
 
     return {
       createTable,
-      users: insertedUsers,
+      persons: insertedPersons,
     };
   } catch (error) {
-    console.error('Error seeding users:', error);
+    console.error('Error seeding persons:', error);
     throw error;
   }
 }
 
-async function seedInvoices(client) {
+async function seedVorHouses(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
-    // Create the "invoices" table if it doesn't exist
+    // Create the "vorHouses" table if it doesn't exist
     const createTable = await client.sql`
-    CREATE TABLE IF NOT EXISTS invoices (
+    CREATE TABLE IF NOT EXISTS vor_houses (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    customer_id UUID NOT NULL,
-    amount INT NOT NULL,
-    status VARCHAR(255) NOT NULL,
-    date DATE NOT NULL
+    family_name VARCHAR(255) NOT NULL,
+    count_id UUID,
+    countess_id UUID
   );
 `;
 
-    console.log(`Created "invoices" table`);
+    console.log(`Created "vorHouses" table`);
 
-    // Insert data into the "invoices" table
-    const insertedInvoices = await Promise.all(
-      invoices.map(
-        (invoice) => client.sql`
-        INSERT INTO invoices (customer_id, amount, status, date)
-        VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date})
+    // Insert data into the "vorHouses" table
+    const insertedVorHouses = await Promise.all(
+      vorHouses.map(
+        (vorHouse) => client.sql`
+        INSERT INTO vor_houses (id, family_name, count_id, countess_id)
+        VALUES (${idMapping[vorHouse.id]}, ${vorHouse.familyName}, 
+          ${idMapping[vorHouse.count_id] || client.sql`uuid_nil()`}, 
+          ${idMapping[vorHouse.countess_id] || client.sql`uuid_nil()`})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
     );
 
-    console.log(`Seeded ${insertedInvoices.length} invoices`);
+    console.log(`Seeded ${insertedVorHouses.length} vorHouses`);
 
     return {
       createTable,
-      invoices: insertedInvoices,
+      vorHouses: insertedVorHouses,
     };
   } catch (error) {
-    console.error('Error seeding invoices:', error);
+    console.error('Error seeding vorHouses:', error);
     throw error;
   }
 }
 
-async function seedCustomers(client) {
+async function seedVotingQuestions(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
-    // Create the "customers" table if it doesn't exist
+    // Create the "voting_questions" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS customers (
-        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        image_url VARCHAR(255) NOT NULL
-      );
-    `;
+    CREATE TABLE IF NOT EXISTS voting_questions (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    type VARCHAR(255) NOT NULL,
+    question_text VARCHAR(255) NOT NULL,
+    answer1 VARCHAR(255) NOT NULL,
+    answer1Advocate_id UUID,
+    answer2 VARCHAR(255) NOT NULL,
+    answer2Advocate_id UUID,
+    status VARCHAR(255) NOT NULL,
+    vote_log TEXT NOT NULL
+  );
+`;
 
-    console.log(`Created "customers" table`);
+    console.log(`Created "voting_questions" table`);
 
-    // Insert data into the "customers" table
-    const insertedCustomers = await Promise.all(
-      customers.map(
-        (customer) => client.sql`
-        INSERT INTO customers (id, name, email, image_url)
-        VALUES (${customer.id}, ${customer.name}, ${customer.email}, ${customer.image_url})
+    // Insert data into the "voting_questions" table
+    const insertedVotingQuestions = await Promise.all(
+      votingQuestions.map(
+        (votingQuestion) => client.sql`
+        INSERT INTO voting_questions (id, type, question_text, answer1, 
+          answer1Advocate_id, answer2, answer2Advocate_id, status, vote_log)
+        VALUES (${idMapping[votingQuestion.id]}, ${votingQuestion.type}, 
+          ${votingQuestion.questionText}, ${votingQuestion.answer1}, 
+            ${idMapping[votingQuestion.answer1Advocate_id] || client.sql`uuid_nil()`}, 
+            ${votingQuestion.answer2}, ${idMapping[votingQuestion.answer2Advocate_id] || client.sql`uuid_nil()`}, 
+            ${votingQuestion.status}, ${votingQuestion.voteLog})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
     );
 
-    console.log(`Seeded ${insertedCustomers.length} customers`);
+    console.log(`Seeded ${insertedVotingQuestions.length} votingQuestions`);
 
     return {
       createTable,
-      customers: insertedCustomers,
+      votingQuestions: insertedVotingQuestions,
     };
   } catch (error) {
-    console.error('Error seeding customers:', error);
+    console.error('Error seeding votingQuestions:', error);
     throw error;
   }
 }
 
-async function seedRevenue(client) {
+async function seedCouncilVotings(client) {
   try {
-    // Create the "revenue" table if it doesn't exist
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+    // Create the "council_votings" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS revenue (
-        month VARCHAR(4) NOT NULL UNIQUE,
-        revenue INT NOT NULL
-      );
-    `;
+    CREATE TABLE IF NOT EXISTS council_votings (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    date VARCHAR(255) NOT NULL,
+    question1_id UUID,
+    question2_id UUID,
+    question3_id UUID,
+    status VARCHAR(255) NOT NULL
+  );
+`;
 
-    console.log(`Created "revenue" table`);
+    console.log(`Created "council_votings" table`);
 
-    // Insert data into the "revenue" table
-    const insertedRevenue = await Promise.all(
-      revenue.map(
-        (rev) => client.sql`
-        INSERT INTO revenue (month, revenue)
-        VALUES (${rev.month}, ${rev.revenue})
-        ON CONFLICT (month) DO NOTHING;
+    // Insert data into the "council_votings" table
+    const insertedCouncilVotings = await Promise.all(
+      councilVotings.map(
+        (councilVoting) => client.sql`
+        INSERT INTO council_votings (id, date, question1_id, question2_id, question3_id, status)
+        VALUES (${idMapping[councilVoting.id]}, ${councilVoting.dateTime}, 
+          ${idMapping[councilVoting.question1_id] || client.sql`uuid_nil()`}, 
+          ${idMapping[councilVoting.question2_id] || client.sql`uuid_nil()`}, 
+          ${idMapping[councilVoting.question3_id] || client.sql`uuid_nil()`}, ${councilVoting.status})
+        ON CONFLICT (id) DO NOTHING;
       `,
       ),
     );
 
-    console.log(`Seeded ${insertedRevenue.length} revenue`);
+    console.log(`Seeded ${insertedCouncilVotings.length} council_votings`);
 
     return {
       createTable,
-      revenue: insertedRevenue,
+      councilVotings: insertedCouncilVotings,
     };
   } catch (error) {
-    console.error('Error seeding revenue:', error);
+    console.error('Error seeding council_votings:', error);
     throw error;
   }
 }
 
 async function main() {
-  // const client = await db.connect();
-
   const sql = postgres()
   const client = {sql, end: () => sql.end()}
 
-  await seedUsers(client);
-  await seedCustomers(client);
-  await seedInvoices(client);
-  await seedRevenue(client);
+  await seedPersons(client);
+  await seedVorHouses(client);
+  await seedVotingQuestions(client);
+  await seedCouncilVotings(client);
 
   await client.end();
 }

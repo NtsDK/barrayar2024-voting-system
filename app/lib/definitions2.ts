@@ -11,8 +11,8 @@ export type Person = {
 export type VorHouse = {
   id: string;
   familyName: string;
-  count_id: string;
-  countess_id: string;
+  count_id?: string;
+  countess_id?: string;
 };
 
 // Голосование совета
