@@ -4,6 +4,7 @@ import InvoiceStatus from "@/app/ui/invoices/status";
 import { formatDateToLocal, formatCurrency } from "@/app/lib/utils";
 import { fetchFilteredInvoices } from "@/app/lib/data";
 import { fetchFilteredPersons } from "@/app/lib/data2";
+import { DeletePerson, UpdatePerson } from "./buttons";
 
 export default async function PersonsTable({
   query,
@@ -111,8 +112,9 @@ export default async function PersonsTable({
                   </td> */}
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <UpdateInvoice id={person.id} />
-                      <DeleteInvoice id={person.id} />
+                      {/* <UpdateInvoice id={person.id} /> */}
+                      <UpdatePerson id={person.id} />
+                      <DeletePerson id={person.id} />
                     </div>
                   </td>
                 </tr>

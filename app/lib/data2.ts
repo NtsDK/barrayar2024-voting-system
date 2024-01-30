@@ -45,3 +45,27 @@ export async function fetchPersonsPages(query: string) {
     throw new Error("Failed to fetch total number of persons.");
   }
 }
+
+export async function fetchPersonById(id: string) {
+  noStore();
+  try {
+    const data = await sql<Person[]>`
+      SELECT
+        persons.id,
+        persons.name,
+        persons.comment
+      FROM persons
+      WHERE persons.id = ${id};
+    `;
+
+    // const invoice = data.map((invoice) => ({
+    //   ...invoice,
+    //   // Convert amount from cents to dollars
+    //   amount: invoice.amount / 100,
+    // }));
+
+    return data[0];
+  } catch (error) {
+    console.error("Database Error:", error);
+  }
+}
