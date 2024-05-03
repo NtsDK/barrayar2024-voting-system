@@ -2,15 +2,14 @@ import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import { notFound } from "next/navigation";
 import Form from "@/app/ui/vorHouses/edit-form";
 import { fetchVorHouseById } from "@/app/lib/vorHouseData";
+import { fetchPersons } from "@/app/lib/personData";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
-  // const [invoice, customers] = await Promise.all([
-  //   fetchInvoiceById(id),
-  //   fetchCustomers(),
-  // ]);
-  // const invoice = await fetchInvoiceById(id);
-  const vorHouse = await fetchVorHouseById(id);
+  const [vorHouse, persons] = await Promise.all([
+    fetchVorHouseById(id),
+    fetchPersons(),
+  ]);
 
   if (!vorHouse) {
     notFound();
@@ -27,7 +26,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           },
         ]}
       />
-      <Form vorHouse={vorHouse} />
+      <Form vorHouse={vorHouse} persons={persons} />
     </main>
   );
 }

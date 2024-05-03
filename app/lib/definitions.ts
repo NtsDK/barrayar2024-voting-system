@@ -44,6 +44,7 @@ export type LatestInvoiceRaw = Omit<LatestInvoice, "amount"> & {
   amount: number;
 };
 
+/* join of invoices and customers */
 export type InvoicesTable = {
   id: string;
   customer_id: string;

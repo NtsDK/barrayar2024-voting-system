@@ -20,13 +20,13 @@ export default async function VorHousesTable({
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
                   Фамилия
                 </th>
-                {/* <th scope="col" className="px-3 py-5 font-medium">
-                  Комент
-                </th> */}
-                {/* <th scope="col" className="px-3 py-5 font-medium">
-                  Amount
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Граф
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
+                  Графиня
+                </th>
+                {/* <th scope="col" className="px-3 py-5 font-medium">
                   Date
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
@@ -55,13 +55,13 @@ export default async function VorHousesTable({
                       <p>{vorHouse.family_name}</p>
                     </div>
                   </td>
-                  {/* <td className="whitespace-nowrap px-3 py-3">
-                    {vorHouse.comment}
-                  </td> */}
-                  {/* <td className="whitespace-nowrap px-3 py-3">
-                    {formatCurrency(person.amount)}
+                  <td className="whitespace-nowrap px-3 py-3">
+                    {vorHouse.count_name || ""}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
+                    {vorHouse.countess_name || ""}
+                  </td>
+                  {/* <td className="whitespace-nowrap px-3 py-3">
                     {formatDateToLocal(person.date)}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">

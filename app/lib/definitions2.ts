@@ -9,8 +9,8 @@ export type Person = {
 export type VorHouse = {
   id: string;
   family_name: string;
-  count_id?: string;
-  countess_id?: string;
+  count_id: string | null;
+  countess_id: string | null;
 };
 
 // Голосование совета
@@ -54,4 +54,16 @@ export type VotingQuestion = {
   status: "raised" | "answer1" | "answer2" | "rescheduling" | "canceled";
   // итог голосования
   vote_log: string;
+};
+
+// #region производные типы
+
+// соединение vorHouses и persons
+export type VorHousesTable = {
+  id: string;
+  family_name: string;
+  count_id: string | null;
+  count_name: string | null;
+  countess_id: string | null;
+  countess_name: string | null;
 };

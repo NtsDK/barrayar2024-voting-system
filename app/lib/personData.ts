@@ -2,6 +2,25 @@ import { unstable_noStore as noStore } from "next/cache";
 import { sql } from "@/db";
 import { Person } from "./definitions2";
 
+export async function fetchPersons() {
+  noStore();
+  try {
+    const persons = await sql<Person[]>`
+      SELECT
+        persons.id,
+        persons.name,
+        persons.comment
+      FROM persons
+      ORDER BY name ASC
+    `;
+
+    return persons;
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch all persons.");
+  }
+}
+
 const ITEMS_PER_PAGE = 15;
 export async function fetchFilteredPersons(query: string, currentPage: number) {
   noStore();

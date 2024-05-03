@@ -1,8 +1,21 @@
 // const postgres = require("postgres")
 
 import postgres from "postgres";
+import { ZERO_UUID } from "./constants";
 
-export const sql = postgres();
+export const sql = postgres({
+  transform: {
+    value: {
+      from(value, column) {
+        if (value === ZERO_UUID) {
+          // console.log("transform", value, column);
+          return null;
+        }
+        return value;
+      },
+    },
+  },
+});
 const client = { sql, end: () => sql.end() };
 
 async function sqlEnd() {

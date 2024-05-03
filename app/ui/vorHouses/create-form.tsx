@@ -11,8 +11,10 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/button";
 import { createVorHouse } from "@/app/lib/vorHouseActions";
+import { Person } from "@/app/lib/definitions2";
+import { ZERO_UUID } from "@/constants";
 
-export default function Form() {
+export default function Form({ persons }: { persons: Person[] }) {
   const initialState = { message: null, errors: {} };
   // const [state, dispatch] = useFormState(createInvoice, initialState);
   const [state, dispatch] = useFormState(createVorHouse, initialState);
@@ -81,6 +83,49 @@ export default function Form() {
               />
               {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
             </div>
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="count" className="mb-2 block text-sm font-medium">
+            Граф
+          </label>
+          <div className="relative">
+            <select
+              id="count"
+              name="count_id"
+              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              defaultValue={ZERO_UUID}
+            >
+              <option value={ZERO_UUID}>Не выбрано</option>
+              {persons.map((person) => (
+                <option key={person.id} value={person.id}>
+                  {person.name}
+                </option>
+              ))}
+            </select>
+            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="countess" className="mb-2 block text-sm font-medium">
+            Графиня
+          </label>
+          <div className="relative">
+            <select
+              id="countess"
+              name="countess_id"
+              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              defaultValue={ZERO_UUID}
+            >
+              <option value={ZERO_UUID}>Не выбрано</option>
+              {persons.map((person) => (
+                <option key={person.id} value={person.id}>
+                  {person.name}
+                </option>
+              ))}
+            </select>
+            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
         </div>
 
