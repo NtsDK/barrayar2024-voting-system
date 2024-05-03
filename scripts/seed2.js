@@ -1,5 +1,3 @@
-// const { db } = require('@vercel/postgres');
-
 // import postgres from 'postgres'
 const postgres = require("postgres")
 const {

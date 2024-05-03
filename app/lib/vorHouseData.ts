@@ -2,7 +2,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { sql } from "@/db";
 import { VorHouse } from "./definitions2";
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 15;
 
 export async function fetchFilteredVorHouses(
   query: string,
@@ -23,7 +23,7 @@ export async function fetchFilteredVorHouses(
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
-    console.log("vorHouses", vorHouses);
+    // console.log("vorHouses", vorHouses);
 
     return vorHouses;
   } catch (error) {

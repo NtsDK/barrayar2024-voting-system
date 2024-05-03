@@ -2,7 +2,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { sql } from "@/db";
 import { Person } from "./definitions2";
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 15;
 export async function fetchFilteredPersons(query: string, currentPage: number) {
   noStore();
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
