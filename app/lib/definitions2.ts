@@ -1,5 +1,3 @@
-// new types {
-
 // игровой персонаж
 export type Person = {
   id: string;
@@ -10,7 +8,7 @@ export type Person = {
 // фор-дом?
 export type VorHouse = {
   id: string;
-  familyName: string;
+  family_name: string;
   count_id?: string;
   countess_id?: string;
 };
@@ -42,20 +40,18 @@ export type VotingQuestion = {
   // игроцким (управляется игроками)
   type: "master" | "player";
   // вопрос на голосовании
-  questionText: string;
+  question_text: string;
   // ответ 1
   answer1: string;
   // адвокат ответа 1
-  answer1Advocate_id: string | null;
+  answer1_advocate_id: string | null;
   // ответ 2
   answer2: string;
   // адвокат ответа 2
-  answer2Advocate_id: string | null;
+  answer2_advocate_id: string | null;
   // итог/статус вопроса
   // поднят, ответ1, ответ2, перенос, вопрос снят
   status: "raised" | "answer1" | "answer2" | "rescheduling" | "canceled";
   // итог голосования
-  voteLog: string;
+  vote_log: string;
 };
-
-// } new types

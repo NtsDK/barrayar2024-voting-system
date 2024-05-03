@@ -1,10 +1,7 @@
-// import Form from "@/app/ui/invoices/edit-form";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
-import { fetchInvoiceById, fetchCustomers } from "@/app/lib/data";
 import { notFound } from "next/navigation";
-import { fetchPersonById } from "@/app/lib/personData";
-// import Form from "@/app/ui/persons/create-form";
-import Form from "@/app/ui/persons/edit-form";
+import Form from "@/app/ui/vorHouses/edit-form";
+import { fetchVorHouseById } from "@/app/lib/vorHouseData";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -13,24 +10,24 @@ export default async function Page({ params }: { params: { id: string } }) {
   //   fetchCustomers(),
   // ]);
   // const invoice = await fetchInvoiceById(id);
-  const person = await fetchPersonById(id);
+  const vorHouse = await fetchVorHouseById(id);
 
-  if (!person) {
+  if (!vorHouse) {
     notFound();
   }
   return (
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: "Персонажи", href: "/dashboard/persons" },
+          { label: "Фор семьи", href: "/dashboard/vorhouses" },
           {
             label: "Изменить персонажа",
-            href: `/dashboard/persons/${id}/edit`,
+            href: `/dashboard/vorhouses/${id}/edit`,
             active: true,
           },
         ]}
       />
-      <Form person={person} />
+      <Form vorHouse={vorHouse} />
     </main>
   );
 }

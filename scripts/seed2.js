@@ -11,6 +11,24 @@ const {
 } = require('../app/lib/placeholder-data2.js');
 const bcrypt = require('bcrypt');
 
+(async function main() {
+  const sql = postgres()
+  const client = {sql, end: () => sql.end()}
+
+  await seedPersons(client);
+  await seedVorHouses(client);
+  await seedVotingQuestions(client);
+  await seedCouncilVotings(client);
+
+  await client.end();
+})().catch((err) => {
+  console.error(
+    'An error occurred while attempting to seed the database:',
+    err,
+  );
+});
+
+
 async function seedPersons(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -183,21 +201,3 @@ async function seedCouncilVotings(client) {
   }
 }
 
-async function main() {
-  const sql = postgres()
-  const client = {sql, end: () => sql.end()}
-
-  await seedPersons(client);
-  await seedVorHouses(client);
-  await seedVotingQuestions(client);
-  await seedCouncilVotings(client);
-
-  await client.end();
-}
-
-main().catch((err) => {
-  console.error(
-    'An error occurred while attempting to seed the database:',
-    err,
-  );
-});

@@ -1,29 +1,76 @@
 "use client";
 
-import { useFormState } from "react-dom";
-import { CustomerField } from "@/app/lib/definitions";
-import Link from "next/link";
 import {
   CheckIcon,
   ClockIcon,
   CurrencyDollarIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import { Button } from "@/app/ui/button";
-import { createPerson } from "@/app/lib/personActions";
-// import { createInvoice } from "@/app/lib/actions";
+import { useFormState } from "react-dom";
+import { VorHouse } from "@/app/lib/definitions2";
+import { updateVorHouse } from "@/app/lib/vorHouseActions";
 
-export default function Form() {
+export default function EditVorHouseForm({
+  vorHouse, // customers,
+}: {
+  vorHouse: VorHouse;
+  // customers: CustomerField[];
+}) {
   const initialState = { message: null, errors: {} };
-  // const [state, dispatch] = useFormState(createInvoice, initialState);
-  const [state, dispatch] = useFormState(createPerson, initialState);
-  // console.log("state", state);
+  const updateVorHouseWithId = updateVorHouse.bind(null, vorHouse.id);
+  const [state, dispatch] = useFormState(updateVorHouseWithId, initialState);
+  // const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* Customer Name */}
+        {/* Person name */}
         <div className="mb-4">
-          {/* <label htmlFor="customer" className="mb-2 block text-sm font-medium">
+          <label
+            htmlFor="family_name"
+            className="mb-2 block text-sm font-medium"
+          >
+            Фамилия
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="family_name"
+                name="family_name"
+                type="text"
+                defaultValue={vorHouse.family_name}
+                // step="0.01"
+                // placeholder="Enter USD amount"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              />
+              {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+            </div>
+          </div>
+        </div>
+
+        {/* Person comment */}
+        {/* <div className="mb-4">
+          <label htmlFor="comment" className="mb-2 block text-sm font-medium">
+            Комментарий
+          </label>
+          <div className="relative mt-2 rounded-md">
+            <div className="relative">
+              <input
+                id="comment"
+                name="comment"
+                type="text"
+                defaultValue={vorHouse.comment}
+                // step="0.01"
+                // placeholder="Enter USD amount"
+                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              />
+            </div>
+          </div>
+        </div> */}
+        {/* Customer Name
+        <div className="mb-4">
+          <label htmlFor="customer" className="mb-2 block text-sm font-medium">
             Choose customer
           </label>
           <div className="relative">
@@ -31,8 +78,7 @@ export default function Form() {
               id="customer"
               name="customerId"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue=""
-              aria-describedby="customer-error"
+              defaultValue={invoice.customer_id}
             >
               <option value="" disabled>
                 Select a customer
@@ -45,63 +91,27 @@ export default function Form() {
             </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
-          <div id="customer-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.customerId &&
-              state.errors.customerId.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                </p>
-              ))}
-          </div> */}
-          <div id="customer-error" aria-live="polite" aria-atomic="true">
-            {state.errors?.name &&
-              state.errors.name.map((error: string) => (
-                <p className="mt-2 text-sm text-red-500" key={error}>
-                  {error}
-                </p>
-              ))}
-          </div>
-        </div>
+        </div> */}
 
-        {/* Person name */}
-        <div className="mb-4">
-          <label htmlFor="name" className="mb-2 block text-sm font-medium">
-            Имя персонажа
+        {/* Invoice Amount */}
+        {/* <div className="mb-4">
+          <label htmlFor="amount" className="mb-2 block text-sm font-medium">
+            Choose an amount
           </label>
           <div className="relative mt-2 rounded-md">
             <div className="relative">
               <input
-                id="name"
-                name="name"
-                type="text"
-                // step="0.01"
-                // placeholder="Enter USD amount"
+                id="amount"
+                name="amount"
+                type="number"
+                defaultValue={invoice.amount}
+                placeholder="Enter USD amount"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               />
-              {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
+              <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
           </div>
-        </div>
-
-        {/* Person comment */}
-        <div className="mb-4">
-          <label htmlFor="comment" className="mb-2 block text-sm font-medium">
-            Комментарий
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="comment"
-                name="comment"
-                type="text"
-                // step="0.01"
-                // placeholder="Enter USD amount"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              />
-              {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
-            </div>
-          </div>
-        </div>
+        </div> */}
 
         {/* Invoice Status */}
         {/* <fieldset>
@@ -116,6 +126,7 @@ export default function Form() {
                   name="status"
                   type="radio"
                   value="pending"
+                  defaultChecked={invoice.status === "pending"}
                   className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
                 />
                 <label
@@ -131,6 +142,7 @@ export default function Form() {
                   name="status"
                   type="radio"
                   value="paid"
+                  defaultChecked={invoice.status === "paid"}
                   className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
                 />
                 <label
@@ -146,12 +158,12 @@ export default function Form() {
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href="/dashboard/persons"
+          href="/dashboard/vorhouses"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Отмена
         </Link>
-        <Button type="submit">Создать персонажа</Button>
+        <Button type="submit">Изменить фор семью</Button>
       </div>
     </form>
   );

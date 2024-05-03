@@ -166,6 +166,9 @@ export function InvoicesMobileSkeleton() {
 export function PersonsTableSkeleton() {
   return <div>...</div>;
 }
+export function VorHousesTableSkeleton() {
+  return <div>...</div>;
+}
 
 export function InvoicesTableSkeleton() {
   return (

@@ -1,68 +1,28 @@
-import Image from "next/image";
-import { formatDateToLocal, formatCurrency } from "@/app/lib/utils";
-import { fetchFilteredPersons } from "@/app/lib/personData";
-import { DeletePerson, UpdatePerson } from "./buttons";
+import { fetchFilteredVorHouses } from "@/app/lib/vorHouseData";
+import { DeleteVorHouse, UpdateVorHouse } from "./buttons";
 
-export default async function PersonsTable({
+export default async function VorHousesTable({
   query,
   currentPage,
 }: {
   query: string;
   currentPage: number;
 }) {
-  // const invoices = await fetchFilteredInvoices(query, currentPage);
-  const persons = await fetchFilteredPersons(query, currentPage);
+  const vorHouses = await fetchFilteredVorHouses(query, currentPage);
 
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
-          {/* <div className="md:hidden">
-            {persons?.map((person) => (
-              <div
-                key={person.id}
-                className="mb-2 w-full rounded-md bg-white p-4"
-              >
-                <div className="flex items-center justify-between border-b pb-4">
-                  <div>
-                    <div className="mb-2 flex items-center">
-                      <Image
-                        src={person.image_url}
-                        className="mr-2 rounded-full"
-                        width={28}
-                        height={28}
-                        alt={`${person.name}'s profile picture`}
-                      />
-                      <p>{person.name}</p>
-                    </div>
-                    <p className="text-sm text-gray-500">{person.email}</p>
-                  </div>
-                  <InvoiceStatus status={person.status} />
-                </div>
-                <div className="flex w-full items-center justify-between pt-4">
-                  <div>
-                    <p className="text-xl font-medium">
-                      {formatCurrency(person.amount)}
-                    </p>
-                    <p>{formatDateToLocal(person.date)}</p>
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <UpdateInvoice id={person.id} />
-                    <DeleteInvoice id={person.id} />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div> */}
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Имя
+                  Фамилия
                 </th>
-                <th scope="col" className="px-3 py-5 font-medium">
+                {/* <th scope="col" className="px-3 py-5 font-medium">
                   Комент
-                </th>
+                </th> */}
                 {/* <th scope="col" className="px-3 py-5 font-medium">
                   Amount
                 </th>
@@ -78,9 +38,9 @@ export default async function PersonsTable({
               </tr>
             </thead>
             <tbody className="bg-white">
-              {persons?.map((person) => (
+              {vorHouses?.map((vorHouse) => (
                 <tr
-                  key={person.id}
+                  key={vorHouse.id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
@@ -92,12 +52,12 @@ export default async function PersonsTable({
                         height={28}
                         alt={`${person.name}'s profile picture`}
                       /> */}
-                      <p>{person.name}</p>
+                      <p>{vorHouse.family_name}</p>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {person.comment}
-                  </td>
+                  {/* <td className="whitespace-nowrap px-3 py-3">
+                    {vorHouse.comment}
+                  </td> */}
                   {/* <td className="whitespace-nowrap px-3 py-3">
                     {formatCurrency(person.amount)}
                   </td>
@@ -109,9 +69,8 @@ export default async function PersonsTable({
                   </td> */}
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      {/* <UpdateInvoice id={person.id} /> */}
-                      <UpdatePerson id={person.id} />
-                      <DeletePerson id={person.id} />
+                      <UpdateVorHouse id={vorHouse.id} />
+                      <DeleteVorHouse id={vorHouse.id} />
                     </div>
                   </td>
                 </tr>

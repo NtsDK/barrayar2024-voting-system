@@ -10,12 +10,12 @@ import { sql } from "@/db";
 
 const FormSchema = z.object({
   id: z.string(),
-  name: z
+  family_name: z
     .string({
-      invalid_type_error: "Введите имя персонажа.",
+      invalid_type_error: "Введите фамилию семьи.",
     })
     .min(1),
-  comment: z.string(),
+  // comment: z.string(),
   // customerId: z.string({
   //   invalid_type_error: "Please select a customer.",
   // }),
@@ -28,24 +28,24 @@ const FormSchema = z.object({
   // date: z.string(),
 });
 
-const CreatePerson = FormSchema.omit({ id: true });
+const CreateVorHouse = FormSchema.omit({ id: true });
 
-const UpdatePerson = FormSchema.omit({ id: true });
+const UpdateVorHouse = FormSchema.omit({ id: true });
 
 export type State = {
   errors?: {
-    name?: string[];
-    comment?: string[];
+    family_name?: string[];
+    // comment?: string[];
     // status?: string[];
   };
   message?: string | null;
 };
 
-export async function createPerson(prevState: State, formData: FormData) {
+export async function createVorHouse(prevState: State, formData: FormData) {
   // export async function createInvoice(formData: FormData) {
-  const validatedFields = CreatePerson.safeParse({
-    name: formData.get("name"),
-    comment: formData.get("comment"),
+  const validatedFields = CreateVorHouse.safeParse({
+    family_name: formData.get("family_name"),
+    // comment: formData.get("comment"),
     // status: formData.get("status"),
   });
 
@@ -57,7 +57,7 @@ export async function createPerson(prevState: State, formData: FormData) {
     };
   }
 
-  const { name, comment } = validatedFields.data;
+  const { family_name } = validatedFields.data;
 
   // Test it out:
   // console.log(rawFormData);
@@ -66,61 +66,61 @@ export async function createPerson(prevState: State, formData: FormData) {
 
   try {
     await sql`
-      INSERT INTO persons (name, comment)
-      VALUES (${name}, ${comment})
+      INSERT INTO vor_houses (family_name)
+      VALUES (${family_name})
     `;
   } catch (error) {
     return {
-      message: "Ошибка базы данных: не удалось создать персонажа.",
+      message: "Ошибка базы данных: не удалось создать форсемью.",
     };
   }
 
-  revalidatePath("/dashboard/persons");
-  redirect("/dashboard/persons");
+  revalidatePath("/dashboard/vorhouses");
+  redirect("/dashboard/vorhouses");
 }
 
-export async function updatePerson(
+export async function updateVorHouse(
   id: string,
   prevState: State,
   formData: FormData
 ) {
-  const validatedFields = UpdatePerson.safeParse({
-    name: formData.get("name"),
-    comment: formData.get("comment"),
+  const validatedFields = UpdateVorHouse.safeParse({
+    family_name: formData.get("family_name"),
+    // comment: formData.get("comment"),
   });
 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Update Person.",
+      message: "Missing Fields. Failed to Update Vor House.",
     };
   }
 
-  const { comment, name } = validatedFields.data;
+  const { family_name } = validatedFields.data;
 
   // const amountInCents = amount * 100;
 
   try {
     await sql`
-        UPDATE persons
-        SET name = ${name}, comment = ${comment}
+        UPDATE vor_houses
+        SET family_name = ${family_name}
         WHERE id = ${id}
       `;
   } catch (error) {
-    return { message: "Database Error: Failed to Update Person." };
+    return { message: "Database Error: Failed to Update Vor House." };
   }
 
-  revalidatePath("/dashboard/persons");
-  redirect("/dashboard/persons");
+  revalidatePath("/dashboard/vorhouses");
+  redirect("/dashboard/vorhouses");
 }
 
-export async function deletePerson(id: string) {
+export async function deleteVorHouse(id: string) {
   // throw new Error("Failed to Delete Invoice");
   try {
-    await sql`DELETE FROM persons WHERE id = ${id}`;
-    revalidatePath("/dashboard/persons");
-    return { message: "Deleted Person." };
+    await sql`DELETE FROM vor_houses WHERE id = ${id}`;
+    revalidatePath("/dashboard/vorhouses");
+    return { message: "Deleted Vor House." };
   } catch (error) {
-    return { message: "Database Error: Failed to Delete Person." };
+    return { message: "Database Error: Failed to Delete Vor House." };
   }
 }

@@ -12,7 +12,7 @@ import { Button } from "@/app/ui/button";
 import { updateInvoice } from "@/app/lib/actions";
 import { useFormState } from "react-dom";
 import { Person } from "@/app/lib/definitions2";
-import { updatePerson } from "@/app/lib/actions2";
+import { updatePerson } from "@/app/lib/personActions";
 
 export default function EditPersonForm({
   person, // customers,

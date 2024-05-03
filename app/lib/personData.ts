@@ -58,12 +58,6 @@ export async function fetchPersonById(id: string) {
       WHERE persons.id = ${id};
     `;
 
-    // const invoice = data.map((invoice) => ({
-    //   ...invoice,
-    //   // Convert amount from cents to dollars
-    //   amount: invoice.amount / 100,
-    // }));
-
     return data[0];
   } catch (error) {
     console.error("Database Error:", error);
