@@ -32,7 +32,7 @@ export async function fetchFilteredVorHouses(
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
 
-    console.log("vorHouses", vorHouses);
+    // console.log("vorHouses", vorHouses);
 
     return vorHouses;
   } catch (error) {

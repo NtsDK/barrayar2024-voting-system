@@ -13,6 +13,7 @@ import { Button } from "@/app/ui/button";
 import { createVorHouse } from "@/app/lib/vorHouseActions";
 import { Person } from "@/app/lib/definitions2";
 import { ZERO_UUID } from "@/constants";
+import { VORHOUSES_ROUTE } from "@/routes";
 
 export default function Form({ persons }: { persons: Person[] }) {
   const initialState = { message: null, errors: {} };
@@ -174,7 +175,7 @@ export default function Form({ persons }: { persons: Person[] }) {
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href="/dashboard/vorhouses"
+          href={VORHOUSES_ROUTE}
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Отмена

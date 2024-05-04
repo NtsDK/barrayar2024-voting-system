@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Form from "@/app/ui/vorHouses/edit-form";
 import { fetchVorHouseById } from "@/app/lib/vorHouseData";
 import { fetchPersons } from "@/app/lib/personData";
+import { VORHOUSES_ROUTE } from "@/routes";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -18,10 +19,10 @@ export default async function Page({ params }: { params: { id: string } }) {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: "Фор семьи", href: "/dashboard/vorhouses" },
+          { label: "Фор семьи", href: VORHOUSES_ROUTE },
           {
             label: "Изменить персонажа",
-            href: `/dashboard/vorhouses/${id}/edit`,
+            href: `${VORHOUSES_ROUTE}/${id}/edit`,
             active: true,
           },
         ]}

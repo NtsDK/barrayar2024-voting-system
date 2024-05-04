@@ -1,7 +1,7 @@
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
-import { fetchCustomers } from "@/app/lib/data";
 import Form from "@/app/ui/vorHouses/create-form";
 import { fetchPersons } from "@/app/lib/personData";
+import { VORHOUSES_ROUTE } from "@/routes";
 
 export default async function Page() {
   const persons = await fetchPersons();
@@ -10,10 +10,10 @@ export default async function Page() {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: "Фор семьи", href: "/dashboard/vorhouses" },
+          { label: "Фор семьи", href: VORHOUSES_ROUTE },
           {
             label: "Создать фор семью",
-            href: "/dashboard/vorhouses/create",
+            href: `${VORHOUSES_ROUTE}/create`,
             active: true,
           },
         ]}

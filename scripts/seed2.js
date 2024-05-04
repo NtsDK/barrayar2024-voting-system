@@ -114,6 +114,7 @@ async function seedVotingQuestions(client) {
     const createTable = await client.sql`
     CREATE TABLE IF NOT EXISTS voting_questions (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    voting_id UUID,
     type VARCHAR(255) NOT NULL,
     question_text VARCHAR(255) NOT NULL,
     answer1 VARCHAR(255) NOT NULL,
@@ -131,9 +132,9 @@ async function seedVotingQuestions(client) {
     const insertedVotingQuestions = await Promise.all(
       votingQuestions.map(
         (votingQuestion) => client.sql`
-        INSERT INTO voting_questions (id, type, question_text, answer1, 
+        INSERT INTO voting_questions (id, voting_id, type, question_text, answer1, 
           answer1Advocate_id, answer2, answer2Advocate_id, status, vote_log)
-        VALUES (${idMapping[votingQuestion.id]}, ${votingQuestion.type}, 
+        VALUES (${idMapping[votingQuestion.id]}, ${idMapping[votingQuestion.voting_id]}, ${votingQuestion.type}, 
           ${votingQuestion.questionText}, ${votingQuestion.answer1}, 
             ${idMapping[votingQuestion.answer1Advocate_id] || client.sql`uuid_nil()`}, 
             ${votingQuestion.answer2}, ${idMapping[votingQuestion.answer2Advocate_id] || client.sql`uuid_nil()`}, 
@@ -164,9 +165,6 @@ async function seedCouncilVotings(client) {
     CREATE TABLE IF NOT EXISTS council_votings (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     date VARCHAR(255) NOT NULL,
-    question1_id UUID,
-    question2_id UUID,
-    question3_id UUID,
     status VARCHAR(255) NOT NULL
   );
 `;
@@ -177,11 +175,8 @@ async function seedCouncilVotings(client) {
     const insertedCouncilVotings = await Promise.all(
       councilVotings.map(
         (councilVoting) => client.sql`
-        INSERT INTO council_votings (id, date, question1_id, question2_id, question3_id, status)
-        VALUES (${idMapping[councilVoting.id]}, ${councilVoting.dateTime}, 
-          ${idMapping[councilVoting.question1_id] || client.sql`uuid_nil()`}, 
-          ${idMapping[councilVoting.question2_id] || client.sql`uuid_nil()`}, 
-          ${idMapping[councilVoting.question3_id] || client.sql`uuid_nil()`}, ${councilVoting.status})
+        INSERT INTO council_votings (id, date, status)
+        VALUES (${idMapping[councilVoting.id]}, ${councilVoting.dateTime}, ${councilVoting.status})
         ON CONFLICT (id) DO NOTHING;
       `,
       ),

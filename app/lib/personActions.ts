@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { sql } from "@/db";
+import { PERSONS_ROUTE } from "@/routes";
 
 const FormSchema = z.object({
   id: z.string(),
@@ -75,8 +76,8 @@ export async function createPerson(prevState: State, formData: FormData) {
     };
   }
 
-  revalidatePath("/dashboard/persons");
-  redirect("/dashboard/persons");
+  revalidatePath(PERSONS_ROUTE);
+  redirect(PERSONS_ROUTE);
 }
 
 export async function updatePerson(
@@ -110,14 +111,14 @@ export async function updatePerson(
     return { message: "Database Error: Failed to Update Person." };
   }
 
-  revalidatePath("/dashboard/persons");
-  redirect("/dashboard/persons");
+  revalidatePath(PERSONS_ROUTE);
+  redirect(PERSONS_ROUTE);
 }
 
 export async function deletePerson(id: string) {
   try {
     await sql`DELETE FROM persons WHERE id = ${id}`;
-    revalidatePath("/dashboard/persons");
+    revalidatePath(PERSONS_ROUTE);
     return { message: "Deleted Person." };
   } catch (error) {
     return { message: "Database Error: Failed to Delete Person." };

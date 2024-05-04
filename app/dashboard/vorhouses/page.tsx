@@ -1,7 +1,7 @@
 import Pagination from "@/app/ui/invoices/pagination";
 import Search from "@/app/ui/search";
 import { lusitana } from "@/app/ui/fonts";
-import { VorHousesTableSkeleton } from "@/app/ui/skeletons";
+import { DefaultSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";
 
 import { Metadata } from "next";
@@ -35,7 +35,7 @@ export default async function Page({
         <Search placeholder="Найти фор семью..." />
         <CreateVorHouse />
       </div>
-      <Suspense key={query + currentPage} fallback={<VorHousesTableSkeleton />}>
+      <Suspense key={query + currentPage} fallback={<DefaultSkeleton />}>
         <Table query={query} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">

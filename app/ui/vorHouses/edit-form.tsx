@@ -12,6 +12,7 @@ import { useFormState } from "react-dom";
 import { Person, VorHouse } from "@/app/lib/definitions2";
 import { updateVorHouse } from "@/app/lib/vorHouseActions";
 import { ZERO_UUID } from "@/constants";
+import { VORHOUSES_ROUTE } from "@/routes";
 
 export default function EditVorHouseForm({
   vorHouse, // customers,
@@ -186,7 +187,7 @@ export default function EditVorHouseForm({
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href="/dashboard/vorhouses"
+          href={VORHOUSES_ROUTE}
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Отмена

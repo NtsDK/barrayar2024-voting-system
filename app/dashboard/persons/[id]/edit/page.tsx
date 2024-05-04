@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { fetchPersonById } from "@/app/lib/personData";
 // import Form from "@/app/ui/persons/create-form";
 import Form from "@/app/ui/persons/edit-form";
+import { PERSONS_ROUTE } from "@/routes";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -22,10 +23,10 @@ export default async function Page({ params }: { params: { id: string } }) {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: "Персонажи", href: "/dashboard/persons" },
+          { label: "Персонажи", href: PERSONS_ROUTE },
           {
             label: "Изменить персонажа",
-            href: `/dashboard/persons/${id}/edit`,
+            href: `${PERSONS_ROUTE}/${id}/edit`,
             active: true,
           },
         ]}

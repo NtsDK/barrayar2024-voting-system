@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FaceFrownIcon } from "@heroicons/react/24/outline";
+import { VORHOUSES_ROUTE } from "@/routes";
 
 export default function NotFound() {
   return (
@@ -8,7 +9,7 @@ export default function NotFound() {
       <h2 className="text-xl font-semibold">404 Не найден</h2>
       <p>Фор семья не найдена.</p>
       <Link
-        href="/dashboard/vorhouses"
+        href={VORHOUSES_ROUTE}
         className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-400"
       >
         На предыдущую страницу

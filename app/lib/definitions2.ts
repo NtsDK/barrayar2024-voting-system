@@ -1,6 +1,7 @@
 // игровой персонаж
 export type Person = {
   id: string;
+  // имя персонажа
   name: string;
   comment: string;
 };
@@ -8,8 +9,11 @@ export type Person = {
 // фор-дом?
 export type VorHouse = {
   id: string;
+  // фамилия
   family_name: string;
+  // id графа
   count_id: string | null;
+  // id графини
   countess_id: string | null;
 };
 
@@ -19,10 +23,6 @@ export type CouncilVoting = {
   // нужно ли человеко-читаемое название?
   // время начала голосования
   dateTime: string;
-  // вопросы в повестке
-  question1_id: string | null;
-  question2_id: string | null;
-  question3_id: string | null;
   // состояние голосования
   // запланировано, подготовка, голосование графинь, голосование графов, завершено
   status:
@@ -36,6 +36,8 @@ export type CouncilVoting = {
 // вопросы на голосовании
 export type VotingQuestion = {
   id: string;
+  // id голосования
+  voting_id: string;
   // вопрос может быть мастерским (управляется мастерами) или
   // игроцким (управляется игроками)
   type: "master" | "player";

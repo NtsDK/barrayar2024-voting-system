@@ -163,10 +163,7 @@ export function InvoicesMobileSkeleton() {
   );
 }
 
-export function PersonsTableSkeleton() {
-  return <div>...</div>;
-}
-export function VorHousesTableSkeleton() {
+export function DefaultSkeleton() {
   return <div>...</div>;
 }
 

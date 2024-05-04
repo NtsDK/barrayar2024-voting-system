@@ -122,9 +122,18 @@ const vorHouses = [
   },
 ];
 
+const councilVotings = [
+  {
+    id: "voting1",
+    dateTime: "asd",
+    status: "planned",
+  },
+];
+
 const votingQuestions = [
   {
     id: "question1",
+    voting_id: "voting1",
     type: "player",
     questionText: "Должен ли любимый конь императора стать графом?",
     answer1: "Да, с присвоением титула и фамилии граф Форовсов",
@@ -133,17 +142,6 @@ const votingQuestions = [
     answer2Advocate_id: null,
     status: "raised",
     voteLog: "",
-  },
-];
-
-const councilVotings = [
-  {
-    id: "voting1",
-    dateTime: "asd",
-    question1_id: "question1",
-    question2_id: null,
-    question3_id: null,
-    status: "planned",
   },
 ];
 

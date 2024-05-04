@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { sql } from "@/db";
+import { VORHOUSES_ROUTE } from "@/routes";
 
 const FormSchema = z.object({
   id: z.string(),
@@ -79,8 +80,8 @@ export async function createVorHouse(prevState: State, formData: FormData) {
     };
   }
 
-  revalidatePath("/dashboard/vorhouses");
-  redirect("/dashboard/vorhouses");
+  revalidatePath(VORHOUSES_ROUTE);
+  redirect(VORHOUSES_ROUTE);
 }
 
 export async function updateVorHouse(
@@ -118,15 +119,15 @@ export async function updateVorHouse(
     return { message: "Database Error: Failed to Update Vor House." };
   }
 
-  revalidatePath("/dashboard/vorhouses");
-  redirect("/dashboard/vorhouses");
+  revalidatePath(VORHOUSES_ROUTE);
+  redirect(VORHOUSES_ROUTE);
 }
 
 export async function deleteVorHouse(id: string) {
   // throw new Error("Failed to Delete Invoice");
   try {
     await sql`DELETE FROM vor_houses WHERE id = ${id}`;
-    revalidatePath("/dashboard/vorhouses");
+    revalidatePath(VORHOUSES_ROUTE);
     return { message: "Deleted Vor House." };
   } catch (error) {
     return { message: "Database Error: Failed to Delete Vor House." };
