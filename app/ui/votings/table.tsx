@@ -1,6 +1,7 @@
 import { fetchFilteredCouncilVotings } from "@/app/lib/votingData";
 import { DeleteVoting, UpdateVoting } from "./buttons";
-import { VOTING_STATUS_I18N } from "@/constants";
+import { COUNCIL_VOTING_STATUS_I18N } from "@/constants";
+import { Card } from "./card";
 
 export default async function VorHousesTable({
   query,
@@ -16,14 +17,18 @@ export default async function VorHousesTable({
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           {votings?.map((voting) => (
-            <div key={voting.id}>
+            <div key={voting.id} className="mb-10">
               <h2>
-                {voting.date_time} {VOTING_STATUS_I18N[voting.status]}
+                {voting.date_time} {COUNCIL_VOTING_STATUS_I18N[voting.status]}
+                <div className="flex justify-end gap-3">
+                  <UpdateVoting id={voting.id} />
+                  <DeleteVoting id={voting.id} />
+                </div>
               </h2>
-              <div>body</div>
-              <div className="flex justify-end gap-3">
-                <UpdateVoting id={voting.id} />
-                <DeleteVoting id={voting.id} />
+              <div className="ml-8">
+                {voting.questions.map((question) => (
+                  <Card key={question.id} question={question} />
+                ))}
               </div>
             </div>
           ))}

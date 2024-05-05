@@ -24,11 +24,11 @@ export type CouncilVoting = {
   // время начала голосования
   date_time: string;
   // состояние голосования
-  status: VotingStatus;
+  status: CouncilVotingStatus;
 };
 
-/** запланировано, подготовка, голосование графинь, голосование графов, завершено */ 
-export type VotingStatus =
+/** запланировано, подготовка, голосование графинь, голосование графов, завершено */
+export type CouncilVotingStatus =
   | "planned"
   | "preparing"
   | "countessVoting"
@@ -42,7 +42,7 @@ export type VotingQuestion = {
   voting_id: string;
   // вопрос может быть мастерским (управляется мастерами) или
   // игроцким (управляется игроками)
-  type: "master" | "player";
+  type: VotingQuestionType;
   // вопрос на голосовании
   question_text: string;
   // ответ 1
@@ -54,11 +54,21 @@ export type VotingQuestion = {
   // адвокат ответа 2
   answer2_advocate_id: string | null;
   // итог/статус вопроса
-  // поднят, ответ1, ответ2, перенос, вопрос снят
-  status: "raised" | "answer1" | "answer2" | "rescheduling" | "canceled";
+  // состояние вопроса
+  status: VotingQuestionStatus;
   // итог голосования
   vote_log: string;
 };
+
+export type VotingQuestionType = "master" | "player";
+
+/** поднят, ответ1, ответ2, перенос, вопрос снят */
+export type VotingQuestionStatus =
+  | "raised"
+  | "answer1"
+  | "answer2"
+  | "rescheduling"
+  | "canceled";
 
 // #region производные типы
 
@@ -70,4 +80,42 @@ export type VorHousesTable = {
   count_name: string | null;
   countess_id: string | null;
   countess_name: string | null;
+};
+
+// соединение CouncilVoting и VotingQuestion
+export type CouncilVotingsList = {
+  id: string;
+  // нужно ли человеко-читаемое название?
+  // время начала голосования
+  date_time: string;
+  // состояние голосования
+  status: CouncilVotingStatus;
+  questions: VotingQuestionsList[];
+};
+
+// соединение VotingQuestion и Person
+export type VotingQuestionsList = {
+  id: string;
+  // id голосования
+  voting_id: string;
+  // вопрос может быть мастерским (управляется мастерами) или
+  // игроцким (управляется игроками)
+  type: VotingQuestionType;
+  // вопрос на голосовании
+  question_text: string;
+  // ответ 1
+  answer1: string;
+  // адвокат ответа 1
+  answer1_advocate_id: string | null;
+  answer1_advocate_name: string | null;
+  // ответ 2
+  answer2: string;
+  // адвокат ответа 2
+  answer2_advocate_id: string | null;
+  answer2_advocate_name: string | null;
+  // итог/статус вопроса
+  // состояние вопроса
+  status: VotingQuestionStatus;
+  // итог голосования
+  vote_log: string;
 };

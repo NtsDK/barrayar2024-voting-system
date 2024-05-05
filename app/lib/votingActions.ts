@@ -124,7 +124,11 @@ export async function updateVoting(
 export async function deleteVoting(id: string) {
   // throw new Error("Failed to Delete Invoice");
   try {
-    await sql`DELETE FROM council_votings WHERE id = ${id}`;
+    await sql.begin((sql) => [
+      sql`DELETE FROM voting_questions WHERE voting_questions.voting_id = ${id}`,
+      sql`DELETE FROM council_votings WHERE id = ${id}`,
+    ]);
+
     revalidatePath(VOTINGS_ROUTE);
     return { message: "Deleted Voting." };
   } catch (error) {

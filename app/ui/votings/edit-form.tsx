@@ -12,7 +12,7 @@ import { useFormState } from "react-dom";
 import { CouncilVoting, Person, VorHouse } from "@/app/lib/definitions2";
 // import { updateVorHouse } from "@/app/lib/vorHouseActions";
 import { updateVoting } from "@/app/lib/votingActions";
-import { VOTING_STATUS_I18N, ZERO_UUID } from "@/constants";
+import { COUNCIL_VOTING_STATUS_I18N } from "@/constants";
 import { VORHOUSES_ROUTE } from "@/routes";
 import { DATE_TIME_LIST } from "./dateTimeList";
 import { STATUS_LIST } from "./statusList";
@@ -158,7 +158,7 @@ export default function EditVotingForm({ voting }: { voting: CouncilVoting }) {
             >
               {STATUS_LIST.map((status) => (
                 <option key={status} value={status}>
-                  {VOTING_STATUS_I18N[status]}
+                  {COUNCIL_VOTING_STATUS_I18N[status]}
                 </option>
               ))}
             </select>

@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/button";
 import { Person } from "@/app/lib/definitions2";
-import { VOTING_STATUS_I18N, ZERO_UUID } from "@/constants";
+import { COUNCIL_VOTING_STATUS_I18N } from "@/constants";
 import { VOTINGS_ROUTE } from "@/routes";
 import { createVoting } from "@/app/lib/votingActions";
 import { DATE_TIME_LIST } from "./dateTimeList";
@@ -129,7 +129,7 @@ export default function Form() {
             >
               {STATUS_LIST.map((status) => (
                 <option key={status} value={status}>
-                  {VOTING_STATUS_I18N[status]}
+                  {COUNCIL_VOTING_STATUS_I18N[status]}
                 </option>
               ))}
             </select>

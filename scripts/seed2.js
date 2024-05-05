@@ -150,19 +150,19 @@ async function seedVotingQuestions(client) {
 
     // Create the "voting_questions" table if it doesn't exist
     const createTable = await client.sql`
-    CREATE TABLE IF NOT EXISTS voting_questions (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    voting_id UUID,
-    type VARCHAR(255) NOT NULL,
-    question_text VARCHAR(255) NOT NULL,
-    answer1 VARCHAR(255) NOT NULL,
-    answer1Advocate_id UUID,
-    answer2 VARCHAR(255) NOT NULL,
-    answer2Advocate_id UUID,
-    status VARCHAR(255) NOT NULL,
-    vote_log TEXT NOT NULL
-  );
-`;
+      CREATE TABLE IF NOT EXISTS voting_questions (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        voting_id UUID,
+        type VARCHAR(255) NOT NULL,
+        question_text VARCHAR(255) NOT NULL,
+        answer1 VARCHAR(255) NOT NULL,
+        answer1_advocate_id UUID,
+        answer2 VARCHAR(255) NOT NULL,
+        answer2_advocate_id UUID,
+        status VARCHAR(255) NOT NULL,
+        vote_log TEXT NOT NULL
+      );
+    `;
 
     console.log(`Created "voting_questions" table`);
 
@@ -171,11 +171,11 @@ async function seedVotingQuestions(client) {
       votingQuestions.map(
         (votingQuestion) => client.sql`
         INSERT INTO voting_questions (id, voting_id, type, question_text, answer1, 
-          answer1Advocate_id, answer2, answer2Advocate_id, status, vote_log)
+          answer1_advocate_id, answer2, answer2_advocate_id, status, vote_log)
         VALUES (${idMapping[votingQuestion.id]}, ${idMapping[votingQuestion.voting_id]}, ${votingQuestion.type}, 
           ${votingQuestion.questionText}, ${votingQuestion.answer1}, 
-            ${idMapping[votingQuestion.answer1Advocate_id] || client.sql`uuid_nil()`}, 
-            ${votingQuestion.answer2}, ${idMapping[votingQuestion.answer2Advocate_id] || client.sql`uuid_nil()`}, 
+            ${idMapping[votingQuestion.answer1_advocate_id] || client.sql`uuid_nil()`}, 
+            ${votingQuestion.answer2}, ${idMapping[votingQuestion.answer2_advocate_id] || client.sql`uuid_nil()`}, 
             ${votingQuestion.status}, ${votingQuestion.voteLog})
         ON CONFLICT (id) DO NOTHING;
       `,
