@@ -125,7 +125,7 @@ const vorHouses = [
 const councilVotings = [
   {
     id: "voting1",
-    dateTime: "asd",
+    dateTime: "22 Августа 12:00",
     status: "planned",
   },
 ];

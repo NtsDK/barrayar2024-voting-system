@@ -22,16 +22,18 @@ export type CouncilVoting = {
   id: string;
   // нужно ли человеко-читаемое название?
   // время начала голосования
-  dateTime: string;
+  date_time: string;
   // состояние голосования
-  // запланировано, подготовка, голосование графинь, голосование графов, завершено
-  status:
-    | "planned"
-    | "preparing"
-    | "countessVoting"
-    | "countVoting"
-    | "finished";
+  status: VotingStatus;
 };
+
+/** запланировано, подготовка, голосование графинь, голосование графов, завершено */ 
+export type VotingStatus =
+  | "planned"
+  | "preparing"
+  | "countessVoting"
+  | "countVoting"
+  | "finished";
 
 // вопросы на голосовании
 export type VotingQuestion = {

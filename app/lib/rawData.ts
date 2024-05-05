@@ -26,7 +26,7 @@ export const persons: Person[] = [
 export const vorHouses: VorHouse[] = [
   {
     id: "house_vorbretten",
-    familyName: "Форбреттен",
+    family_name: "Форбреттен",
     count_id: "vorbretten_alan",
     countess_id: "vorbretten_eliza",
   },
@@ -35,24 +35,22 @@ export const vorHouses: VorHouse[] = [
 export const votingQuestions: VotingQuestion[] = [
   {
     id: "question1",
+    voting_id: "voting1",
     type: "player",
-    questionText: "Должен ли любимый конь императора стать графом?",
+    question_text: "Должен ли любимый конь императора стать графом?",
     answer1: "Да, с присвоением титула и фамилии граф Форовсов",
-    answer1Advocate_id: "vorbarra_urii",
+    answer1_advocate_id: "vorbarra_urii",
     answer2: "Да, с присвоением титула и фамилии графиня Форскакунаева",
-    answer2Advocate_id: null,
+    answer2_advocate_id: null,
     status: "raised",
-    voteLog: "",
+    vote_log: "",
   },
 ];
 
 export const councilVotings: CouncilVoting[] = [
   {
     id: "voting1",
-    dateTime: "",
-    question1_id: "question1",
-    question2_id: null,
-    question3_id: null,
+    date_time: "",
     status: "planned",
   },
 ];

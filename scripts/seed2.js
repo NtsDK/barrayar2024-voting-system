@@ -15,8 +15,8 @@ const bcrypt = require('bcrypt');
 
   await seedPersons(client);
   await seedVorHouses(client);
-  await seedVotingQuestions(client);
   await seedCouncilVotings(client);
+  await seedVotingQuestions(client);
 
   await client.end();
 })().catch((err) => {
@@ -106,6 +106,44 @@ async function seedVorHouses(client) {
   }
 }
 
+async function seedCouncilVotings(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+    // Create the "council_votings" table if it doesn't exist
+    const createTable = await client.sql`
+    CREATE TABLE IF NOT EXISTS council_votings (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    date_time VARCHAR(255) NOT NULL,
+    status VARCHAR(255) NOT NULL
+  );
+`;
+
+    console.log(`Created "council_votings" table`);
+
+    // Insert data into the "council_votings" table
+    const insertedCouncilVotings = await Promise.all(
+      councilVotings.map(
+        (councilVoting) => client.sql`
+        INSERT INTO council_votings (id, date_time, status)
+        VALUES (${idMapping[councilVoting.id]}, ${councilVoting.dateTime}, ${councilVoting.status})
+        ON CONFLICT (id) DO NOTHING;
+      `,
+      ),
+    );
+
+    console.log(`Seeded ${insertedCouncilVotings.length} council_votings`);
+
+    return {
+      createTable,
+      councilVotings: insertedCouncilVotings,
+    };
+  } catch (error) {
+    console.error('Error seeding council_votings:', error);
+    throw error;
+  }
+}
+
 async function seedVotingQuestions(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -152,44 +190,6 @@ async function seedVotingQuestions(client) {
     };
   } catch (error) {
     console.error('Error seeding votingQuestions:', error);
-    throw error;
-  }
-}
-
-async function seedCouncilVotings(client) {
-  try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
-    // Create the "council_votings" table if it doesn't exist
-    const createTable = await client.sql`
-    CREATE TABLE IF NOT EXISTS council_votings (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    date VARCHAR(255) NOT NULL,
-    status VARCHAR(255) NOT NULL
-  );
-`;
-
-    console.log(`Created "council_votings" table`);
-
-    // Insert data into the "council_votings" table
-    const insertedCouncilVotings = await Promise.all(
-      councilVotings.map(
-        (councilVoting) => client.sql`
-        INSERT INTO council_votings (id, date, status)
-        VALUES (${idMapping[councilVoting.id]}, ${councilVoting.dateTime}, ${councilVoting.status})
-        ON CONFLICT (id) DO NOTHING;
-      `,
-      ),
-    );
-
-    console.log(`Seeded ${insertedCouncilVotings.length} council_votings`);
-
-    return {
-      createTable,
-      councilVotings: insertedCouncilVotings,
-    };
-  } catch (error) {
-    console.error('Error seeding council_votings:', error);
     throw error;
   }
 }

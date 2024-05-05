@@ -15,11 +15,11 @@ export async function fetchFilteredCouncilVotings(
     const votings = await sql<CouncilVoting[]>`
       SELECT
         council_votings.id,
-        council_votings.date,
+        council_votings.date_time,
         council_votings.status
       FROM council_votings
       ORDER BY 
-        council_votings.date ASC
+        council_votings.date_time ASC
     `;
 
     // console.log("vorHouses", vorHouses);
@@ -28,5 +28,23 @@ export async function fetchFilteredCouncilVotings(
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch vorHouses.");
+  }
+}
+
+export async function fetchVotingById(id: string) {
+  noStore();
+  try {
+    const data = await sql<CouncilVoting[]>`
+      SELECT
+        council_votings.id,
+        council_votings.date_time,
+        council_votings.status
+      FROM council_votings
+      WHERE council_votings.id = ${id};
+    `;
+
+    return data[0];
+  } catch (error) {
+    console.error("Database Error:", error);
   }
 }
