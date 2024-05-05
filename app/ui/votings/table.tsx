@@ -2,6 +2,7 @@ import { fetchFilteredCouncilVotings } from "@/app/lib/votingData";
 import { DeleteVoting, UpdateVoting } from "./buttons";
 import { COUNCIL_VOTING_STATUS_I18N } from "@/constants";
 import { Card } from "./card";
+import { CreateQuestion } from "../questions/buttons";
 
 export default async function VorHousesTable({
   query,
@@ -21,6 +22,7 @@ export default async function VorHousesTable({
               <h2>
                 {voting.date_time} {COUNCIL_VOTING_STATUS_I18N[voting.status]}
                 <div className="flex justify-end gap-3">
+                  <CreateQuestion id={voting.id} />
                   <UpdateVoting id={voting.id} />
                   <DeleteVoting id={voting.id} />
                 </div>
