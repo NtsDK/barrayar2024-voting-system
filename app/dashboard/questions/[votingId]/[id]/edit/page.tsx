@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { fetchPersons } from "@/app/lib/personData";
 import { QUESTIONS_ROUTE, VOTINGS_ROUTE } from "@/routes";
 import { fetchVotingById } from "@/app/lib/votingData";
-// import Form from "@/app/ui/questions/create-form";
+import Form from "@/app/ui/questions/edit-form";
+import { fetchQuestionById } from "@/app/lib/questionData";
 
 export default async function Page({
   params,
@@ -12,12 +13,13 @@ export default async function Page({
 }) {
   const votingId = params.votingId;
   const id = params.id;
-  const [voting, persons] = await Promise.all([
+  const [voting, persons, question] = await Promise.all([
     fetchVotingById(votingId),
     fetchPersons(),
+    fetchQuestionById(id),
   ]);
 
-  if (!voting) {
+  if (!voting || !question) {
     notFound();
   }
   return (
@@ -27,12 +29,12 @@ export default async function Page({
           { label: "Голосования", href: VOTINGS_ROUTE },
           {
             label: "Изменить вопрос",
-            href: `${QUESTIONS_ROUTE}/${votingId}/${id}/create`,
+            href: `${QUESTIONS_ROUTE}/${votingId}/${id}/edit`,
             active: true,
           },
         ]}
       />
-      {/* <Form votingId={votingId} persons={persons} /> */}
+      <Form persons={persons} question={question} />
     </main>
   );
 }

@@ -24,7 +24,7 @@ const FormSchema = z.object({
 
 const CreateQuestion = FormSchema.omit({ id: true });
 
-// const UpdateVoting = FormSchema.omit({ id: true });
+const UpdateQuestion = FormSchema.omit({ id: true });
 
 export type State = {
   errors?: {
@@ -67,10 +67,30 @@ export async function createQuestion(prevState: State, formData: FormData) {
 
   try {
     await sql`
-      INSERT INTO voting_questions (voting_id, type, question_text, answer1, answer1_advocate_id,
-        answer2, answer2_advocate_id, status, vote_log
+      INSERT INTO voting_questions 
+      ( 
+        voting_id, 
+        type, 
+        question_text, 
+        answer1, 
+        answer1_advocate_id,
+        answer2, 
+        answer2_advocate_id, 
+        status, 
+        vote_log
       )
-      VALUES (${voting_id},${type},${question_text},${answer1},${answer1_advocate_id},${answer2},${answer2_advocate_id},${status},${vote_log})
+      VALUES 
+      (
+        ${voting_id},
+        ${type},
+        ${question_text},
+        ${answer1},
+        ${answer1_advocate_id},
+        ${answer2},
+        ${answer2_advocate_id},
+        ${status},
+        ${vote_log}
+      )
     `;
   } catch (error) {
     return {
@@ -81,42 +101,68 @@ export async function createQuestion(prevState: State, formData: FormData) {
   redirect(VOTINGS_ROUTE);
 }
 
-// export async function updateVoting(
-//   id: string,
-//   prevState: State,
-//   formData: FormData
-// ) {
-//   const validatedFields = UpdateVoting.safeParse({
-//     date_time: formData.get("date_time"),
-//     status: formData.get("status"),
-//   });
+export async function updateQuestion(
+  id: string,
+  prevState: State,
+  formData: FormData
+) {
+  const validatedFields = UpdateQuestion.safeParse({
+    voting_id: formData.get("voting_id"),
+    type: formData.get("type"),
+    question_text: formData.get("question_text"),
+    answer1: formData.get("answer1"),
+    answer1_advocate_id: formData.get("answer1_advocate_id"),
+    answer2: formData.get("answer2"),
+    answer2_advocate_id: formData.get("answer2_advocate_id"),
+    status: formData.get("status"),
+    vote_log: formData.get("vote_log"),
+  });
 
-//   // console.log("updateVorHouse", validatedFields);
+  // console.log("updateVorHouse", validatedFields);
 
-//   if (!validatedFields.success) {
-//     return {
-//       errors: validatedFields.error.flatten().fieldErrors,
-//       message: "Missing Fields. Failed to Update Voting.",
-//     };
-//   }
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to Update Question.",
+    };
+  }
 
-//   const { date_time, status } = validatedFields.data;
+  const {
+    answer1,
+    answer1_advocate_id,
+    answer2,
+    answer2_advocate_id,
+    question_text,
+    status,
+    type,
+    vote_log,
+    voting_id,
+  } = validatedFields.data;
 
-//   // const amountInCents = amount * 100;
+  // const amountInCents = amount * 100;
 
-//   try {
-//     await sql`
-//         UPDATE council_votings
-//         SET date_time = ${date_time}, status = ${status}
-//         WHERE id = ${id}
-//       `;
-//   } catch (error) {
-//     return { message: "Database Error: Failed to Update Voting." };
-//   }
+  try {
+    await sql`
+        UPDATE voting_questions
+        SET 
+          answer1 = ${answer1},
+          answer1_advocate_id = ${answer1_advocate_id},
+          answer2 = ${answer2},
+          answer2_advocate_id = ${answer2_advocate_id},
+          question_text = ${question_text},
+          status = ${status},
+          type = ${type},
+          vote_log = ${vote_log},
+          voting_id = ${voting_id}
+        WHERE id = ${id}
+      `;
+  } catch (error) {
+    return { message: "Database Error: Failed to Update Question." };
+  }
 
-//   revalidatePath(VOTINGS_ROUTE);
-//   redirect(VOTINGS_ROUTE);
-// }
+  revalidatePath(VOTINGS_ROUTE);
+  redirect(VOTINGS_ROUTE);
+}
 
 export async function deleteQuestion(id: string) {
   // throw new Error("Failed to Delete Invoice");
