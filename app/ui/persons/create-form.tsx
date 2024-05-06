@@ -16,7 +16,6 @@ import { PERSONS_ROUTE } from "@/routes";
 
 export default function Form() {
   const initialState = { message: null, errors: {} };
-  // const [state, dispatch] = useFormState(createInvoice, initialState);
   const [state, dispatch] = useFormState(createPerson, initialState);
   // console.log("state", state);
   return (

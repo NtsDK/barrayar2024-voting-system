@@ -10,50 +10,12 @@ export default async function PersonsTable({
   query: string;
   currentPage: number;
 }) {
-  // const invoices = await fetchFilteredInvoices(query, currentPage);
   const persons = await fetchFilteredPersons(query, currentPage);
 
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
-          {/* <div className="md:hidden">
-            {persons?.map((person) => (
-              <div
-                key={person.id}
-                className="mb-2 w-full rounded-md bg-white p-4"
-              >
-                <div className="flex items-center justify-between border-b pb-4">
-                  <div>
-                    <div className="mb-2 flex items-center">
-                      <Image
-                        src={person.image_url}
-                        className="mr-2 rounded-full"
-                        width={28}
-                        height={28}
-                        alt={`${person.name}'s profile picture`}
-                      />
-                      <p>{person.name}</p>
-                    </div>
-                    <p className="text-sm text-gray-500">{person.email}</p>
-                  </div>
-                  <InvoiceStatus status={person.status} />
-                </div>
-                <div className="flex w-full items-center justify-between pt-4">
-                  <div>
-                    <p className="text-xl font-medium">
-                      {formatCurrency(person.amount)}
-                    </p>
-                    <p>{formatDateToLocal(person.date)}</p>
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <UpdateInvoice id={person.id} />
-                    <DeleteInvoice id={person.id} />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div> */}
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
@@ -63,15 +25,6 @@ export default async function PersonsTable({
                 <th scope="col" className="px-3 py-5 font-medium">
                   Комент
                 </th>
-                {/* <th scope="col" className="px-3 py-5 font-medium">
-                  Amount
-                </th>
-                <th scope="col" className="px-3 py-5 font-medium">
-                  Date
-                </th>
-                <th scope="col" className="px-3 py-5 font-medium">
-                  Status
-                </th> */}
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Edit</span>
                 </th>
@@ -85,28 +38,12 @@ export default async function PersonsTable({
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
-                      {/* <Image
-                        src={person.image_url}
-                        className="rounded-full"
-                        width={28}
-                        height={28}
-                        alt={`${person.name}'s profile picture`}
-                      /> */}
                       <p>{person.name}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     {person.comment}
                   </td>
-                  {/* <td className="whitespace-nowrap px-3 py-3">
-                    {formatCurrency(person.amount)}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {formatDateToLocal(person.date)}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    <InvoiceStatus status={person.status} />
-                  </td> */}
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
                       {/* <UpdateInvoice id={person.id} /> */}
