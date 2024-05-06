@@ -2,7 +2,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { sql } from "@/db";
 import { VorHouse, VorHousesTable } from "./definitions2";
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 16;
 
 export async function fetchFilteredVorHouses(
   query: string,

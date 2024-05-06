@@ -18,18 +18,25 @@ const idMapping = {
   "vorvolinkin_olga": "7fb5bfd4-919e-401d-aa53-d228ccd58a0b",
   "vorvolinkin_filat": "4c989391-b98a-48bb-8efe-fa794e2403a5",
 
-
+  "house_vorbarra": "bc8518bc-b8a5-4b21-b74c-4045fe67a7ba",
   "house_vorbretten": "50f1246a-65aa-4f8a-a9b5-018dcff1d58c",
   "house_vorvolinkin": "586c3352-022c-462b-9ad0-91e37c221bbc",
   "house_vordarian": "7a0a29a2-d2b3-40c3-8ace-5d48186bf145",
-
+  "house_vorkosigan": "f1e027e8-0079-4513-ba44-734775285625",
+  "house_vorlakial": "c5fc12b8-0ccb-493b-ab26-0cd2111d42a2",
+  "house_vormuir": "c9665462-ec4d-4e51-8807-0d16473776cd",
+  "house_vorrobio": "c1551982-2ada-4243-917b-a545b5d13f90",
+  "house_vorpatril": "69c274da-e0b0-490b-b633-a4ffd4d8b636",
+  "house_vorpinski": "24bf5326-edf9-42f9-84ee-83c3f604be90",
+  "house_vorratier": "a071052f-02df-4866-9e13-b485ce5100b5",
+  "house_vorsmit": "c0125cc4-d61c-41a2-a3d7-abd6a2243a4f",
+  "house_vortala": "7bd647d1-b52d-43cd-97f1-ee2498b009de",
+  "house_vortein": "b1174bc7-499e-4f1a-ae19-8ce2771b0525",
+  "house_vorhalas": "ad63730a-7d42-4e81-af9d-e8dafe066916",
+  "house_vorhovic": "bef65095-2944-4e7c-b6ba-10fed5259a00",
 
   "question1": "dc6004a1-669f-46c1-af1d-3e45b6212037",
   "voting1": "4535a18c-279d-49e9-b3b0-f856a4e2ddc4",
-  // : "572208af-8ac7-4625-b445-dec1fba1e9b1",
-  // : "cdae38e5-69c8-4bd0-8c78-a78a0767b23d",
-  // : "f9426f75-5c9c-4c96-97f3-82cbd5267720",
-  // : "4003f112-4f68-445f-a6b1-ddcceaa8566d",
 }
 
 const persons = [
@@ -105,6 +112,10 @@ const persons = [
 
 const vorHouses = [
   {
+    id: "house_vorbarra",
+    familyName: "Форбарра",
+  },
+  {
     id: "house_vorbretten",
     familyName: "Форбреттен",
     count_id: "vorbretten_alan",
@@ -119,6 +130,54 @@ const vorHouses = [
   {
     id: "house_vordarian",
     familyName: "Фордариан",
+  },
+  {
+    id: "house_vorkosigan",
+    familyName: "Форкосиган",
+  },
+  {
+    id: "house_vorlakial",
+    familyName: "Форлакиал",
+  },
+  {
+    id: "house_vormuir",
+    familyName: "Формюир",
+  },
+  {
+    id: "house_vorrobio",
+    familyName: "Форобио",
+  },
+  {
+    id: "house_vorpatril",
+    familyName: "Форпатрил",
+  },
+  {
+    id: "house_vorpinski",
+    familyName: "Форпински",
+  },
+  {
+    id: "house_vorratier",
+    familyName: "Форратьер",
+  },
+  {
+    id: "house_vorsmit",
+    familyName: "Форсмит",
+  },
+  {
+    id: "house_vortala",
+    familyName: "Фортала",
+  },
+  {
+    id: "house_vortein",
+    familyName: "Фортейн",
+  },
+  {
+    id: "house_vorhalas",
+    familyName: "Форхалас",
+  },
+  {
+    id: "house_vorhovic",
+    familyName: "Форховиц",
   },
 ];
 
