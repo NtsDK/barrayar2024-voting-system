@@ -118,17 +118,14 @@ export async function createQuestion(prevState: State, formData: FormData) {
 //   redirect(VOTINGS_ROUTE);
 // }
 
-// export async function deleteVoting(id: string) {
-//   // throw new Error("Failed to Delete Invoice");
-//   try {
-//     await sql.begin((sql) => [
-//       sql`DELETE FROM voting_questions WHERE voting_questions.voting_id = ${id}`,
-//       sql`DELETE FROM council_votings WHERE id = ${id}`,
-//     ]);
+export async function deleteQuestion(id: string) {
+  // throw new Error("Failed to Delete Invoice");
+  try {
+    await sql`DELETE FROM voting_questions WHERE voting_questions.id = ${id}`;
 
-//     revalidatePath(VOTINGS_ROUTE);
-//     return { message: "Deleted Voting." };
-//   } catch (error) {
-//     return { message: "Database Error: Failed to Delete Voting." };
-//   }
-// }
+    revalidatePath(VOTINGS_ROUTE);
+    return { message: "Deleted Question." };
+  } catch (error) {
+    return { message: "Database Error: Failed to Delete Question." };
+  }
+}

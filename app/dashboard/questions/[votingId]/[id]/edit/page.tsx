@@ -1,14 +1,19 @@
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import { notFound } from "next/navigation";
 import { fetchPersons } from "@/app/lib/personData";
-import { VOTINGS_ROUTE } from "@/routes";
+import { QUESTIONS_ROUTE, VOTINGS_ROUTE } from "@/routes";
 import { fetchVotingById } from "@/app/lib/votingData";
-import Form from "@/app/ui/questions/create-form";
+// import Form from "@/app/ui/questions/create-form";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: { votingId: string; id: string };
+}) {
+  const votingId = params.votingId;
   const id = params.id;
   const [voting, persons] = await Promise.all([
-    fetchVotingById(id),
+    fetchVotingById(votingId),
     fetchPersons(),
   ]);
 
@@ -21,13 +26,13 @@ export default async function Page({ params }: { params: { id: string } }) {
         breadcrumbs={[
           { label: "Голосования", href: VOTINGS_ROUTE },
           {
-            label: "Создать вопрос",
-            href: `${VOTINGS_ROUTE}/${id}/create`,
+            label: "Изменить вопрос",
+            href: `${QUESTIONS_ROUTE}/${votingId}/${id}/create`,
             active: true,
           },
         ]}
       />
-      <Form votingId={id} persons={persons} />
+      {/* <Form votingId={votingId} persons={persons} /> */}
     </main>
   );
 }
