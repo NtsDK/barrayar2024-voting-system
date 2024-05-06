@@ -1,8 +1,11 @@
+import clsx from "clsx";
+
 type StringInputProps = {
   id: string;
   label: string;
   defaultValue?: string | null;
   errors?: Record<string, string[] | undefined>;
+  className?: string;
 };
 
 export default function StringInput({
@@ -10,9 +13,10 @@ export default function StringInput({
   id,
   defaultValue,
   errors,
+  className,
 }: StringInputProps) {
   return (
-    <div className="mb-4">
+    <div className={clsx("mb-4", className)}>
       <label htmlFor={id} className="mb-2 block text-sm font-medium">
         {label}
       </label>
