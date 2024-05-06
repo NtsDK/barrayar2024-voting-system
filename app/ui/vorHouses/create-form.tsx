@@ -9,12 +9,12 @@ import {
   CurrencyDollarIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { Button } from "@/app/ui/button";
+import { Button } from "@/app/ui/common/button";
 import { createVorHouse } from "@/app/lib/vorHouseActions";
 import { Person } from "@/app/lib/definitions2";
 import { ZERO_UUID } from "@/constants";
 import { VORHOUSES_ROUTE } from "@/routes";
-import PersonSelect from "../person-select";
+import PersonSelect from "../common/person-select";
 
 export default function Form({ persons }: { persons: Person[] }) {
   const initialState = { message: null, errors: {} };

@@ -8,7 +8,7 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { Button } from "@/app/ui/button";
+import { Button } from "@/app/ui/common/button";
 import { useFormState } from "react-dom";
 import { Person } from "@/app/lib/definitions2";
 import { updatePerson } from "@/app/lib/personActions";

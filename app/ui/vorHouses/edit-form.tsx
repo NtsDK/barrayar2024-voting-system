@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/app/ui/button";
+import { Button } from "@/app/ui/common/button";
 import { useFormState } from "react-dom";
 import { Person, VorHouse } from "@/app/lib/definitions2";
 import { updateVorHouse } from "@/app/lib/vorHouseActions";
 import { VORHOUSES_ROUTE } from "@/routes";
-import PersonSelect from "../person-select";
+import PersonSelect from "../common/person-select";
 
 export default function EditVorHouseForm({
   vorHouse,

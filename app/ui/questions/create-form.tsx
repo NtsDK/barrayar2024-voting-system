@@ -9,12 +9,12 @@ import {
   CurrencyDollarIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { Button } from "@/app/ui/button";
+import { Button } from "@/app/ui/common/button";
 import { Person } from "@/app/lib/definitions2";
 import { COUNCIL_VOTING_STATUS_I18N } from "@/constants";
 import { VOTINGS_ROUTE } from "@/routes";
 import { createQuestion } from "@/app/lib/questionActions";
-import PersonSelect from "../person-select";
+import PersonSelect from "../common/person-select";
 // import { DATE_TIME_LIST } from "./dateTimeList";
 // import { STATUS_LIST } from "./statusList";
 

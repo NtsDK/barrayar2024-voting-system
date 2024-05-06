@@ -9,7 +9,7 @@ import {
   CurrencyDollarIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { Button } from "@/app/ui/button";
+import { Button } from "@/app/ui/common/button";
 import { createPerson } from "@/app/lib/personActions";
 import { PERSONS_ROUTE } from "@/routes";
 // import { createInvoice } from "@/app/lib/actions";

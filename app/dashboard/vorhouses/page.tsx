@@ -1,5 +1,5 @@
 import Pagination from "@/app/ui/invoices/pagination";
-import Search from "@/app/ui/search";
+import Search from "@/app/ui/common/search";
 import { lusitana } from "@/app/ui/fonts";
 import { DefaultSkeleton } from "@/app/ui/skeletons";
 import { Suspense } from "react";

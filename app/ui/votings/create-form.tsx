@@ -9,7 +9,7 @@ import {
   CurrencyDollarIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { Button } from "@/app/ui/button";
+import { Button } from "@/app/ui/common/button";
 import { Person } from "@/app/lib/definitions2";
 import { COUNCIL_VOTING_STATUS_I18N } from "@/constants";
 import { VOTINGS_ROUTE } from "@/routes";
