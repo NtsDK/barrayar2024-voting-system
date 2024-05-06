@@ -1,11 +1,6 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { sql } from "@/db";
-import {
-  CouncilVoting,
-  CouncilVotingsList,
-  VotingQuestion,
-  VotingQuestionsList,
-} from "./definitions2";
+import { VotingQuestion } from "./definitions2";
 
 export async function fetchQuestionById(id: string) {
   noStore();

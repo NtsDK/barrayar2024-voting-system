@@ -15,6 +15,7 @@ import { createVoting } from "@/app/lib/votingActions";
 import { STATUS_LIST } from "./statusList";
 import CommonSelect from "../common/common-select";
 import VotingDateTimeSelect from "./voting-date-time-select";
+import StringInput from "../common/string-input";
 
 export default function Form() {
   const initialState = { message: null, errors: {} };
@@ -22,6 +23,8 @@ export default function Form() {
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
+        <StringInput id="title" label="Название" errors={state.errors} />
+
         <VotingDateTimeSelect id="date_time" errors={state.errors} />
 
         <CommonSelect

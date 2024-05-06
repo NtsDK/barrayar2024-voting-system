@@ -35,8 +35,10 @@ const idMapping = {
   "house_vorhalas": "ad63730a-7d42-4e81-af9d-e8dafe066916",
   "house_vorhovic": "bef65095-2944-4e7c-b6ba-10fed5259a00",
 
-  "question1": "dc6004a1-669f-46c1-af1d-3e45b6212037",
   "voting1": "4535a18c-279d-49e9-b3b0-f856a4e2ddc4",
+  "voting2": "9d0037b7-e9ed-433b-b888-74edb46b6210",
+
+  "question1": "dc6004a1-669f-46c1-af1d-3e45b6212037",
 }
 
 const persons = [
@@ -184,7 +186,14 @@ const vorHouses = [
 const councilVotings = [
   {
     id: "voting1",
+    title: "Первое голосование",
     dateTime: "22 Августа 12:00",
+    status: "planned",
+  },
+  {
+    id: "voting2",
+    title: "Второе голосование",
+    dateTime: "23 Августа 14:00",
     status: "planned",
   },
 ];

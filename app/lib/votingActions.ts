@@ -11,6 +11,7 @@ import { VOTINGS_ROUTE } from "@/routes";
 
 const FormSchema = z.object({
   id: z.string(),
+  title: z.string(),
   date_time: z
     .string({
       invalid_type_error: "Выберите время голосования.",
@@ -23,17 +24,6 @@ const FormSchema = z.object({
     "countVoting",
     "finished",
   ]),
-  // comment: z.string(),
-  // customerId: z.string({
-  //   invalid_type_error: "Please select a customer.",
-  // }),
-  // amount: z.coerce
-  //   .number()
-  //   .gt(0, { message: "Please enter an amount greater than $0." }),
-  // status: z.enum(["pending", "paid"], {
-  //   invalid_type_error: "Please select an invoice status.",
-  // }),
-  // date: z.string(),
 });
 
 const CreateVoting = FormSchema.omit({ id: true });
@@ -52,6 +42,7 @@ export async function createVoting(prevState: State, formData: FormData) {
   const validatedFields = CreateVoting.safeParse({
     date_time: formData.get("date_time"),
     status: formData.get("status"),
+    title: formData.get("title"),
   });
 
   // console.log("validatedFields", validatedFields);
@@ -62,7 +53,7 @@ export async function createVoting(prevState: State, formData: FormData) {
     };
   }
 
-  const { date_time, status } = validatedFields.data;
+  const { date_time, status, title } = validatedFields.data;
 
   // Test it out:
   // console.log(rawFormData);
@@ -71,8 +62,8 @@ export async function createVoting(prevState: State, formData: FormData) {
 
   try {
     await sql`
-      INSERT INTO council_votings (date_time, status)
-      VALUES (${date_time},${status})
+      INSERT INTO council_votings (date_time, status, title)
+      VALUES (${date_time},${status},${title})
     `;
   } catch (error) {
     return {
@@ -92,6 +83,7 @@ export async function updateVoting(
   const validatedFields = UpdateVoting.safeParse({
     date_time: formData.get("date_time"),
     status: formData.get("status"),
+    title: formData.get("title"),
   });
 
   // console.log("updateVorHouse", validatedFields);
@@ -103,14 +95,14 @@ export async function updateVoting(
     };
   }
 
-  const { date_time, status } = validatedFields.data;
+  const { date_time, status, title } = validatedFields.data;
 
   // const amountInCents = amount * 100;
 
   try {
     await sql`
         UPDATE council_votings
-        SET date_time = ${date_time}, status = ${status}
+        SET date_time = ${date_time}, status = ${status}, title = ${title}
         WHERE id = ${id}
       `;
   } catch (error) {

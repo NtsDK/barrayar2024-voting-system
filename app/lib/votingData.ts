@@ -19,6 +19,7 @@ export async function fetchFilteredCouncilVotings(
     const votingsPromise = sql<CouncilVoting[]>`
       SELECT
         council_votings.id,
+        council_votings.title,
         council_votings.date_time,
         council_votings.status
       FROM council_votings
@@ -94,6 +95,7 @@ export async function fetchVotingById(id: string) {
     const data = await sql<CouncilVoting[]>`
       SELECT
         council_votings.id,
+        council_votings.title,
         council_votings.date_time,
         council_votings.status
       FROM council_votings

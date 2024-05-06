@@ -20,7 +20,8 @@ export type VorHouse = {
 // Голосование совета
 export type CouncilVoting = {
   id: string;
-  // нужно ли человеко-читаемое название?
+  // название
+  title: string;
   // время начала голосования
   date_time: string;
   // состояние голосования
@@ -85,7 +86,8 @@ export type VorHousesTable = {
 // соединение CouncilVoting и VotingQuestion
 export type CouncilVotingsList = {
   id: string;
-  // нужно ли человеко-читаемое название?
+  // название
+  title: string;
   // время начала голосования
   date_time: string;
   // состояние голосования

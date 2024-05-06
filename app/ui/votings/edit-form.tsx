@@ -16,6 +16,7 @@ import { VORHOUSES_ROUTE } from "@/routes";
 import { STATUS_LIST } from "./statusList";
 import CommonSelect from "../common/common-select";
 import VotingDateTimeSelect from "./voting-date-time-select";
+import StringInput from "../common/string-input";
 
 export default function EditVotingForm({ voting }: { voting: CouncilVoting }) {
   const initialState = { message: null, errors: {} };
@@ -26,6 +27,13 @@ export default function EditVotingForm({ voting }: { voting: CouncilVoting }) {
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
+        <StringInput
+          id="title"
+          label="Название"
+          defaultValue={voting.title}
+          errors={state.errors}
+        />
+
         <VotingDateTimeSelect
           id="date_time"
           defaultValue={voting.date_time}

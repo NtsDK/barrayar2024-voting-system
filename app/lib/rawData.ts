@@ -50,6 +50,7 @@ export const votingQuestions: VotingQuestion[] = [
 export const councilVotings: CouncilVoting[] = [
   {
     id: "voting1",
+    title: "",
     date_time: "",
     status: "planned",
   },

@@ -13,6 +13,10 @@ const bcrypt = require('bcrypt');
   const sql = postgres()
   const client = {sql, end: () => sql.end()}
 
+  await client.sql`DROP TABLE IF EXISTS persons`;
+  await client.sql`DROP TABLE IF EXISTS vor_houses`;
+  await client.sql`DROP TABLE IF EXISTS council_votings`;
+  await client.sql`DROP TABLE IF EXISTS voting_questions`;
   await seedPersons(client);
   await seedVorHouses(client);
   await seedCouncilVotings(client);
@@ -113,11 +117,12 @@ async function seedCouncilVotings(client) {
     // Create the "council_votings" table if it doesn't exist
     const createTable = await client.sql`
     CREATE TABLE IF NOT EXISTS council_votings (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    date_time VARCHAR(255) NOT NULL,
-    status VARCHAR(255) NOT NULL
-  );
-`;
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      date_time VARCHAR(255) NOT NULL,
+      status VARCHAR(255) NOT NULL
+    );
+  `;
 
     console.log(`Created "council_votings" table`);
 
@@ -125,8 +130,13 @@ async function seedCouncilVotings(client) {
     const insertedCouncilVotings = await Promise.all(
       councilVotings.map(
         (councilVoting) => client.sql`
-        INSERT INTO council_votings (id, date_time, status)
-        VALUES (${idMapping[councilVoting.id]}, ${councilVoting.dateTime}, ${councilVoting.status})
+        INSERT INTO council_votings (id, title, date_time, status)
+        VALUES (
+          ${idMapping[councilVoting.id]}, 
+          ${councilVoting.title},
+          ${councilVoting.dateTime}, 
+          ${councilVoting.status}
+        )
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
