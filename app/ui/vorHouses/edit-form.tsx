@@ -7,6 +7,7 @@ import { Person, VorHouse } from "@/app/lib/definitions2";
 import { updateVorHouse } from "@/app/lib/vorHouseActions";
 import { VORHOUSES_ROUTE } from "@/routes";
 import PersonSelect from "../common/person-select";
+import StringInput from "../common/string-input";
 
 export default function EditVorHouseForm({
   vorHouse,
@@ -23,29 +24,12 @@ export default function EditVorHouseForm({
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* Person name */}
-        <div className="mb-4">
-          <label
-            htmlFor="family_name"
-            className="mb-2 block text-sm font-medium"
-          >
-            Фамилия
-          </label>
-          <div className="relative mt-2 rounded-md">
-            <div className="relative">
-              <input
-                id="family_name"
-                name="family_name"
-                type="text"
-                defaultValue={vorHouse.family_name}
-                // step="0.01"
-                // placeholder="Enter USD amount"
-                className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              />
-              {/* <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" /> */}
-            </div>
-          </div>
-        </div>
+        <StringInput
+          id="family_name"
+          label="Фамилия"
+          defaultValue={vorHouse.family_name}
+          errors={state.errors}
+        />
 
         <PersonSelect
           id="count_id"
