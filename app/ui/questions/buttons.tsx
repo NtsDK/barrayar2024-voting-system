@@ -1,4 +1,11 @@
-import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  PencilIcon,
+  PlusIcon,
+  TrashIcon,
+  HandRaisedIcon,
+  HandThumbDownIcon,
+  HandThumbUpIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { QUESTIONS_ROUTE } from "@/routes";
 import { deleteVoting } from "@/app/lib/votingActions";
@@ -41,5 +48,24 @@ export function DeleteQuestion({ id }: { id: string }) {
         <TrashIcon className="w-5" />
       </button>
     </form>
+  );
+}
+
+export function VoteOnQuestion({
+  votingId,
+  id,
+}: {
+  votingId: string;
+  id: string;
+}) {
+  return (
+    <Link
+      href={`${QUESTIONS_ROUTE}/${votingId}/${id}/vote`}
+      className="rounded-md border p-2 hover:bg-gray-100 flex"
+    >
+      <HandThumbUpIcon className="w-5" />
+      <HandRaisedIcon className="w-5" />
+      <HandThumbDownIcon className="w-5" />
+    </Link>
   );
 }

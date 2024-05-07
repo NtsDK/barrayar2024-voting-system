@@ -12,7 +12,7 @@ import {
   VOTING_QUESTION_TYPE_I18N,
 } from "@/constants";
 import clsx from "clsx";
-import { DeleteQuestion, UpdateQuestion } from "./buttons";
+import { DeleteQuestion, UpdateQuestion, VoteOnQuestion } from "./buttons";
 
 type CardProps = {
   question: VotingQuestionsList;
@@ -36,6 +36,7 @@ export function Card(props: CardProps) {
     <div className={clsx("m-4", props.className)}>
       <div>{question_text}</div>
       <div className="flex justify-end gap-3">
+        <VoteOnQuestion id={id} votingId={voting_id} />
         <UpdateQuestion id={id} votingId={voting_id} />
         <DeleteQuestion id={id} />
       </div>

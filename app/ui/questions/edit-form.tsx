@@ -34,19 +34,6 @@ export default function EditQuestionForm({ persons, question }: FormProps) {
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <input
-          type="hidden"
-          id="voting_id"
-          name="voting_id"
-          value={question.voting_id}
-        />
-        <input
-          type="hidden"
-          id="vote_log"
-          name="vote_log"
-          value={question.vote_log}
-        />
-
         <CommonSelect
           id="type"
           label="Тип вопроса"

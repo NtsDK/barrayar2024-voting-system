@@ -22,9 +22,25 @@ const FormSchema = z.object({
   vote_log: z.string(),
 });
 
-const CreateQuestion = FormSchema.omit({ id: true });
+const CreateQuestion = FormSchema.omit({ id: true, vote_log: true });
 
-const UpdateQuestion = FormSchema.omit({ id: true });
+const UpdateQuestion = FormSchema.omit({
+  id: true,
+  voting_id: true,
+  vote_log: true,
+});
+
+const UpdateQuestionVoteLog = FormSchema.omit({
+  id: true,
+  voting_id: true,
+  type: true,
+  question_text: true,
+  answer1: true,
+  answer1_advocate_id: true,
+  answer2: true,
+  answer2_advocate_id: true,
+  status: true,
+});
 
 export type State = {
   errors?: {
@@ -44,7 +60,6 @@ export async function createQuestion(prevState: State, formData: FormData) {
     answer2: formData.get("answer2"),
     answer2_advocate_id: formData.get("answer2_advocate_id"),
     status: formData.get("status"),
-    vote_log: formData.get("vote_log"),
   });
   // console.log("validatedFields", validatedFields);
   if (!validatedFields.success) {
@@ -61,7 +76,6 @@ export async function createQuestion(prevState: State, formData: FormData) {
     question_text,
     status,
     type,
-    vote_log,
     voting_id,
   } = validatedFields.data;
 
@@ -89,7 +103,7 @@ export async function createQuestion(prevState: State, formData: FormData) {
         ${answer2},
         ${answer2_advocate_id},
         ${status},
-        ${vote_log}
+        ''
       )
     `;
   } catch (error) {
@@ -107,7 +121,6 @@ export async function updateQuestion(
   formData: FormData
 ) {
   const validatedFields = UpdateQuestion.safeParse({
-    voting_id: formData.get("voting_id"),
     type: formData.get("type"),
     question_text: formData.get("question_text"),
     answer1: formData.get("answer1"),
@@ -115,7 +128,6 @@ export async function updateQuestion(
     answer2: formData.get("answer2"),
     answer2_advocate_id: formData.get("answer2_advocate_id"),
     status: formData.get("status"),
-    vote_log: formData.get("vote_log"),
   });
 
   // console.log("updateVorHouse", validatedFields);
@@ -135,8 +147,6 @@ export async function updateQuestion(
     question_text,
     status,
     type,
-    vote_log,
-    voting_id,
   } = validatedFields.data;
 
   // const amountInCents = amount * 100;
@@ -151,13 +161,44 @@ export async function updateQuestion(
           answer2_advocate_id = ${answer2_advocate_id},
           question_text = ${question_text},
           status = ${status},
-          type = ${type},
-          vote_log = ${vote_log},
-          voting_id = ${voting_id}
+          type = ${type}
         WHERE id = ${id}
       `;
   } catch (error) {
     return { message: "Database Error: Failed to Update Question." };
+  }
+
+  revalidatePath(VOTINGS_ROUTE);
+  redirect(VOTINGS_ROUTE);
+}
+
+export async function updateQuestionVoteLog(
+  id: string,
+  prevState: State,
+  formData: FormData
+) {
+  const validatedFields = UpdateQuestionVoteLog.safeParse({
+    vote_log: formData.get("vote_log"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to Update Question Vote Log.",
+    };
+  }
+
+  const { vote_log } = validatedFields.data;
+
+  try {
+    await sql`
+        UPDATE voting_questions
+        SET 
+          vote_log = ${vote_log}
+        WHERE id = ${id}
+      `;
+  } catch (error) {
+    return { message: "Database Error: Failed to Update Question Vote Log." };
   }
 
   revalidatePath(VOTINGS_ROUTE);

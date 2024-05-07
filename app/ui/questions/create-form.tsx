@@ -34,7 +34,6 @@ export default function Form({ votingId, persons }: FormProps) {
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <input type="hidden" id="voting_id" name="voting_id" value={votingId} />
-        <input type="hidden" id="vote_log" name="vote_log" value="" />
 
         <CommonSelect
           id="type"
