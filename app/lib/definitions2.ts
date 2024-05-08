@@ -15,6 +15,8 @@ export type VorHouse = {
   count_id: string | null;
   // id графини
   countess_id: string | null;
+  // социальный капитал семьи
+  social_capital: number;
 };
 
 // Голосование совета
@@ -81,6 +83,7 @@ export type VorHousesTable = {
   count_name: string | null;
   countess_id: string | null;
   countess_name: string | null;
+  social_capital: number;
 };
 
 // соединение CouncilVoting и VotingQuestion

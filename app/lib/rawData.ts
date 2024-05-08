@@ -29,6 +29,7 @@ export const vorHouses: VorHouse[] = [
     family_name: "Форбреттен",
     count_id: "vorbretten_alan",
     countess_id: "vorbretten_eliza",
+    social_capital: 100,
   },
 ];
 

@@ -26,6 +26,12 @@ export default function Form({ persons }: { persons: Person[] }) {
         <PersonSelect id="count_id" label="Граф" persons={persons} />
 
         <PersonSelect id="countess_id" label="Графиня" persons={persons} />
+
+        <StringInput
+          id="social_capital"
+          label="Социальный капитал"
+          errors={state.errors}
+        />
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link

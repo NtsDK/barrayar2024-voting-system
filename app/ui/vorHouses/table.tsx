@@ -26,12 +26,9 @@ export default async function VorHousesTable({
                 <th scope="col" className="px-3 py-5 font-medium">
                   Графиня
                 </th>
-                {/* <th scope="col" className="px-3 py-5 font-medium">
-                  Date
-                </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Status
-                </th> */}
+                  Соцкап
+                </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Edit</span>
                 </th>
@@ -45,13 +42,6 @@ export default async function VorHousesTable({
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
-                      {/* <Image
-                        src={person.image_url}
-                        className="rounded-full"
-                        width={28}
-                        height={28}
-                        alt={`${person.name}'s profile picture`}
-                      /> */}
                       <p>{vorHouse.family_name}</p>
                     </div>
                   </td>
@@ -61,12 +51,9 @@ export default async function VorHousesTable({
                   <td className="whitespace-nowrap px-3 py-3">
                     {vorHouse.countess_name || ""}
                   </td>
-                  {/* <td className="whitespace-nowrap px-3 py-3">
-                    {formatDateToLocal(person.date)}
-                  </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    <InvoiceStatus status={person.status} />
-                  </td> */}
+                    {vorHouse.social_capital}
+                  </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
                       <UpdateVorHouse id={vorHouse.id} />

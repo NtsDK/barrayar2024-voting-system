@@ -44,6 +44,13 @@ export default function EditVorHouseForm({
           persons={persons}
           defaultValue={vorHouse.countess_id}
         />
+
+        <StringInput
+          id="social_capital"
+          label="Социальный капитал"
+          errors={state.errors}
+          defaultValue={String(vorHouse.social_capital)}
+        />
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link

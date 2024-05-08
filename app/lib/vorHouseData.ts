@@ -18,6 +18,7 @@ export async function fetchFilteredVorHouses(
         vor_houses.family_name,
         vor_houses.count_id,
         vor_houses.countess_id,
+        vor_houses.social_capital,
         count.name AS count_name,
         countess.name AS countess_name
       FROM vor_houses
@@ -72,7 +73,8 @@ export async function fetchVorHouseById(id: string) {
         vor_houses.id,
         vor_houses.family_name,
         vor_houses.count_id,
-        vor_houses.countess_id
+        vor_houses.countess_id,
+        vor_houses.social_capital
       FROM vor_houses
       WHERE vor_houses.id = ${id};
     `;

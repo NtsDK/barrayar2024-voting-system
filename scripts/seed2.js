@@ -50,10 +50,10 @@ async function seedPersons(client) {
       persons.map(async (person) => {
         // const hashedPassword = await bcrypt.hash(user.password, 10);
         return client.sql`
-        INSERT INTO persons (id, name, comment)
-        VALUES (${idMapping[person.id]}, ${person.name}, ${person.comment})
-        ON CONFLICT (id) DO NOTHING;
-      `;
+          INSERT INTO persons (id, name, comment)
+          VALUES (${idMapping[person.id]}, ${person.name}, ${person.comment})
+          ON CONFLICT (id) DO NOTHING;
+        `;
       }),
     );
 
@@ -75,13 +75,14 @@ async function seedVorHouses(client) {
 
     // Create the "vorHouses" table if it doesn't exist
     const createTable = await client.sql`
-    CREATE TABLE IF NOT EXISTS vor_houses (
-    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    family_name VARCHAR(255) NOT NULL,
-    count_id UUID,
-    countess_id UUID
-  );
-`;
+      CREATE TABLE IF NOT EXISTS vor_houses (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        family_name VARCHAR(255) NOT NULL,
+        count_id UUID,
+        countess_id UUID,
+        social_capital INT NOT NULL
+      );
+    `;
 
     console.log(`Created "vorHouses" table`);
 
@@ -89,10 +90,14 @@ async function seedVorHouses(client) {
     const insertedVorHouses = await Promise.all(
       vorHouses.map(
         (vorHouse) => client.sql`
-        INSERT INTO vor_houses (id, family_name, count_id, countess_id)
-        VALUES (${idMapping[vorHouse.id]}, ${vorHouse.familyName}, 
+        INSERT INTO vor_houses (id, family_name, count_id, countess_id, social_capital)
+        VALUES (
+          ${idMapping[vorHouse.id]}, 
+          ${vorHouse.familyName}, 
           ${idMapping[vorHouse.count_id] || client.sql`uuid_nil()`}, 
-          ${idMapping[vorHouse.countess_id] || client.sql`uuid_nil()`})
+          ${idMapping[vorHouse.countess_id] || client.sql`uuid_nil()`},
+          ${vorHouse.socialCapital}
+        )
         ON CONFLICT (id) DO NOTHING;
       `,
       ),
@@ -116,13 +121,13 @@ async function seedCouncilVotings(client) {
 
     // Create the "council_votings" table if it doesn't exist
     const createTable = await client.sql`
-    CREATE TABLE IF NOT EXISTS council_votings (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      title VARCHAR(255) NOT NULL,
-      date_time VARCHAR(255) NOT NULL,
-      status VARCHAR(255) NOT NULL
-    );
-  `;
+      CREATE TABLE IF NOT EXISTS council_votings (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        date_time VARCHAR(255) NOT NULL,
+        status VARCHAR(255) NOT NULL
+      );
+    `;
 
     console.log(`Created "council_votings" table`);
 
@@ -130,15 +135,15 @@ async function seedCouncilVotings(client) {
     const insertedCouncilVotings = await Promise.all(
       councilVotings.map(
         (councilVoting) => client.sql`
-        INSERT INTO council_votings (id, title, date_time, status)
-        VALUES (
-          ${idMapping[councilVoting.id]}, 
-          ${councilVoting.title},
-          ${councilVoting.dateTime}, 
-          ${councilVoting.status}
-        )
-        ON CONFLICT (id) DO NOTHING;
-      `,
+          INSERT INTO council_votings (id, title, date_time, status)
+          VALUES (
+            ${idMapping[councilVoting.id]}, 
+            ${councilVoting.title},
+            ${councilVoting.dateTime}, 
+            ${councilVoting.status}
+          )
+          ON CONFLICT (id) DO NOTHING;
+        `,
       ),
     );
 
@@ -180,15 +185,32 @@ async function seedVotingQuestions(client) {
     const insertedVotingQuestions = await Promise.all(
       votingQuestions.map(
         (votingQuestion) => client.sql`
-        INSERT INTO voting_questions (id, voting_id, type, question_text, answer1, 
-          answer1_advocate_id, answer2, answer2_advocate_id, status, vote_log)
-        VALUES (${idMapping[votingQuestion.id]}, ${idMapping[votingQuestion.voting_id]}, ${votingQuestion.type}, 
-          ${votingQuestion.questionText}, ${votingQuestion.answer1}, 
+          INSERT INTO voting_questions (
+            id, 
+            voting_id, 
+            type, 
+            question_text, 
+            answer1, 
+            answer1_advocate_id, 
+            answer2, 
+            answer2_advocate_id, 
+            status, 
+            vote_log
+          )
+          VALUES (
+            ${idMapping[votingQuestion.id]}, 
+            ${idMapping[votingQuestion.voting_id]}, 
+            ${votingQuestion.type}, 
+            ${votingQuestion.questionText}, 
+            ${votingQuestion.answer1}, 
             ${idMapping[votingQuestion.answer1_advocate_id] || client.sql`uuid_nil()`}, 
-            ${votingQuestion.answer2}, ${idMapping[votingQuestion.answer2_advocate_id] || client.sql`uuid_nil()`}, 
-            ${votingQuestion.status}, ${votingQuestion.voteLog})
-        ON CONFLICT (id) DO NOTHING;
-      `,
+            ${votingQuestion.answer2}, 
+            ${idMapping[votingQuestion.answer2_advocate_id] || client.sql`uuid_nil()`}, 
+            ${votingQuestion.status}, 
+            ${votingQuestion.voteLog}
+          )
+          ON CONFLICT (id) DO NOTHING;
+        `,
       ),
     );
 

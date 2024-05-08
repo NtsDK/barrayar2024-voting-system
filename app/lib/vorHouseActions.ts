@@ -18,17 +18,7 @@ const FormSchema = z.object({
     .min(1),
   count_id: z.string().min(1),
   countess_id: z.string().min(1),
-  // comment: z.string(),
-  // customerId: z.string({
-  //   invalid_type_error: "Please select a customer.",
-  // }),
-  // amount: z.coerce
-  //   .number()
-  //   .gt(0, { message: "Please enter an amount greater than $0." }),
-  // status: z.enum(["pending", "paid"], {
-  //   invalid_type_error: "Please select an invoice status.",
-  // }),
-  // date: z.string(),
+  social_capital: z.coerce.number(),
 });
 
 const CreateVorHouse = FormSchema.omit({ id: true });
@@ -45,13 +35,11 @@ export type State = {
 };
 
 export async function createVorHouse(prevState: State, formData: FormData) {
-  // export async function createInvoice(formData: FormData) {
   const validatedFields = CreateVorHouse.safeParse({
     family_name: formData.get("family_name"),
     count_id: formData.get("count_id"),
     countess_id: formData.get("countess_id"),
-    // comment: formData.get("comment"),
-    // status: formData.get("status"),
+    social_capital: formData.get("social_capital"),
   });
 
   // console.log("validatedFields", validatedFields);
@@ -62,7 +50,8 @@ export async function createVorHouse(prevState: State, formData: FormData) {
     };
   }
 
-  const { family_name, count_id, countess_id } = validatedFields.data;
+  const { family_name, count_id, countess_id, social_capital } =
+    validatedFields.data;
 
   // Test it out:
   // console.log(rawFormData);
@@ -71,8 +60,8 @@ export async function createVorHouse(prevState: State, formData: FormData) {
 
   try {
     await sql`
-      INSERT INTO vor_houses (family_name, count_id, countess_id)
-      VALUES (${family_name},${count_id},${countess_id})
+      INSERT INTO vor_houses (family_name, count_id, countess_id, social_capital)
+      VALUES (${family_name},${count_id},${countess_id}, ${social_capital})
     `;
   } catch (error) {
     return {
@@ -93,7 +82,7 @@ export async function updateVorHouse(
     family_name: formData.get("family_name"),
     count_id: formData.get("count_id"),
     countess_id: formData.get("countess_id"),
-    // comment: formData.get("comment"),
+    social_capital: formData.get("social_capital"),
   });
 
   console.log("updateVorHouse", validatedFields);
@@ -105,14 +94,17 @@ export async function updateVorHouse(
     };
   }
 
-  const { family_name, count_id, countess_id } = validatedFields.data;
-
-  // const amountInCents = amount * 100;
+  const { family_name, count_id, countess_id, social_capital } =
+    validatedFields.data;
 
   try {
     await sql`
         UPDATE vor_houses
-        SET family_name = ${family_name}, count_id = ${count_id}, countess_id = ${countess_id}
+        SET 
+          family_name = ${family_name}, 
+          count_id = ${count_id}, 
+          countess_id = ${countess_id},
+          social_capital = ${social_capital}
         WHERE id = ${id}
       `;
   } catch (error) {

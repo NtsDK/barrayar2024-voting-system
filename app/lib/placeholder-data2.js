@@ -116,70 +116,86 @@ const vorHouses = [
   {
     id: "house_vorbarra",
     familyName: "Форбарра",
+    socialCapital: 100
   },
   {
     id: "house_vorbretten",
     familyName: "Форбреттен",
     count_id: "vorbretten_alan",
     countess_id: "vorbretten_eliza",
+    socialCapital: 100
   },
   {
     id: "house_vorvolinkin",
     familyName: "Форволынкин",
     count_id: "vorvolinkin_arsenii",
     countess_id: "vorvolinkin_esenia",
+    socialCapital: 100
   },
   {
     id: "house_vordarian",
     familyName: "Фордариан",
+    socialCapital: 100
   },
   {
     id: "house_vorkosigan",
     familyName: "Форкосиган",
+    socialCapital: 100
   },
   {
     id: "house_vorlakial",
     familyName: "Форлакиал",
+    socialCapital: 100
   },
   {
     id: "house_vormuir",
     familyName: "Формюир",
+    socialCapital: 100
   },
   {
     id: "house_vorrobio",
     familyName: "Форобио",
+    socialCapital: 100
   },
   {
     id: "house_vorpatril",
     familyName: "Форпатрил",
+    socialCapital: 100
   },
   {
     id: "house_vorpinski",
     familyName: "Форпински",
+    socialCapital: 100
   },
   {
     id: "house_vorratier",
     familyName: "Форратьер",
+    socialCapital: 100
   },
   {
     id: "house_vorsmit",
     familyName: "Форсмит",
+    socialCapital: 100
   },
   {
     id: "house_vortala",
     familyName: "Фортала",
+    socialCapital: 100
   },
   {
     id: "house_vortein",
     familyName: "Фортейн",
+    socialCapital: 100
   },
   {
     id: "house_vorhalas",
     familyName: "Форхалас",
+    socialCapital: 100
   },
   {
     id: "house_vorhovic",
     familyName: "Форховиц",
+    socialCapital: 100
   },
 ];
 
