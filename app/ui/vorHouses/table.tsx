@@ -1,5 +1,7 @@
 import { fetchFilteredVorHouses } from "@/app/lib/vorHouseData";
 import { DeleteVorHouse, UpdateVorHouse } from "./buttons";
+import { useState } from "react";
+import SocialCapitalForm from "./social-capital-form";
 
 export default async function VorHousesTable({
   query,
@@ -51,8 +53,12 @@ export default async function VorHousesTable({
                   <td className="whitespace-nowrap px-3 py-3">
                     {vorHouse.countess_name || ""}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {vorHouse.social_capital}
+                  <td className="whitespace-nowrap px-3 py-3 flex">
+                    <div className="w-12">{vorHouse.social_capital}</div>
+                    <SocialCapitalForm
+                      id={vorHouse.id}
+                      baseNumber={vorHouse.social_capital}
+                    />
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">

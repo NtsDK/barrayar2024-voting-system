@@ -25,11 +25,14 @@ const CreateVorHouse = FormSchema.omit({ id: true });
 
 const UpdateVorHouse = FormSchema.omit({ id: true });
 
+const UpdateVorHouseSocialCapital = FormSchema.pick({ social_capital: true });
+
 export type State = {
   errors?: {
     family_name?: string[];
     count_id?: string[];
     countess_id?: string[];
+    social_capital?: string[];
   };
   message?: string | null;
 };
@@ -85,7 +88,7 @@ export async function updateVorHouse(
     social_capital: formData.get("social_capital"),
   });
 
-  console.log("updateVorHouse", validatedFields);
+  // console.log("updateVorHouse", validatedFields);
 
   if (!validatedFields.success) {
     return {
@@ -109,6 +112,44 @@ export async function updateVorHouse(
       `;
   } catch (error) {
     return { message: "Database Error: Failed to Update Vor House." };
+  }
+
+  revalidatePath(VORHOUSES_ROUTE);
+  redirect(VORHOUSES_ROUTE);
+}
+
+export async function updateVorHouseSocialCapital(
+  id: string,
+  prevState: State,
+  formData: FormData
+) {
+  console.log('formData.get("social_capital")', formData.get("social_capital"));
+  const validatedFields = UpdateVorHouseSocialCapital.safeParse({
+    social_capital: formData.get("social_capital"),
+  });
+
+  // console.log("updateVorHouse", validatedFields);
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Missing Fields. Failed to Update Vor House Social Capital.",
+    };
+  }
+
+  const { social_capital } = validatedFields.data;
+
+  try {
+    await sql`
+        UPDATE vor_houses
+        SET 
+          social_capital = ${social_capital}
+        WHERE id = ${id}
+      `;
+  } catch (error) {
+    return {
+      message: "Database Error: Failed to Update Vor House Social Capital.",
+    };
   }
 
   revalidatePath(VORHOUSES_ROUTE);
