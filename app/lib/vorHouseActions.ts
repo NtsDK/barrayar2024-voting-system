@@ -123,7 +123,7 @@ export async function updateVorHouseSocialCapital(
   prevState: State,
   formData: FormData
 ) {
-  console.log('formData.get("social_capital")', formData.get("social_capital"));
+  // console.log('formData.get("social_capital")', formData.get("social_capital"));
   const validatedFields = UpdateVorHouseSocialCapital.safeParse({
     social_capital: formData.get("social_capital"),
   });

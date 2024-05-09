@@ -1,25 +1,28 @@
 "use client";
 
-import { updateVorHouseSocialCapital } from "@/app/lib/vorHouseActions";
 import CommonSocialCapitalForm from "../common/common-social-capital-form";
+import { updatePrincessSocialCapital } from "@/app/lib/princessActions";
 
 type SocialCapitalFormProps = {
   id: string;
   baseNumber: number;
+  type: "positive" | "negative";
 };
 
 export default function SocialCapitalForm({
   id,
   baseNumber,
+  type,
 }: SocialCapitalFormProps) {
-  const updateVorHouseSocialCapitalWithId = updateVorHouseSocialCapital.bind(
+  const updatePrincessSocialCapitalWithId = updatePrincessSocialCapital.bind(
     null,
-    id
+    id,
+    type
   );
   return (
     <CommonSocialCapitalForm
       baseNumber={baseNumber}
-      updateFunction={updateVorHouseSocialCapitalWithId}
+      updateFunction={updatePrincessSocialCapitalWithId}
     />
   );
 }

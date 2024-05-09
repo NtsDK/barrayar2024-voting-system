@@ -6,6 +6,7 @@ const {
   vorHouses,
   votingQuestions,
   councilVotings,
+  princesses,
 } = require('../app/lib/placeholder-data2.js');
 const bcrypt = require('bcrypt');
 
@@ -17,10 +18,12 @@ const bcrypt = require('bcrypt');
   await client.sql`DROP TABLE IF EXISTS vor_houses`;
   await client.sql`DROP TABLE IF EXISTS council_votings`;
   await client.sql`DROP TABLE IF EXISTS voting_questions`;
+  await client.sql`DROP TABLE IF EXISTS princesses`;
   await seedPersons(client);
   await seedVorHouses(client);
   await seedCouncilVotings(client);
   await seedVotingQuestions(client);
+  await seedPrincesses(client);
 
   await client.end();
 })().catch((err) => {
@@ -222,6 +225,55 @@ async function seedVotingQuestions(client) {
     };
   } catch (error) {
     console.error('Error seeding votingQuestions:', error);
+    throw error;
+  }
+}
+
+async function seedPrincesses(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+    // Create the "voting_questions" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS princesses (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        positive_social_capital INT NOT NULL,
+        negative_social_capital INT NOT NULL
+      );
+    `;
+
+    console.log(`Created "princesses" table`);
+
+    // Insert data into the "princesses" table
+    const insertedPrincesses = await Promise.all(
+      princesses.map(
+        (princess) => client.sql`
+          INSERT INTO princesses (
+            id, 
+            name, 
+            positive_social_capital, 
+            negative_social_capital
+          )
+          VALUES (
+            ${idMapping[princess.id]}, 
+            ${princess.name}, 
+            ${princess.positiveSocialCapital}, 
+            ${princess.negativeSocialCapital}
+          )
+          ON CONFLICT (id) DO NOTHING;
+        `,
+      ),
+    );
+
+    console.log(`Seeded ${insertedPrincesses.length} princesses`);
+
+    return {
+      createTable,
+      princesses: insertedPrincesses,
+    };
+  } catch (error) {
+    console.error('Error seeding princesses:', error);
     throw error;
   }
 }

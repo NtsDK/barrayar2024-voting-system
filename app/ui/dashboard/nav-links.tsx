@@ -5,11 +5,17 @@ import {
   HomeIcon,
   DocumentDuplicateIcon,
   HandRaisedIcon,
+  TrophyIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { PERSONS_ROUTE, VORHOUSES_ROUTE, VOTINGS_ROUTE } from "@/routes";
+import {
+  PERSONS_ROUTE,
+  PRINCESSES_ROUTE,
+  VORHOUSES_ROUTE,
+  VOTINGS_ROUTE,
+} from "@/routes";
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
@@ -24,6 +30,7 @@ const links = [
   { name: "Персонажи", href: PERSONS_ROUTE, icon: UserIcon },
   { name: "Фор семьи", href: VORHOUSES_ROUTE, icon: UserGroupIcon },
   { name: "Голосования", href: VOTINGS_ROUTE, icon: HandRaisedIcon },
+  { name: "Принцессы", href: PRINCESSES_ROUTE, icon: TrophyIcon },
 ];
 
 export default function NavLinks() {

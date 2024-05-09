@@ -124,3 +124,14 @@ export type VotingQuestionsList = {
   // итог голосования
   vote_log: string;
 };
+
+// принцесса
+export type Princess = {
+  id: string;
+  // имя принцессы
+  name: string;
+  // позитивный социальный капитал
+  positive_social_capital: number;
+  // негативный социальный капитал
+  negative_social_capital: number;
+};

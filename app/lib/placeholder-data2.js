@@ -39,6 +39,8 @@ const idMapping = {
   "voting2": "9d0037b7-e9ed-433b-b888-74edb46b6210",
 
   "question1": "dc6004a1-669f-46c1-af1d-3e45b6212037",
+  "princess_margaret": "a5433d0d-13c6-4d27-a379-93b4058c6bf4",
+  "princess_beatrice": "6332fa19-c52a-41f0-9f47-a78feb39159e",
 }
 
 const persons = [
@@ -229,10 +231,26 @@ const votingQuestions = [
   },
 ];
 
+const princesses = [
+  {
+    id: "princess_margaret",
+    name: "Маргарета",
+    positiveSocialCapital: 100,
+    negativeSocialCapital: 30
+  },
+  {
+    id: "princess_beatrice",
+    name: "Беатрис",
+    positiveSocialCapital: 105,
+    negativeSocialCapital: 35
+  },
+]
+
 module.exports = {
   idMapping,
   persons,
   vorHouses,
   votingQuestions,
   councilVotings,
+  princesses,
 };
