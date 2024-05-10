@@ -135,3 +135,25 @@ export type Princess = {
   // негативный социальный капитал
   negative_social_capital: number;
 };
+
+// таблица членов и друзей форсемьи
+export type VorHouseMembersTable = {
+  // id фор семьи
+  house_id: string;
+  // id персонажа
+  person_id: string;
+  // имя персонажа
+  person_name: string;
+};
+
+// список персонажей с указанием к какой фор семье они относятся, если это применимо
+export type PersonWithVorHouseTable = {
+  // id персонажа
+  person_id: string;
+  // имя персонажа
+  person_name: string;
+  // id фор семьи
+  house_id: string | null;
+  // фамилия фор семьи
+  house_name: string | null;
+};

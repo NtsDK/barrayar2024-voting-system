@@ -1,7 +1,13 @@
-import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  PencilIcon,
+  PlusIcon,
+  TrashIcon,
+  UsersIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { deleteVorHouse } from "@/app/lib/vorHouseActions";
 import { VORHOUSES_ROUTE } from "@/routes";
+import { deleteVorHouseMember } from "@/app/lib/vorHouseMemberActions";
 
 export function CreateVorHouse() {
   return (
@@ -26,10 +32,33 @@ export function UpdateVorHouse({ id }: { id: string }) {
   );
 }
 
+export function UpdateVorHouseMembers({ id }: { id: string }) {
+  return (
+    <Link
+      href={`${VORHOUSES_ROUTE}/${id}/members`}
+      className="rounded-md border p-2 hover:bg-gray-100"
+    >
+      <UsersIcon className="w-5" />
+    </Link>
+  );
+}
+
 export function DeleteVorHouse({ id }: { id: string }) {
   const deleteVorHouseWithId = deleteVorHouse.bind(null, id);
   return (
     <form action={deleteVorHouseWithId}>
+      <button className="rounded-md border p-2 hover:bg-gray-100">
+        <span className="sr-only">Удалить</span>
+        <TrashIcon className="w-5" />
+      </button>
+    </form>
+  );
+}
+
+export function DeleteVorHouseMember({ id }: { id: string }) {
+  const deleteVorHouseMemberWithId = deleteVorHouseMember.bind(null, id);
+  return (
+    <form action={deleteVorHouseMemberWithId}>
       <button className="rounded-md border p-2 hover:bg-gray-100">
         <span className="sr-only">Удалить</span>
         <TrashIcon className="w-5" />

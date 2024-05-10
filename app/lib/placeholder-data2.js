@@ -244,7 +244,18 @@ const princesses = [
     positiveSocialCapital: 105,
     negativeSocialCapital: 35
   },
-]
+];
+
+const houseMembers = [{
+  house_id: "house_vorbretten",
+  person_id: "vorbretten_filipp"
+}, {
+  house_id: "house_vorbretten",
+  person_id: "vorbretten_rene"
+}, {
+  house_id: "house_vorvolinkin",
+  person_id: "vorvolinkin_olga"
+}];
 
 module.exports = {
   idMapping,
@@ -253,4 +264,5 @@ module.exports = {
   votingQuestions,
   councilVotings,
   princesses,
+  houseMembers,
 };

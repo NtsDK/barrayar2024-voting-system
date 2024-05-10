@@ -7,6 +7,7 @@ const {
   votingQuestions,
   councilVotings,
   princesses,
+  houseMembers,
 } = require('../app/lib/placeholder-data2.js');
 const bcrypt = require('bcrypt');
 
@@ -19,11 +20,13 @@ const bcrypt = require('bcrypt');
   await client.sql`DROP TABLE IF EXISTS council_votings`;
   await client.sql`DROP TABLE IF EXISTS voting_questions`;
   await client.sql`DROP TABLE IF EXISTS princesses`;
+  await client.sql`DROP TABLE IF EXISTS house_members`;
   await seedPersons(client);
   await seedVorHouses(client);
   await seedCouncilVotings(client);
   await seedVotingQuestions(client);
   await seedPrincesses(client);
+  await seedHouseMembers(client);
 
   await client.end();
 })().catch((err) => {
@@ -274,6 +277,48 @@ async function seedPrincesses(client) {
     };
   } catch (error) {
     console.error('Error seeding princesses:', error);
+    throw error;
+  }
+}
+
+async function seedHouseMembers(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+    // Create the "voting_questions" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS house_members (
+        house_id UUID,
+        person_id UUID
+      );
+    `;
+
+    console.log(`Created "house_members" table`);
+
+    // Insert data into the "house_members" table
+    const insertedHouseMembers = await Promise.all(
+      houseMembers.map(
+        (houseMember) => client.sql`
+          INSERT INTO house_members (
+            house_id, 
+            person_id
+          )
+          VALUES (
+            ${idMapping[houseMember.house_id]}, 
+            ${idMapping[houseMember.person_id]}
+          )
+        `,
+      ),
+    );
+
+    console.log(`Seeded ${insertedHouseMembers.length} houseMembers`);
+
+    return {
+      createTable,
+      houseMembers: insertedHouseMembers,
+    };
+  } catch (error) {
+    console.error('Error seeding houseMembers:', error);
     throw error;
   }
 }

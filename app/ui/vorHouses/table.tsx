@@ -1,5 +1,9 @@
 import { fetchFilteredVorHouses } from "@/app/lib/vorHouseData";
-import { DeleteVorHouse, UpdateVorHouse } from "./buttons";
+import {
+  DeleteVorHouse,
+  UpdateVorHouse,
+  UpdateVorHouseMembers,
+} from "./buttons";
 import { useState } from "react";
 import SocialCapitalForm from "./social-capital-form";
 
@@ -62,6 +66,7 @@ export default async function VorHousesTable({
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
+                      <UpdateVorHouseMembers id={vorHouse.id} />
                       <UpdateVorHouse id={vorHouse.id} />
                       <DeleteVorHouse id={vorHouse.id} />
                     </div>
