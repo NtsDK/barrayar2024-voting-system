@@ -120,6 +120,7 @@ export async function updateVorHouse(
 
 export async function updateVorHouseSocialCapital(
   id: string,
+  route: string,
   prevState: State,
   formData: FormData
 ) {
@@ -152,8 +153,8 @@ export async function updateVorHouseSocialCapital(
     };
   }
 
-  revalidatePath(VORHOUSES_ROUTE);
-  redirect(VORHOUSES_ROUTE);
+  revalidatePath(route);
+  redirect(route);
 }
 
 export async function deleteVorHouse(id: string) {

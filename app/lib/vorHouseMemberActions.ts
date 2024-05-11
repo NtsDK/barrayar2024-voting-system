@@ -53,6 +53,7 @@ export async function addVorHouseMember(prevState: State, formData: FormData) {
   }
 
   revalidatePath(VORHOUSES_ROUTE);
+  return {};
 }
 
 export async function deleteVorHouseMember(person_id: string) {

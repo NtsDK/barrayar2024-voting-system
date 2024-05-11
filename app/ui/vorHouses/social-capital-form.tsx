@@ -2,6 +2,7 @@
 
 import { updateVorHouseSocialCapital } from "@/app/lib/vorHouseActions";
 import CommonSocialCapitalForm from "../common/common-social-capital-form";
+import { VORHOUSES_ROUTE } from "@/routes";
 
 type SocialCapitalFormProps = {
   id: string;
@@ -14,7 +15,8 @@ export default function SocialCapitalForm({
 }: SocialCapitalFormProps) {
   const updateVorHouseSocialCapitalWithId = updateVorHouseSocialCapital.bind(
     null,
-    id
+    id,
+    VORHOUSES_ROUTE
   );
   return (
     <CommonSocialCapitalForm

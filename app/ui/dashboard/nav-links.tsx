@@ -6,6 +6,7 @@ import {
   DocumentDuplicateIcon,
   HandRaisedIcon,
   TrophyIcon,
+  ScaleIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,6 +14,7 @@ import clsx from "clsx";
 import {
   PERSONS_ROUTE,
   PRINCESSES_ROUTE,
+  SOC_CAP_ROUTE,
   VORHOUSES_ROUTE,
   VOTINGS_ROUTE,
 } from "@/routes";
@@ -31,6 +33,7 @@ const links = [
   { name: "Фор семьи", href: VORHOUSES_ROUTE, icon: UserGroupIcon },
   { name: "Голосования", href: VOTINGS_ROUTE, icon: HandRaisedIcon },
   { name: "Принцессы", href: PRINCESSES_ROUTE, icon: TrophyIcon },
+  { name: "Соц. кап.", href: SOC_CAP_ROUTE, icon: ScaleIcon },
 ];
 
 export default function NavLinks() {

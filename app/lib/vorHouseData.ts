@@ -2,7 +2,8 @@ import { unstable_noStore as noStore } from "next/cache";
 import { sql } from "@/db";
 import { VorHouse, VorHousesTable } from "./definitions2";
 
-const ITEMS_PER_PAGE = 16;
+// столько семей не будет, фактически это убирает пагинацию
+const ITEMS_PER_PAGE = 100;
 
 export async function fetchFilteredVorHouses(
   query: string,

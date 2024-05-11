@@ -23,7 +23,7 @@ export default function AddMemberForm({
   persons: PersonWithVorHouseTable[];
   house_id: string;
 }) {
-  const initialState = { message: null, errors: {} } as State;
+  const initialState = { message: null, errors: {} };
   const [state, dispatch] = useFormState<State, FormData>(
     addVorHouseMember,
     initialState
