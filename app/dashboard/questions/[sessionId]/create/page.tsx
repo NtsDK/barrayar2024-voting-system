@@ -1,37 +1,37 @@
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import { notFound } from "next/navigation";
 import { fetchPersons } from "@/app/lib/personData";
-import { QUESTIONS_ROUTE, VOTINGS_ROUTE } from "@/routes";
-import { fetchVotingById } from "@/app/lib/votingData";
+import { QUESTIONS_ROUTE, SESSIONS_ROUTE } from "@/routes";
+import { fetchSessionById } from "@/app/lib/sessionData";
 import Form from "@/app/ui/questions/create-form";
 
 export default async function Page({
   params,
 }: {
-  params: { votingId: string };
+  params: { sessionId: string };
 }) {
-  const votingId = params.votingId;
-  const [voting, persons] = await Promise.all([
-    fetchVotingById(votingId),
+  const sessionId = params.sessionId;
+  const [session, persons] = await Promise.all([
+    fetchSessionById(sessionId),
     fetchPersons(),
   ]);
 
-  if (!voting) {
+  if (!session) {
     notFound();
   }
   return (
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: "Голосования", href: VOTINGS_ROUTE },
+          { label: "Голосования", href: SESSIONS_ROUTE },
           {
             label: "Создать вопрос",
-            href: `${QUESTIONS_ROUTE}/${votingId}/create`,
+            href: `${QUESTIONS_ROUTE}/${sessionId}/create`,
             active: true,
           },
         ]}
       />
-      <Form votingId={votingId} persons={persons} />
+      <Form sessionId={sessionId} persons={persons} />
     </main>
   );
 }

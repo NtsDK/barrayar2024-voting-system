@@ -4,8 +4,8 @@ const {
   idMapping,
   persons,
   vorHouses,
-  votingQuestions,
-  councilVotings,
+  sessionQuestions,
+  councilSessions,
   princesses,
   houseMembers,
 } = require('../app/lib/placeholder-data2.js');
@@ -17,14 +17,14 @@ const bcrypt = require('bcrypt');
 
   await client.sql`DROP TABLE IF EXISTS persons`;
   await client.sql`DROP TABLE IF EXISTS vor_houses`;
-  await client.sql`DROP TABLE IF EXISTS council_votings`;
-  await client.sql`DROP TABLE IF EXISTS voting_questions`;
+  await client.sql`DROP TABLE IF EXISTS council_sessions`;
+  await client.sql`DROP TABLE IF EXISTS session_questions`;
   await client.sql`DROP TABLE IF EXISTS princesses`;
   await client.sql`DROP TABLE IF EXISTS house_members`;
   await seedPersons(client);
   await seedVorHouses(client);
-  await seedCouncilVotings(client);
-  await seedVotingQuestions(client);
+  await seedCouncilSessions(client);
+  await seedSessionQuestions(client);
   await seedPrincesses(client);
   await seedHouseMembers(client);
 
@@ -121,13 +121,13 @@ async function seedVorHouses(client) {
   }
 }
 
-async function seedCouncilVotings(client) {
+async function seedCouncilSessions(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
-    // Create the "council_votings" table if it doesn't exist
+    // Create the "council_sessions" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS council_votings (
+      CREATE TABLE IF NOT EXISTS council_sessions (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         date_time VARCHAR(255) NOT NULL,
@@ -135,45 +135,45 @@ async function seedCouncilVotings(client) {
       );
     `;
 
-    console.log(`Created "council_votings" table`);
+    console.log(`Created "council_sessions" table`);
 
-    // Insert data into the "council_votings" table
-    const insertedCouncilVotings = await Promise.all(
-      councilVotings.map(
-        (councilVoting) => client.sql`
-          INSERT INTO council_votings (id, title, date_time, status)
+    // Insert data into the "council_sessions" table
+    const insertedCouncilSessions = await Promise.all(
+      councilSessions.map(
+        (councilSession) => client.sql`
+          INSERT INTO council_sessions (id, title, date_time, status)
           VALUES (
-            ${idMapping[councilVoting.id]}, 
-            ${councilVoting.title},
-            ${councilVoting.dateTime}, 
-            ${councilVoting.status}
+            ${idMapping[councilSession.id]}, 
+            ${councilSession.title},
+            ${councilSession.dateTime}, 
+            ${councilSession.status}
           )
           ON CONFLICT (id) DO NOTHING;
         `,
       ),
     );
 
-    console.log(`Seeded ${insertedCouncilVotings.length} council_votings`);
+    console.log(`Seeded ${insertedCouncilSessions.length} council_sessions`);
 
     return {
       createTable,
-      councilVotings: insertedCouncilVotings,
+      councilSessions: insertedCouncilSessions,
     };
   } catch (error) {
-    console.error('Error seeding council_votings:', error);
+    console.error('Error seeding council_sessions:', error);
     throw error;
   }
 }
 
-async function seedVotingQuestions(client) {
+async function seedSessionQuestions(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
-    // Create the "voting_questions" table if it doesn't exist
+    // Create the "session_questions" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS voting_questions (
+      CREATE TABLE IF NOT EXISTS session_questions (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        voting_id UUID,
+        session_id UUID,
         type VARCHAR(255) NOT NULL,
         question_text VARCHAR(255) NOT NULL,
         answer1 VARCHAR(255) NOT NULL,
@@ -185,15 +185,15 @@ async function seedVotingQuestions(client) {
       );
     `;
 
-    console.log(`Created "voting_questions" table`);
+    console.log(`Created "session_questions" table`);
 
-    // Insert data into the "voting_questions" table
-    const insertedVotingQuestions = await Promise.all(
-      votingQuestions.map(
-        (votingQuestion) => client.sql`
-          INSERT INTO voting_questions (
+    // Insert data into the "session_questions" table
+    const insertedSessionQuestions = await Promise.all(
+      sessionQuestions.map(
+        (sessionQuestion) => client.sql`
+          INSERT INTO session_questions (
             id, 
-            voting_id, 
+            session_id, 
             type, 
             question_text, 
             answer1, 
@@ -204,30 +204,30 @@ async function seedVotingQuestions(client) {
             vote_log
           )
           VALUES (
-            ${idMapping[votingQuestion.id]}, 
-            ${idMapping[votingQuestion.voting_id]}, 
-            ${votingQuestion.type}, 
-            ${votingQuestion.questionText}, 
-            ${votingQuestion.answer1}, 
-            ${idMapping[votingQuestion.answer1_advocate_id] || client.sql`uuid_nil()`}, 
-            ${votingQuestion.answer2}, 
-            ${idMapping[votingQuestion.answer2_advocate_id] || client.sql`uuid_nil()`}, 
-            ${votingQuestion.status}, 
-            ${votingQuestion.voteLog}
+            ${idMapping[sessionQuestion.id]}, 
+            ${idMapping[sessionQuestion.session_id]}, 
+            ${sessionQuestion.type}, 
+            ${sessionQuestion.questionText}, 
+            ${sessionQuestion.answer1}, 
+            ${idMapping[sessionQuestion.answer1_advocate_id] || client.sql`uuid_nil()`}, 
+            ${sessionQuestion.answer2}, 
+            ${idMapping[sessionQuestion.answer2_advocate_id] || client.sql`uuid_nil()`}, 
+            ${sessionQuestion.status}, 
+            ${sessionQuestion.voteLog}
           )
           ON CONFLICT (id) DO NOTHING;
         `,
       ),
     );
 
-    console.log(`Seeded ${insertedVotingQuestions.length} votingQuestions`);
+    console.log(`Seeded ${insertedSessionQuestions.length} sessionQuestions`);
 
     return {
       createTable,
-      votingQuestions: insertedVotingQuestions,
+      sessionQuestions: insertedSessionQuestions,
     };
   } catch (error) {
-    console.error('Error seeding votingQuestions:', error);
+    console.error('Error seeding sessionQuestions:', error);
     throw error;
   }
 }
@@ -236,7 +236,7 @@ async function seedPrincesses(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
-    // Create the "voting_questions" table if it doesn't exist
+    // Create the "session_questions" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS princesses (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -285,7 +285,7 @@ async function seedHouseMembers(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
-    // Create the "voting_questions" table if it doesn't exist
+    // Create the "session_questions" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS house_members (
         house_id UUID,

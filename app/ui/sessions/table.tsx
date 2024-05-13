@@ -1,6 +1,6 @@
-import { fetchFilteredCouncilVotings } from "@/app/lib/votingData";
-import { DeleteVoting, UpdateVoting } from "./buttons";
-import { COUNCIL_VOTING_STATUS_I18N } from "@/constants";
+import { fetchFilteredCouncilSessions } from "@/app/lib/sessionData";
+import { DeleteSession, UpdateSession } from "./buttons";
+import { COUNCIL_SESSION_STATUS_I18N } from "@/constants";
 import { Card } from "../questions/card";
 import { CreateQuestion } from "../questions/buttons";
 
@@ -11,25 +11,26 @@ export default async function VorHousesTable({
   query: string;
   currentPage: number;
 }) {
-  const votings = await fetchFilteredCouncilVotings(query, currentPage);
+  const sessions = await fetchFilteredCouncilSessions(query, currentPage);
 
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
-          {votings?.map((voting) => (
-            <div key={voting.id} className="mb-10">
+          {sessions?.map((session) => (
+            <div key={session.id} className="mb-10">
               <div>
-                <h2>{voting.title}</h2>
-                {voting.date_time} {COUNCIL_VOTING_STATUS_I18N[voting.status]}
+                <h2>{session.title}</h2>
+                {session.date_time}{" "}
+                {COUNCIL_SESSION_STATUS_I18N[session.status]}
                 <div className="flex justify-end gap-3">
-                  <CreateQuestion id={voting.id} />
-                  <UpdateVoting id={voting.id} />
-                  <DeleteVoting id={voting.id} />
+                  <CreateQuestion id={session.id} />
+                  <UpdateSession id={session.id} />
+                  <DeleteSession id={session.id} />
                 </div>
               </div>
               <div className="ml-8">
-                {voting.questions.map((question) => (
+                {session.questions.map((question) => (
                   <Card key={question.id} question={question} />
                 ))}
               </div>

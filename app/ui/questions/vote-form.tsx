@@ -10,12 +10,12 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/common/button";
-import { Person, VotingQuestion } from "@/app/lib/definitions2";
+import { Person, SessionQuestion } from "@/app/lib/definitions2";
 import {
-  VOTING_QUESTION_STATUS_I18N,
-  VOTING_QUESTION_TYPE_I18N,
+  SESSION_QUESTION_STATUS_I18N,
+  SESSION_QUESTION_TYPE_I18N,
 } from "@/constants";
-import { VOTINGS_ROUTE } from "@/routes";
+import { SESSIONS_ROUTE } from "@/routes";
 import {
   updateQuestion,
   updateQuestionVoteLog,
@@ -35,7 +35,7 @@ import {
 import clsx from "clsx";
 
 type FormProps = {
-  question: VotingQuestion;
+  question: SessionQuestion;
 };
 
 function CheckButton({
@@ -146,7 +146,7 @@ export default function VoteOnQuestionForm({ question }: FormProps) {
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href={VOTINGS_ROUTE}
+          href={SESSIONS_ROUTE}
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Отмена

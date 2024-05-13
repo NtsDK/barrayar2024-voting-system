@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { sql } from "@/db";
-import { VOTINGS_ROUTE } from "@/routes";
+import { SESSIONS_ROUTE } from "@/routes";
 
 const FormSchema = z.object({
   id: z.string(),
@@ -26,9 +26,9 @@ const FormSchema = z.object({
   ]),
 });
 
-const CreateVoting = FormSchema.omit({ id: true });
+const CreateSession = FormSchema.omit({ id: true });
 
-const UpdateVoting = FormSchema.omit({ id: true });
+const UpdateSession = FormSchema.omit({ id: true });
 
 export type State = {
   errors?: {
@@ -38,8 +38,8 @@ export type State = {
   message?: string | null;
 };
 
-export async function createVoting(prevState: State, formData: FormData) {
-  const validatedFields = CreateVoting.safeParse({
+export async function createSession(prevState: State, formData: FormData) {
+  const validatedFields = CreateSession.safeParse({
     date_time: formData.get("date_time"),
     status: formData.get("status"),
     title: formData.get("title"),
@@ -62,7 +62,7 @@ export async function createVoting(prevState: State, formData: FormData) {
 
   try {
     await sql`
-      INSERT INTO council_votings (date_time, status, title)
+      INSERT INTO council_sessions (date_time, status, title)
       VALUES (${date_time},${status},${title})
     `;
   } catch (error) {
@@ -71,16 +71,16 @@ export async function createVoting(prevState: State, formData: FormData) {
     };
   }
 
-  revalidatePath(VOTINGS_ROUTE);
-  redirect(VOTINGS_ROUTE);
+  revalidatePath(SESSIONS_ROUTE);
+  redirect(SESSIONS_ROUTE);
 }
 
-export async function updateVoting(
+export async function updateSession(
   id: string,
   prevState: State,
   formData: FormData
 ) {
-  const validatedFields = UpdateVoting.safeParse({
+  const validatedFields = UpdateSession.safeParse({
     date_time: formData.get("date_time"),
     status: formData.get("status"),
     title: formData.get("title"),
@@ -91,7 +91,7 @@ export async function updateVoting(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Update Voting.",
+      message: "Missing Fields. Failed to Update Session.",
     };
   }
 
@@ -101,29 +101,29 @@ export async function updateVoting(
 
   try {
     await sql`
-        UPDATE council_votings
+        UPDATE council_sessions
         SET date_time = ${date_time}, status = ${status}, title = ${title}
         WHERE id = ${id}
       `;
   } catch (error) {
-    return { message: "Database Error: Failed to Update Voting." };
+    return { message: "Database Error: Failed to Update Session." };
   }
 
-  revalidatePath(VOTINGS_ROUTE);
-  redirect(VOTINGS_ROUTE);
+  revalidatePath(SESSIONS_ROUTE);
+  redirect(SESSIONS_ROUTE);
 }
 
-export async function deleteVoting(id: string) {
+export async function deleteSession(id: string) {
   // throw new Error("Failed to Delete Invoice");
   try {
     await sql.begin((sql) => [
-      sql`DELETE FROM voting_questions WHERE voting_questions.voting_id = ${id}`,
-      sql`DELETE FROM council_votings WHERE id = ${id}`,
+      sql`DELETE FROM session_questions WHERE session_questions.session_id = ${id}`,
+      sql`DELETE FROM council_sessions WHERE id = ${id}`,
     ]);
 
-    revalidatePath(VOTINGS_ROUTE);
-    return { message: "Deleted Voting." };
+    revalidatePath(SESSIONS_ROUTE);
+    return { message: "Deleted Session." };
   } catch (error) {
-    return { message: "Database Error: Failed to Delete Voting." };
+    return { message: "Database Error: Failed to Delete Session." };
   }
 }

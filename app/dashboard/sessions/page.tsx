@@ -8,8 +8,8 @@ import { Metadata } from "next";
 // import Table from "@/app/ui/vorHouses/table";
 import { CreateVorHouse } from "@/app/ui/vorHouses/buttons";
 import { fetchVorHousesPages } from "@/app/lib/vorHouseData";
-import Table from "@/app/ui/votings/table";
-import { CreateVoting } from "@/app/ui/votings/buttons";
+import Table from "@/app/ui/sessions/table";
+import { CreateSession } from "@/app/ui/sessions/buttons";
 
 export const metadata: Metadata = {
   title: "Голосования",
@@ -33,7 +33,7 @@ export default async function Page({
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         <Search placeholder="Найти голосование..." />
-        <CreateVoting />
+        <CreateSession />
       </div>
       <Suspense key={query + currentPage} fallback={<DefaultSkeleton />}>
         <Table query={query} currentPage={currentPage} />

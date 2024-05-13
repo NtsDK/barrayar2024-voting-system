@@ -1,8 +1,8 @@
 import {
-  CouncilVoting,
+  CouncilSession,
   Person,
   VorHouse,
-  VotingQuestion,
+  SessionQuestion,
 } from "./definitions2";
 
 export const persons: Person[] = [
@@ -33,10 +33,10 @@ export const vorHouses: VorHouse[] = [
   },
 ];
 
-export const votingQuestions: VotingQuestion[] = [
+export const sessionQuestions: SessionQuestion[] = [
   {
     id: "question1",
-    voting_id: "voting1",
+    session_id: "session1",
     type: "player",
     question_text: "Должен ли любимый конь императора стать графом?",
     answer1: "Да, с присвоением титула и фамилии граф Форовсов",
@@ -48,9 +48,9 @@ export const votingQuestions: VotingQuestion[] = [
   },
 ];
 
-export const councilVotings: CouncilVoting[] = [
+export const councilSessions: CouncilSession[] = [
   {
-    id: "voting1",
+    id: "session1",
     title: "",
     date_time: "",
     status: "planned",

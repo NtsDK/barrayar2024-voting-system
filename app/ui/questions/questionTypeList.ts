@@ -1,3 +1,3 @@
-import { VotingQuestionType } from "@/app/lib/definitions2";
+import { SessionQuestionType } from "@/app/lib/definitions2";
 
-export const QUESTION_TYPE_LIST: VotingQuestionType[] = ["master", "player"];
+export const QUESTION_TYPE_LIST: SessionQuestionType[] = ["master", "player"];

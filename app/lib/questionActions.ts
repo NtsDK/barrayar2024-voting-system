@@ -7,11 +7,11 @@ import { redirect } from "next/navigation";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { sql } from "@/db";
-import { VOTINGS_ROUTE } from "@/routes";
+import { SESSIONS_ROUTE } from "@/routes";
 
 const FormSchema = z.object({
   id: z.string(),
-  voting_id: z.string(),
+  session_id: z.string(),
   type: z.enum(["master", "player"]),
   question_text: z.string(),
   answer1: z.string(),
@@ -26,13 +26,13 @@ const CreateQuestion = FormSchema.omit({ id: true, vote_log: true });
 
 const UpdateQuestion = FormSchema.omit({
   id: true,
-  voting_id: true,
+  session_id: true,
   vote_log: true,
 });
 
 const UpdateQuestionVoteLog = FormSchema.omit({
   id: true,
-  voting_id: true,
+  session_id: true,
   type: true,
   question_text: true,
   answer1: true,
@@ -52,7 +52,7 @@ export type State = {
 
 export async function createQuestion(prevState: State, formData: FormData) {
   const validatedFields = CreateQuestion.safeParse({
-    voting_id: formData.get("voting_id"),
+    session_id: formData.get("session_id"),
     type: formData.get("type"),
     question_text: formData.get("question_text"),
     answer1: formData.get("answer1"),
@@ -76,14 +76,14 @@ export async function createQuestion(prevState: State, formData: FormData) {
     question_text,
     status,
     type,
-    voting_id,
+    session_id,
   } = validatedFields.data;
 
   try {
     await sql`
-      INSERT INTO voting_questions 
+      INSERT INTO session_questions 
       ( 
-        voting_id, 
+        session_id, 
         type, 
         question_text, 
         answer1, 
@@ -95,7 +95,7 @@ export async function createQuestion(prevState: State, formData: FormData) {
       )
       VALUES 
       (
-        ${voting_id},
+        ${session_id},
         ${type},
         ${question_text},
         ${answer1},
@@ -111,8 +111,8 @@ export async function createQuestion(prevState: State, formData: FormData) {
       message: "Ошибка базы данных: не удалось создать вопрос.",
     };
   }
-  revalidatePath(VOTINGS_ROUTE);
-  redirect(VOTINGS_ROUTE);
+  revalidatePath(SESSIONS_ROUTE);
+  redirect(SESSIONS_ROUTE);
 }
 
 export async function updateQuestion(
@@ -153,7 +153,7 @@ export async function updateQuestion(
 
   try {
     await sql`
-        UPDATE voting_questions
+        UPDATE session_questions
         SET 
           answer1 = ${answer1},
           answer1_advocate_id = ${answer1_advocate_id},
@@ -168,8 +168,8 @@ export async function updateQuestion(
     return { message: "Database Error: Failed to Update Question." };
   }
 
-  revalidatePath(VOTINGS_ROUTE);
-  redirect(VOTINGS_ROUTE);
+  revalidatePath(SESSIONS_ROUTE);
+  redirect(SESSIONS_ROUTE);
 }
 
 export async function updateQuestionVoteLog(
@@ -192,7 +192,7 @@ export async function updateQuestionVoteLog(
 
   try {
     await sql`
-        UPDATE voting_questions
+        UPDATE session_questions
         SET 
           vote_log = ${vote_log}
         WHERE id = ${id}
@@ -201,16 +201,16 @@ export async function updateQuestionVoteLog(
     return { message: "Database Error: Failed to Update Question Vote Log." };
   }
 
-  revalidatePath(VOTINGS_ROUTE);
-  redirect(VOTINGS_ROUTE);
+  revalidatePath(SESSIONS_ROUTE);
+  redirect(SESSIONS_ROUTE);
 }
 
 export async function deleteQuestion(id: string) {
   // throw new Error("Failed to Delete Invoice");
   try {
-    await sql`DELETE FROM voting_questions WHERE voting_questions.id = ${id}`;
+    await sql`DELETE FROM session_questions WHERE session_questions.id = ${id}`;
 
-    revalidatePath(VOTINGS_ROUTE);
+    revalidatePath(SESSIONS_ROUTE);
     return { message: "Deleted Question." };
   } catch (error) {
     return { message: "Database Error: Failed to Delete Question." };

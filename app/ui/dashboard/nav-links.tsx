@@ -16,7 +16,7 @@ import {
   PRINCESSES_ROUTE,
   SOC_CAP_ROUTE,
   VORHOUSES_ROUTE,
-  VOTINGS_ROUTE,
+  SESSIONS_ROUTE,
 } from "@/routes";
 
 // Map of links to display in the side navigation.
@@ -31,7 +31,7 @@ const links = [
   // { name: "Customers", href: "/dashboard/customers", icon: UserGroupIcon },
   { name: "Персонажи", href: PERSONS_ROUTE, icon: UserIcon },
   { name: "Фор семьи", href: VORHOUSES_ROUTE, icon: UserGroupIcon },
-  { name: "Голосования", href: VOTINGS_ROUTE, icon: HandRaisedIcon },
+  { name: "Голосования", href: SESSIONS_ROUTE, icon: HandRaisedIcon },
   { name: "Принцессы", href: PRINCESSES_ROUTE, icon: TrophyIcon },
   { name: "Соц. кап.", href: SOC_CAP_ROUTE, icon: ScaleIcon },
 ];

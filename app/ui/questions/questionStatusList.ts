@@ -1,6 +1,6 @@
-import { VotingQuestionStatus } from "@/app/lib/definitions2";
+import { SessionQuestionStatus } from "@/app/lib/definitions2";
 
-export const QUESTION_STATUS_LIST: VotingQuestionStatus[] = [
+export const QUESTION_STATUS_LIST: SessionQuestionStatus[] = [
   "raised",
   "answer1",
   "answer2",

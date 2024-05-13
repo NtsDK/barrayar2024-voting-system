@@ -1,16 +1,16 @@
 import { DATE_TIME_LIST } from "./dateTimeList";
 
-type VotingDateTimeSelectProps = {
+type SessioDateTimeSelectProps = {
   id: string;
   defaultValue?: string;
   errors?: Record<string, string[] | undefined>;
 };
 
-export default function VotingDateTimeSelect({
+export default function SessionDateTimeSelect({
   id,
   defaultValue,
   errors,
-}: VotingDateTimeSelectProps) {
+}: SessioDateTimeSelectProps) {
   return (
     <div className="mb-4">
       <label htmlFor={id} className="mb-2 block text-sm font-medium">

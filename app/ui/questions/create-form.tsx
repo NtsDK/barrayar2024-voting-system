@@ -11,10 +11,10 @@ import {
 import { Button } from "@/app/ui/common/button";
 import { Person } from "@/app/lib/definitions2";
 import {
-  VOTING_QUESTION_STATUS_I18N,
-  VOTING_QUESTION_TYPE_I18N,
+  SESSION_QUESTION_STATUS_I18N,
+  SESSION_QUESTION_TYPE_I18N,
 } from "@/constants";
-import { VOTINGS_ROUTE } from "@/routes";
+import { SESSIONS_ROUTE } from "@/routes";
 import { createQuestion } from "@/app/lib/questionActions";
 import PersonSelect from "../common/person-select";
 import StringInput from "../common/string-input";
@@ -23,24 +23,29 @@ import { QUESTION_TYPE_LIST } from "./questionTypeList";
 import { QUESTION_STATUS_LIST } from "./questionStatusList";
 
 type FormProps = {
-  votingId: string;
+  sessionId: string;
   persons: Person[];
 };
 
-export default function Form({ votingId, persons }: FormProps) {
+export default function Form({ sessionId, persons }: FormProps) {
   const initialState = { message: null, errors: {} };
   const [state, dispatch] = useFormState(createQuestion, initialState);
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <input type="hidden" id="voting_id" name="voting_id" value={votingId} />
+        <input
+          type="hidden"
+          id="session_id"
+          name="session_id"
+          value={sessionId}
+        />
 
         <CommonSelect
           id="type"
           label="Тип вопроса"
           defaultValue="master"
           valueList={QUESTION_TYPE_LIST}
-          i18n={VOTING_QUESTION_TYPE_I18N}
+          i18n={SESSION_QUESTION_TYPE_I18N}
         />
 
         <StringInput id="question_text" label="Вопрос" errors={state.errors} />
@@ -66,12 +71,12 @@ export default function Form({ votingId, persons }: FormProps) {
           label="Статус"
           defaultValue="raised"
           valueList={QUESTION_STATUS_LIST}
-          i18n={VOTING_QUESTION_STATUS_I18N}
+          i18n={SESSION_QUESTION_STATUS_I18N}
         />
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href={VOTINGS_ROUTE}
+          href={SESSIONS_ROUTE}
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Отмена

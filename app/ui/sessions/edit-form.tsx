@@ -9,19 +9,23 @@ import {
 import Link from "next/link";
 import { Button } from "@/app/ui/common/button";
 import { useFormState } from "react-dom";
-import { CouncilVoting } from "@/app/lib/definitions2";
-import { updateVoting } from "@/app/lib/votingActions";
-import { COUNCIL_VOTING_STATUS_I18N } from "@/constants";
+import { CouncilSession } from "@/app/lib/definitions2";
+import { updateSession } from "@/app/lib/sessionActions";
+import { COUNCIL_SESSION_STATUS_I18N } from "@/constants";
 import { VORHOUSES_ROUTE } from "@/routes";
 import { STATUS_LIST } from "./statusList";
 import CommonSelect from "../common/common-select";
-import VotingDateTimeSelect from "./voting-date-time-select";
+import SessionDateTimeSelect from "./session-date-time-select";
 import StringInput from "../common/string-input";
 
-export default function EditVotingForm({ voting }: { voting: CouncilVoting }) {
+export default function EditSessionForm({
+  session,
+}: {
+  session: CouncilSession;
+}) {
   const initialState = { message: null, errors: {} };
-  const updateVotingWithId = updateVoting.bind(null, voting.id);
-  const [state, dispatch] = useFormState(updateVotingWithId, initialState);
+  const updateSessionWithId = updateSession.bind(null, session.id);
+  const [state, dispatch] = useFormState(updateSessionWithId, initialState);
 
   // console.log("vorHouse", vorHouse);
   return (
@@ -30,22 +34,22 @@ export default function EditVotingForm({ voting }: { voting: CouncilVoting }) {
         <StringInput
           id="title"
           label="Название"
-          defaultValue={voting.title}
+          defaultValue={session.title}
           errors={state.errors}
         />
 
-        <VotingDateTimeSelect
+        <SessionDateTimeSelect
           id="date_time"
-          defaultValue={voting.date_time}
+          defaultValue={session.date_time}
           errors={state.errors}
         />
 
         <CommonSelect
           id="status"
           label="Состояние"
-          defaultValue={voting.status}
+          defaultValue={session.status}
           valueList={STATUS_LIST}
-          i18n={COUNCIL_VOTING_STATUS_I18N}
+          i18n={COUNCIL_SESSION_STATUS_I18N}
         />
       </div>
       <div className="mt-6 flex justify-end gap-4">

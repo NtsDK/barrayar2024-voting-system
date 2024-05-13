@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { QUESTIONS_ROUTE } from "@/routes";
-import { deleteVoting } from "@/app/lib/votingActions";
+import { deleteSession } from "@/app/lib/sessionActions";
 import { deleteQuestion } from "@/app/lib/questionActions";
 
 export function CreateQuestion({ id }: { id: string }) {
@@ -23,15 +23,15 @@ export function CreateQuestion({ id }: { id: string }) {
 }
 
 export function UpdateQuestion({
-  votingId,
+  sessionId,
   id,
 }: {
-  votingId: string;
+  sessionId: string;
   id: string;
 }) {
   return (
     <Link
-      href={`${QUESTIONS_ROUTE}/${votingId}/${id}/edit`}
+      href={`${QUESTIONS_ROUTE}/${sessionId}/${id}/edit`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
@@ -52,15 +52,15 @@ export function DeleteQuestion({ id }: { id: string }) {
 }
 
 export function VoteOnQuestion({
-  votingId,
+  sessionId,
   id,
 }: {
-  votingId: string;
+  sessionId: string;
   id: string;
 }) {
   return (
     <Link
-      href={`${QUESTIONS_ROUTE}/${votingId}/${id}/vote`}
+      href={`${QUESTIONS_ROUTE}/${sessionId}/${id}/vote`}
       className="rounded-md border p-2 hover:bg-gray-100 flex"
     >
       <HandThumbUpIcon className="w-5" />

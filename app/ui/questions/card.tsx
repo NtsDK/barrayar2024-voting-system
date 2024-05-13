@@ -6,23 +6,23 @@ import {
 } from "@heroicons/react/24/outline";
 import { lusitana } from "@/app/ui/fonts";
 import { fetchCardData } from "@/app/lib/data";
-import { VotingQuestionsList } from "@/app/lib/definitions2";
+import { SessionQuestionsList } from "@/app/lib/definitions2";
 import {
-  VOTING_QUESTION_STATUS_I18N,
-  VOTING_QUESTION_TYPE_I18N,
+  SESSION_QUESTION_STATUS_I18N,
+  SESSION_QUESTION_TYPE_I18N,
 } from "@/constants";
 import clsx from "clsx";
 import { DeleteQuestion, UpdateQuestion, VoteOnQuestion } from "./buttons";
 
 type CardProps = {
-  question: VotingQuestionsList;
+  question: SessionQuestionsList;
   className?: string;
 };
 
 export function Card(props: CardProps) {
   const {
     id,
-    voting_id,
+    session_id: session_id,
     question_text,
     status,
     type,
@@ -36,12 +36,12 @@ export function Card(props: CardProps) {
     <div className={clsx("m-4", props.className)}>
       <div>{question_text}</div>
       <div className="flex justify-end gap-3">
-        <VoteOnQuestion id={id} votingId={voting_id} />
-        <UpdateQuestion id={id} votingId={voting_id} />
+        <VoteOnQuestion id={id} sessionId={session_id} />
+        <UpdateQuestion id={id} sessionId={session_id} />
         <DeleteQuestion id={id} />
       </div>
-      <div className="ml-8">{VOTING_QUESTION_TYPE_I18N[type]}</div>
-      <div className="ml-8">{VOTING_QUESTION_STATUS_I18N[status]}</div>
+      <div className="ml-8">{SESSION_QUESTION_TYPE_I18N[type]}</div>
+      <div className="ml-8">{SESSION_QUESTION_STATUS_I18N[status]}</div>
       <div>{answer1}</div>
       <div className="ml-8">{answer1_advocate_name}</div>
       <div>{answer2}</div>
