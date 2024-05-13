@@ -6,8 +6,6 @@ import { Suspense } from "react";
 
 import { Metadata } from "next";
 // import Table from "@/app/ui/vorHouses/table";
-import { CreateVorHouse } from "@/app/ui/vorHouses/buttons";
-import { fetchVorHousesPages } from "@/app/lib/vorHouseData";
 import Table from "@/app/ui/sessions/table";
 import { CreateSession } from "@/app/ui/sessions/buttons";
 

@@ -68,7 +68,7 @@ export default async function VorHousesTable({
                     <div className="flex justify-end gap-3">
                       <UpdateVorHouseMembers id={vorHouse.id} />
                       <UpdateVorHouse id={vorHouse.id} />
-                      <DeleteVorHouse id={vorHouse.id} />
+                      {/* <DeleteVorHouse id={vorHouse.id} /> */}
                     </div>
                   </td>
                 </tr>
