@@ -204,13 +204,13 @@ const vorHouses = [
 const councilSessions = [
   {
     id: "session1",
-    title: "Первое голосование",
+    title: "Первое заседание",
     dateTime: "22 Августа 12:00",
     status: "planned",
   },
   {
     id: "session2",
-    title: "Второе голосование",
+    title: "Второе заседание",
     dateTime: "23 Августа 14:00",
     status: "planned",
   },

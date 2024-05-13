@@ -25,7 +25,7 @@ export default async function Page({
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: "Голосования", href: SESSIONS_ROUTE },
+          { label: "Заседания", href: SESSIONS_ROUTE },
           {
             label: "Голосование по вопросу",
             href: `${QUESTIONS_ROUTE}/${sessionId}/${id}/vote`,

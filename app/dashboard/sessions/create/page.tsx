@@ -7,9 +7,9 @@ export default async function Page() {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: "Голосования", href: SESSIONS_ROUTE },
+          { label: "Заседания", href: SESSIONS_ROUTE },
           {
-            label: "Создать голосование",
+            label: "Создать заседание",
             href: `${SESSIONS_ROUTE}/create`,
             active: true,
           },

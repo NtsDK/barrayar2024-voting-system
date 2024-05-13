@@ -70,7 +70,7 @@ export async function fetchFilteredCouncilSessions(
       const session = sessionsIndex[question.session_id];
       if (!session) {
         console.warn(
-          "Не найдено голосование по id",
+          "Не найдено заседание по id",
           question.session_id,
           question
         );

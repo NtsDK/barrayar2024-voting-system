@@ -59,7 +59,7 @@ export default function EditSessionForm({
         >
           Отмена
         </Link>
-        <Button type="submit">Изменить голосование</Button>
+        <Button type="submit">Изменить заседание</Button>
       </div>
     </form>
   );

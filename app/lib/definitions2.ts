@@ -19,14 +19,14 @@ export type VorHouse = {
   social_capital: number;
 };
 
-// Голосование совета
+// заседание совета
 export type CouncilSession = {
   id: string;
   // название
   title: string;
-  // время начала голосования
+  // время начала заседания
   date_time: string;
-  // состояние голосования
+  // состояние заседания
   status: CouncilSessionStatus;
 };
 
@@ -41,7 +41,7 @@ export type CouncilSessionStatus =
 // вопросы на голосовании
 export type SessionQuestion = {
   id: string;
-  // id голосования
+  // id заседания
   session_id: string;
   // вопрос может быть мастерским (управляется мастерами) или
   // игроцким (управляется игроками)
@@ -91,9 +91,9 @@ export type CouncilSessionsList = {
   id: string;
   // название
   title: string;
-  // время начала голосования
+  // время начала заседания
   date_time: string;
-  // состояние голосования
+  // состояние заседания
   status: CouncilSessionStatus;
   questions: SessionQuestionsList[];
 };

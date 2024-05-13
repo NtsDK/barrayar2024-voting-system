@@ -42,7 +42,7 @@ export default function Form() {
         >
           Отмена
         </Link>
-        <Button type="submit">Создать голосование</Button>
+        <Button type="submit">Создать заседание</Button>
       </div>
     </form>
   );

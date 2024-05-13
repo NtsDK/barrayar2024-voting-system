@@ -14,7 +14,7 @@ export default function SessionDateTimeSelect({
   return (
     <div className="mb-4">
       <label htmlFor={id} className="mb-2 block text-sm font-medium">
-        Время голосования
+        Время заседания
       </label>
       <div className="relative">
         <select

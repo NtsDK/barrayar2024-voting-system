@@ -14,7 +14,7 @@ const FormSchema = z.object({
   title: z.string(),
   date_time: z
     .string({
-      invalid_type_error: "Выберите время голосования.",
+      invalid_type_error: "Выберите время заседания.",
     })
     .min(1),
   status: z.enum([
@@ -67,7 +67,7 @@ export async function createSession(prevState: State, formData: FormData) {
     `;
   } catch (error) {
     return {
-      message: "Ошибка базы данных: не удалось создать голосование.",
+      message: "Ошибка базы данных: не удалось создать заседание.",
     };
   }
 

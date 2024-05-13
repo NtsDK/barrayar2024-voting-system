@@ -17,9 +17,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: "Голосования", href: SESSIONS_ROUTE },
+          { label: "Заседания", href: SESSIONS_ROUTE },
           {
-            label: "Изменить голосование",
+            label: "Изменить заседание",
             href: `${SESSIONS_ROUTE}/${id}/edit`,
             active: true,
           },
