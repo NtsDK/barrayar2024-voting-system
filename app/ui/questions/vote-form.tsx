@@ -10,7 +10,11 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/common/button";
-import { Person, SessionQuestion } from "@/app/lib/definitions2";
+import {
+  Person,
+  SessionQuestion,
+  VorHousesTable,
+} from "@/app/lib/definitions2";
 import {
   SESSION_QUESTION_STATUS_I18N,
   SESSION_QUESTION_TYPE_I18N,
@@ -26,41 +30,15 @@ import CommonSelect from "../common/common-select";
 import { QUESTION_TYPE_LIST } from "./questionTypeList";
 import { QUESTION_STATUS_LIST } from "./questionStatusList";
 import { useState } from "react";
-import {
-  FAMILY_NAMES,
-  VoteLog,
-  defaultVoteLog,
-  voteList,
-} from "./vorHouseList";
+import { VoteLog, getDefaultVoteLog, voteList } from "./vorHouseList";
 import clsx from "clsx";
 
 type FormProps = {
   question: SessionQuestion;
+  vorHouses: VorHousesTable[];
 };
 
-function CheckButton({
-  checked,
-  onClick,
-}: {
-  onClick: () => void;
-  checked: boolean;
-}) {
-  return (
-    <button
-      type="button"
-      className="rounded-md border p-2 hover:bg-gray-100"
-      onClick={onClick}
-    >
-      <CheckIcon
-        className={clsx("w-5", {
-          invisible: !checked,
-        })}
-      />
-    </button>
-  );
-}
-
-export default function VoteOnQuestionForm({ question }: FormProps) {
+export default function VoteOnQuestionForm({ question, vorHouses }: FormProps) {
   const initialState = { message: null, errors: {} };
   const updateQuestionVoteLognWithId = updateQuestionVoteLog.bind(
     null,
@@ -72,7 +50,7 @@ export default function VoteOnQuestionForm({ question }: FormProps) {
   );
   const [voteLog, setVoteLog] = useState<VoteLog>(
     question.vote_log === ""
-      ? { ...defaultVoteLog }
+      ? getDefaultVoteLog(vorHouses)
       : JSON.parse(question.vote_log)
   );
   return (
@@ -105,23 +83,32 @@ export default function VoteOnQuestionForm({ question }: FormProps) {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {FAMILY_NAMES?.map((familyName) => (
+            {vorHouses?.map((vorHouse) => (
               <tr
-                key={familyName}
+                key={vorHouse.id}
                 className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
               >
                 <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                  {familyName}
+                  {vorHouse.family_name}
                 </td>
                 {voteList.map((vote) => (
                   <td
-                    key={`${familyName}_${vote}`}
+                    key={`${vorHouse.id}_${vote}`}
                     className="whitespace-nowrap px-3 py-3"
                   >
                     <CheckButton
-                      checked={voteLog[familyName] === vote}
+                      checked={voteLog.counts[vorHouse.id].vote === vote}
                       onClick={() =>
-                        setVoteLog({ ...voteLog, [familyName]: vote })
+                        setVoteLog({
+                          ...voteLog,
+                          counts: {
+                            ...voteLog.counts,
+                            [vorHouse.id]: {
+                              vote,
+                              familyName: vorHouse.family_name,
+                            },
+                          },
+                        })
                       }
                     />
                   </td>
@@ -131,13 +118,18 @@ export default function VoteOnQuestionForm({ question }: FormProps) {
             <tr className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
               <td className="whitespace-nowrap py-3 pl-6 pr-3">
                 Всего{" "}
-                {FAMILY_NAMES.length -
-                  Object.values(voteLog).filter((el) => el === "notFilled")
-                    .length}
+                {vorHouses.length -
+                  Object.values(voteLog.counts).filter(
+                    (el) => el.vote === "notFilled"
+                  ).length}
               </td>
               {voteList.map((vote) => (
                 <td key={vote} className="whitespace-nowrap px-3 py-3">
-                  {Object.values(voteLog).filter((el) => el === vote).length}
+                  {
+                    Object.values(voteLog.counts).filter(
+                      (el) => el.vote === vote
+                    ).length
+                  }
                 </td>
               ))}
             </tr>
@@ -154,5 +146,27 @@ export default function VoteOnQuestionForm({ question }: FormProps) {
         <Button type="submit">Изменить вопрос</Button>
       </div>
     </form>
+  );
+}
+
+function CheckButton({
+  checked,
+  onClick,
+}: {
+  onClick: () => void;
+  checked: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      className="rounded-md border p-2 hover:bg-gray-100"
+      onClick={onClick}
+    >
+      <CheckIcon
+        className={clsx("w-5", {
+          invisible: !checked,
+        })}
+      />
+    </button>
   );
 }

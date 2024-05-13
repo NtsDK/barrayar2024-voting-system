@@ -5,6 +5,7 @@ import { QUESTIONS_ROUTE, SESSIONS_ROUTE } from "@/routes";
 import { fetchSessionById } from "@/app/lib/sessionData";
 import Form from "@/app/ui/questions/vote-form";
 import { fetchQuestionById } from "@/app/lib/questionData";
+import { fetchVorHouses } from "@/app/lib/vorHouseData";
 
 export default async function Page({
   params,
@@ -13,12 +14,13 @@ export default async function Page({
 }) {
   const sessionId = params.sessionId;
   const id = params.id;
-  const [session, question] = await Promise.all([
+  const [session, question, vorHouses] = await Promise.all([
     fetchSessionById(sessionId),
     fetchQuestionById(id),
+    fetchVorHouses(),
   ]);
 
-  if (!session || !question) {
+  if (!session || !question || !vorHouses) {
     notFound();
   }
   return (
@@ -33,7 +35,7 @@ export default async function Page({
           },
         ]}
       />
-      <Form question={question} />
+      <Form question={question} vorHouses={vorHouses} />
     </main>
   );
 }

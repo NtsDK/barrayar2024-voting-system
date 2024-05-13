@@ -1,4 +1,4 @@
-import { fetchFilteredVorHouses } from "@/app/lib/vorHouseData";
+import { fetchVorHouses } from "@/app/lib/vorHouseData";
 import { fetchPersonsWithVorHouse } from "@/app/lib/vorHouseMemberData";
 import { lusitana } from "@/app/ui/fonts";
 import ChangeSocialCapitalForm from "@/app/ui/social-capital/change-social-capital-form";
@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 export default async function Page() {
   const [persons, vorHouses] = await Promise.all([
     fetchPersonsWithVorHouse(),
-    fetchFilteredVorHouses("", 1),
+    fetchVorHouses(),
   ]);
 
   if (!persons || !vorHouses) {

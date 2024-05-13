@@ -43,6 +43,10 @@ export async function fetchFilteredVorHouses(
   }
 }
 
+export async function fetchVorHouses() {
+  return fetchFilteredVorHouses("", 1);
+}
+
 export async function fetchVorHousesPages(query: string) {
   noStore();
   try {

@@ -1,32 +1,26 @@
+import { VorHousesTable } from "@/app/lib/definitions2";
+
 type Vote = "notFilled" | "answer1" | "answer2" | "abstain" | "absent";
 
 export const voteList: Vote[] = ["answer1", "answer2", "abstain", "absent"];
 
-export const FAMILY_NAMES = [
-  "Форбарра",
-  "Форбреттен",
-  "Форволынкин",
-  "Фордариан",
-  "Форкосиган",
-  "Форлакиал",
-  "Формюир",
-  "Форобио",
-  "Форпатрил",
-  "Форпински",
-  "Форратьер",
-  "Форсмит",
-  "Фортала",
-  "Фортейн",
-  "Форхалас",
-  "Форховиц",
-] as const;
+export type VoteLog = {
+  counts: Record<string, { vote: Vote; familyName: string }>;
+  // TODO countesses: ;
+  // TODO result
+};
 
-export type VoteLog = Record<(typeof FAMILY_NAMES)[number], Vote>;
+export function getDefaultVoteLog(vorHouses: VorHousesTable[]): VoteLog {
+  const voteLog: VoteLog = { counts: {} };
+  vorHouses.forEach((el) => {
+    voteLog.counts[el.id] = {
+      vote: "notFilled",
+      familyName: el.family_name,
+    };
+  });
 
-export const defaultVoteLog = FAMILY_NAMES.reduce((acc: VoteLog, name) => {
-  acc[name] = "notFilled";
-  return acc;
-}, {} as VoteLog);
+  return voteLog;
+}
 
 // type VorHouseName = {
 //   id: string;
