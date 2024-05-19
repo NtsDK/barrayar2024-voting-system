@@ -6,7 +6,7 @@ export type Person = {
   comment: string;
 };
 
-// фор-дом?
+// фор-дом
 export type VorHouse = {
   id: string;
   // фамилия
