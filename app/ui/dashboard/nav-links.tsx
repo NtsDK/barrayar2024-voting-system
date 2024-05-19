@@ -7,6 +7,7 @@ import {
   HandRaisedIcon,
   TrophyIcon,
   ScaleIcon,
+  EnvelopeIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -17,6 +18,7 @@ import {
   SOC_CAP_ROUTE,
   VORHOUSES_ROUTE,
   SESSIONS_ROUTE,
+  COUNTESS_REQUESTS_ROUTE,
 } from "@/routes";
 
 // Map of links to display in the side navigation.
@@ -34,6 +36,7 @@ const links = [
   { name: "Заседания", href: SESSIONS_ROUTE, icon: HandRaisedIcon },
   { name: "Принцессы", href: PRINCESSES_ROUTE, icon: TrophyIcon },
   { name: "Соц. кап.", href: SOC_CAP_ROUTE, icon: ScaleIcon },
+  { name: "Заявки графинь", href: COUNTESS_REQUESTS_ROUTE, icon: EnvelopeIcon },
 ];
 
 export default function NavLinks() {
