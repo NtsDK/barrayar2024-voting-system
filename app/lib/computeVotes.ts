@@ -1,12 +1,10 @@
 import {
+  CountVoteStatus,
   CountessesVoteLog,
   CountsVoteLog,
   Vote,
-} from "../ui/questions/vorHouseList";
-
-type CountVoteStatus = "answer1" | "answer2" | "draw";
-
-export type VoteComputeResult = CountVoteStatus | "notAllCountVotes";
+  VoteComputeResult,
+} from "./voteDefinitions";
 
 export default function computeVotes(
   countVoteLog: CountsVoteLog,

@@ -21,12 +21,14 @@ const bcrypt = require('bcrypt');
   await client.sql`DROP TABLE IF EXISTS session_questions`;
   await client.sql`DROP TABLE IF EXISTS princesses`;
   await client.sql`DROP TABLE IF EXISTS house_members`;
+  await client.sql`DROP TABLE IF EXISTS countess_session_requests`;
   await seedPersons(client);
   await seedVorHouses(client);
   await seedCouncilSessions(client);
   await seedSessionQuestions(client);
   await seedPrincesses(client);
   await seedHouseMembers(client);
+  await seedCountessSessionRequests(client);
 
   await client.end();
 })().catch((err) => {
@@ -288,8 +290,8 @@ async function seedHouseMembers(client) {
     // Create the "session_questions" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS house_members (
-        house_id UUID,
-        person_id UUID
+        house_id UUID NOT NULL,
+        person_id UUID NOT NULL
       );
     `;
 
@@ -319,6 +321,52 @@ async function seedHouseMembers(client) {
     };
   } catch (error) {
     console.error('Error seeding houseMembers:', error);
+    throw error;
+  }
+}
+
+
+async function seedCountessSessionRequests(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+    // Create the "countess_session_requests" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS countess_session_requests (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        house_id UUID NOT NULL,
+        session_id UUID NOT NULL,
+        timestamp TIMESTAMP NOT NULL,
+        question_requests TEXT NOT NULL
+      );
+    `;
+
+    console.log(`Created "countess_session_requests" table`);
+
+    // Insert data into the "countess_session_requests" table
+    // const insertedHouseMembers = await Promise.all(
+    //   houseMembers.map(
+    //     (houseMember) => client.sql`
+    //       INSERT INTO house_members (
+    //         house_id, 
+    //         person_id
+    //       )
+    //       VALUES (
+    //         ${idMapping[houseMember.house_id]}, 
+    //         ${idMapping[houseMember.person_id]}
+    //       )
+    //     `,
+    //   ),
+    // );
+
+    // console.log(`Seeded ${insertedHouseMembers.length} houseMembers`);
+
+    return {
+      // createTable,
+      // houseMembers: insertedHouseMembers,
+    };
+  } catch (error) {
+    console.error('Error seeding countess_session_requests:', error);
     throw error;
   }
 }
