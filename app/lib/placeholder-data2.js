@@ -41,6 +41,8 @@ const idMapping = {
   "question1": "dc6004a1-669f-46c1-af1d-3e45b6212037",
   "princess_margaret": "a5433d0d-13c6-4d27-a379-93b4058c6bf4",
   "princess_beatrice": "6332fa19-c52a-41f0-9f47-a78feb39159e",
+
+  "countess_request_1": "9aba1f9d-a164-4503-a033-ad8c9a69bde3",
 }
 
 const persons = [
@@ -257,6 +259,14 @@ const houseMembers = [{
   person_id: "vorvolinkin_olga"
 }];
 
+const countessSessionRequests = [{
+  id: "countess_request_1",
+  house_id: "house_vorbretten",
+  session_id: "session1",
+  timestamp: new Date("Aug 21 2024 14:15:16"),
+  question_requests: "{}"
+}];
+
 module.exports = {
   idMapping,
   persons,
@@ -265,4 +275,5 @@ module.exports = {
   councilSessions,
   princesses,
   houseMembers,
+  countessSessionRequests,
 };

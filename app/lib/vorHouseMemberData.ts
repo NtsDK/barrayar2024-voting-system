@@ -19,9 +19,9 @@ export async function fetchPersonsWithVorHouse() {
       FROM persons
         LEFT JOIN house_members ON house_members.person_id = persons.id
         LEFT JOIN vor_houses ON 
-      vor_houses.id = house_members.house_id OR 
-      vor_houses.count_id = persons.id OR 
-      vor_houses.countess_id = persons.id
+          vor_houses.id = house_members.house_id OR 
+          vor_houses.count_id = persons.id OR 
+          vor_houses.countess_id = persons.id
       ORDER BY persons.name ASC;
     `;
 

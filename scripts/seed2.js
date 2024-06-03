@@ -8,6 +8,7 @@ const {
   councilSessions,
   princesses,
   houseMembers,
+  countessSessionRequests
 } = require('../app/lib/placeholder-data2.js');
 const bcrypt = require('bcrypt');
 
@@ -344,26 +345,32 @@ async function seedCountessSessionRequests(client) {
     console.log(`Created "countess_session_requests" table`);
 
     // Insert data into the "countess_session_requests" table
-    // const insertedHouseMembers = await Promise.all(
-    //   houseMembers.map(
-    //     (houseMember) => client.sql`
-    //       INSERT INTO house_members (
-    //         house_id, 
-    //         person_id
-    //       )
-    //       VALUES (
-    //         ${idMapping[houseMember.house_id]}, 
-    //         ${idMapping[houseMember.person_id]}
-    //       )
-    //     `,
-    //   ),
-    // );
+    const insertedCountessSessionRequests = await Promise.all(
+      countessSessionRequests.map(
+        (countessSessionRequest) => client.sql`
+          INSERT INTO countess_session_requests (
+            id,
+            house_id, 
+            session_id,
+            timestamp,
+            question_requests
+          )
+          VALUES (
+            ${idMapping[countessSessionRequest.id]}, 
+            ${idMapping[countessSessionRequest.house_id]}, 
+            ${idMapping[countessSessionRequest.session_id]},
+            ${countessSessionRequest.timestamp},
+            ${countessSessionRequest.question_requests}
+          )
+        `,
+      ),
+    );
 
-    // console.log(`Seeded ${insertedHouseMembers.length} houseMembers`);
+    console.log(`Seeded ${insertedCountessSessionRequests.length} countessSessionRequests`);
 
     return {
-      // createTable,
-      // houseMembers: insertedHouseMembers,
+      createTable,
+      countessSessionRequests: insertedCountessSessionRequests,
     };
   } catch (error) {
     console.error('Error seeding countess_session_requests:', error);

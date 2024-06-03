@@ -1,23 +1,41 @@
 // Заявка графини на голосование в базе
 export type CountessSessionRequest = {
+  id: string;
   // id фор семьи
   house_id: string;
   // id голосования
   session_id: string;
   // время внесения заявки
-  timestamp: string;
+  timestamp: Date;
   // строковое представление запроса
   question_requests: string;
 };
 
 // Заявка графини на голосование для интерфейса
 export type CountessSessionRequestTable = {
+  id: string;
   // id фор семьи
   house_id: string;
+  // фамилия фор семьи
+  house_name: string;
   // id голосования
   session_id: string;
   // время внесения заявки
-  timestamp: string;
+  timestamp: Date;
+  // строковое представление запроса
+  question_requests: string;
+};
+
+export type CountessSessionRequestTable2 = {
+  id: string;
+  // id фор семьи
+  house_id: string;
+  // фамилия фор семьи
+  house_name: string;
+  // id голосования
+  session_id: string;
+  // время внесения заявки
+  timestamp: Date;
   // строковое представление запроса
   question_requests: Record<string, CountessQuestionRequest>;
 };
