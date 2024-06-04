@@ -208,7 +208,7 @@ const councilSessions = [
     id: "session1",
     title: "Первое заседание",
     dateTime: "22 Августа 12:00",
-    status: "planned",
+    status: "countessVoting",
   },
   {
     id: "session2",

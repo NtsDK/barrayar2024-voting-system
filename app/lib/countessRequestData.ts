@@ -6,6 +6,7 @@ import {
   CountessSessionRequestTable,
   CountessSessionRequestTable2,
 } from "./voteDefinitions";
+import { MinimalVorHouse, VorHouse } from "./definitions2";
 
 export async function fetchCountessRequests(): Promise<
   CountessSessionRequestTable2[]
@@ -37,6 +38,52 @@ export async function fetchCountessRequests(): Promise<
     return list2;
   } catch (err) {
     console.error("Database Error:", err);
-    throw new Error("Failed to fetch all persons.");
+    throw new Error("Failed to fetch CountessRequests.");
+  }
+}
+
+export async function fetchVorHousesWithoutCountessRequests(): Promise<
+  MinimalVorHouse[]
+> {
+  noStore();
+  try {
+    const minimalVorHouseList = await sql<MinimalVorHouse[]>`
+    SELECT
+      vor_houses2.id,
+      vor_houses2.family_name
+    FROM (
+      SELECT
+        vor_houses.id,
+        vor_houses.family_name,
+        used_house_ids.house_id as countess_house_id,
+        CASE WHEN used_house_ids.house_id <> uuid_nil()
+          THEN TRUE
+          ELSE FALSE
+        END as tval
+      FROM vor_houses
+        LEFT JOIN (
+          SELECT
+            csr.house_id
+          FROM council_sessions
+            INNER JOIN countess_session_requests as csr
+              ON council_sessions.id = csr.session_id
+          WHERE
+            council_sessions.status = 'countessVoting' 
+        ) as used_house_ids ON
+          used_house_ids.house_id = vor_houses.id
+    ) as vor_houses2
+    WHERE 
+      vor_houses2.tval = FALSE
+    ORDER BY
+      vor_houses2.family_name
+    `;
+    // У меня получилось только через tval убрать не пустые uuid.
+    // -- WHERE vor_houses2.countess_house_id = uuid_nil()
+    // -- WHERE vor_houses2.countess_house_id = vor_houses2.id
+
+    return minimalVorHouseList;
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch vor houses.");
   }
 }

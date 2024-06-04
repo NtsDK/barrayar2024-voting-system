@@ -19,6 +19,8 @@ export type VorHouse = {
   social_capital: number;
 };
 
+export type MinimalVorHouse = Pick<VorHouse, "id" | "family_name">;
+
 // заседание совета
 export type CouncilSession = {
   id: string;

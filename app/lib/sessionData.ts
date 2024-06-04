@@ -8,6 +8,30 @@ import {
 
 // const ITEMS_PER_PAGE = 15;
 
+export async function fetchCountessRequestSessions() {
+  noStore();
+  // const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const sessions = await sql<CouncilSession[]>`
+      SELECT
+        council_sessions.id,
+        council_sessions.title,
+        council_sessions.date_time,
+        council_sessions.status
+      FROM council_sessions
+      WHERE
+        council_sessions.status = 'countessVoting'
+      ORDER BY 
+        council_sessions.date_time ASC
+    `;
+    return sessions;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch sessions.");
+  }
+}
+
 export async function fetchFilteredCouncilSessions(
   query: string,
   currentPage: number
@@ -85,7 +109,7 @@ export async function fetchFilteredCouncilSessions(
     return sessions2;
   } catch (error) {
     console.error("Database Error:", error);
-    throw new Error("Failed to fetch vorHouses.");
+    throw new Error("Failed to fetch sessions.");
   }
 }
 

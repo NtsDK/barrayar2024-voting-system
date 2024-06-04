@@ -1,8 +1,14 @@
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
-import Form from "@/app/ui/persons/create-form";
+import Form from "@/app/ui/countess-requests/create-form";
 import { COUNTESS_REQUESTS_ROUTE } from "@/routes";
+import { fetchCountessRequestSessions } from "@/app/lib/sessionData";
+import { fetchVorHousesWithoutCountessRequests } from "@/app/lib/countessRequestData";
 
 export default async function Page() {
+  const [sessions, vorHouses] = await Promise.all([
+    fetchCountessRequestSessions(),
+    fetchVorHousesWithoutCountessRequests(),
+  ]);
   return (
     <main>
       <Breadcrumbs
@@ -15,8 +21,29 @@ export default async function Page() {
           },
         ]}
       />
-      TODO
-      {/* <Form /> */}
+      {sessions.length === 1 && vorHouses.length > 0 && (
+        <Form session={sessions[0]} vorHouses={vorHouses} />
+      )}
+      {sessions.length === 0 && (
+        <div>Сейчас нет открытых голосований графинь</div>
+      )}
+      {vorHouses.length === 0 && <div>Заявки от всех фор домов поданы</div>}
+
+      {sessions.length > 1 && (
+        <div>
+          <span>
+            Открыто несколько голосований графинь. Должно быть открыто только
+            одно.
+          </span>
+          <div>
+            {sessions.map((session) => (
+              <div key={session.id}>
+                {session.date_time} {session.title}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </main>
   );
 }
