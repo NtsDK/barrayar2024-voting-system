@@ -15,6 +15,7 @@ import { VORHOUSES_ROUTE } from "@/routes";
 import PersonSelect from "../common/person-select";
 import StringInput from "../common/string-input";
 import { State, addVorHouseMember } from "@/app/lib/vorHouseMemberActions";
+import HiddenInput from "../common/hidden-input";
 
 export default function AddMemberForm({
   persons,
@@ -30,7 +31,7 @@ export default function AddMemberForm({
   );
   return (
     <form action={dispatch} className="flex">
-      <input type="hidden" id="house_id" name="house_id" value={house_id} />
+      <HiddenInput name="house_id" value={house_id} />
       <select
         id="person_id"
         name="person_id"

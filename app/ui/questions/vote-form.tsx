@@ -30,8 +30,10 @@ import CommonSelect from "../common/common-select";
 import { QUESTION_TYPE_LIST } from "./questionTypeList";
 import { QUESTION_STATUS_LIST } from "./questionStatusList";
 import { useState } from "react";
-import { VoteLog, getDefaultVoteLog, voteList } from "./vorHouseList";
+import { getDefaultVoteLog, voteList } from "./vorHouseList";
 import clsx from "clsx";
+import HiddenInput from "../common/hidden-input";
+import { VoteLog } from "@/app/lib/voteDefinitions";
 
 type FormProps = {
   question: SessionQuestion;
@@ -55,12 +57,7 @@ export default function VoteOnQuestionForm({ question, vorHouses }: FormProps) {
   );
   return (
     <form action={dispatch}>
-      <input
-        type="hidden"
-        id="vote_log"
-        name="vote_log"
-        value={JSON.stringify(voteLog)}
-      />
+      <HiddenInput name="vote_log" value={JSON.stringify(voteLog)} />
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <table className="hidden min-w-full text-gray-900 md:table">
           <thead className="rounded-lg text-left text-sm font-normal">

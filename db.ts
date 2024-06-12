@@ -3,7 +3,10 @@
 import postgres from "postgres";
 import { ZERO_UUID } from "./constants";
 
+console.log("Run db.ts");
+
 export const sql = postgres({
+  idle_timeout: 20,
   transform: {
     value: {
       from(value, column) {
@@ -19,6 +22,7 @@ export const sql = postgres({
 const client = { sql, end: () => sql.end() };
 
 async function sqlEnd() {
+  console.log("called sqlEnd");
   sql.end();
 }
 
@@ -45,17 +49,17 @@ async function sqlEnd() {
 
 process.on("SIGHUP", async () => {
   await sqlEnd();
-  // logger.info('Received: SIGHUP');
+  console.info("Received: SIGHUP");
 });
 process.on("SIGINT", async () => {
   await sqlEnd();
-  // logger.info('Received: SIGINT');
+  console.info("Received: SIGINT");
 });
 process.on("SIGQUIT", async () => {
   await sqlEnd();
-  // logger.info('Received: SIGQUIT');
+  console.info("Received: SIGQUIT");
 });
 process.on("SIGTERM", async () => {
   await sqlEnd();
-  // logger.info('Received: SIGTERM');
+  console.info("Received: SIGTERM");
 });

@@ -16,16 +16,16 @@ export function CreateCountessRequest() {
   );
 }
 
-// export function UpdatePerson({ id }: { id: string }) {
-//   return (
-//     <Link
-//       href={`${PERSONS_ROUTE}/${id}/edit`}
-//       className="rounded-md border p-2 hover:bg-gray-100"
-//     >
-//       <PencilIcon className="w-5" />
-//     </Link>
-//   );
-// }
+export function UpdateCountessRequest({ id }: { id: string }) {
+  return (
+    <Link
+      href={`${COUNTESS_REQUESTS_ROUTE}/${id}/edit`}
+      className="rounded-md border p-2 hover:bg-gray-100"
+    >
+      <PencilIcon className="w-5" />
+    </Link>
+  );
+}
 
 export function DeleteCountessRequest({ id }: { id: string }) {
   const deleteCountessRequestWithId = deleteCountessRequest.bind(null, id);

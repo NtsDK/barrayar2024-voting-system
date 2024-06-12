@@ -13,6 +13,9 @@ import { COUNTESS_REQUESTS_ROUTE } from "@/routes";
 import StringInput from "../common/string-input";
 import { createCountessRequest } from "@/app/lib/countessRequestActions";
 import { CouncilSession, MinimalVorHouse } from "@/app/lib/definitions2";
+import ErrorMessage from "../error-message";
+import CommonSelect from "../common/common-select";
+import HiddenInput from "../common/hidden-input";
 
 interface FormProps {
   session: CouncilSession;
@@ -24,15 +27,26 @@ export default function Form(props: FormProps) {
   const initialState = { message: null, errors: {} };
   const [state, dispatch] = useFormState(createCountessRequest, initialState);
   // console.log("state", state);
+  const houseNameIndex = vorHouses.reduce(
+    (acc: Record<string, string>, house) => {
+      acc[house.id] = house.family_name;
+      return acc;
+    },
+    {}
+  );
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        {/* <StringInput id="name" label="Имя персонажа" errors={state.errors} />
-        <StringInput id="comment" label="Комментарий" errors={state.errors} /> */}
-        {session.id}
-        {vorHouses.map((vorHouse) => (
-          <div key={vorHouse.id}>{vorHouse.family_name}</div>
-        ))}
+        <ErrorMessage formState={state} />
+        <HiddenInput name="session_id" value={session.id} />
+        <HiddenInput name="question_requests" value={"{}"} />
+        <CommonSelect
+          id="house_id"
+          label="Фор семья"
+          defaultValue={vorHouses[0].id}
+          valueList={vorHouses.map((house) => house.id)}
+          i18n={houseNameIndex}
+        />
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link

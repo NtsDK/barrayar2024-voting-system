@@ -2,7 +2,7 @@ import Image from "next/image";
 import { formatDateToLocal, formatCurrency } from "@/app/lib/utils";
 import { fetchFilteredPersons } from "@/app/lib/personData";
 import { fetchCountessRequests } from "@/app/lib/countessRequestData";
-import { DeleteCountessRequest } from "./buttons";
+import { DeleteCountessRequest, UpdateCountessRequest } from "./buttons";
 // import { DeletePerson, UpdatePerson } from "./buttons";
 
 export default async function CountessRequestsTable({
@@ -27,7 +27,10 @@ export default async function CountessRequestsTable({
                 <div>{JSON.stringify(countessRequest.question_requests)}</div>
               </div>
               <div className="flex-grow-0 flex-shrink-0">
-                <DeleteCountessRequest id={countessRequest.id} />
+                <div className="flex justify-end gap-3">
+                  <UpdateCountessRequest id={countessRequest.id} />
+                  <DeleteCountessRequest id={countessRequest.id} />
+                </div>
               </div>
             </div>
           ))}

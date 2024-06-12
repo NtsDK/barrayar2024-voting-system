@@ -337,7 +337,7 @@ async function seedCountessSessionRequests(client) {
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         house_id UUID NOT NULL,
         session_id UUID NOT NULL,
-        timestamp TIMESTAMP NOT NULL,
+        timestamp TIMESTAMPTZ NOT NULL,
         question_requests TEXT NOT NULL
       );
     `;
@@ -365,6 +365,19 @@ async function seedCountessSessionRequests(client) {
         `,
       ),
     );
+
+    // проверял, что дата на входе и на выходе получается одна и та же
+    // const selectTable = await client.sql`
+    //   SELECT
+    //     csr.id,
+    //     csr.house_id,
+    //     csr.session_id,
+    //     csr.timestamp,
+    //     csr.question_requests
+    //   FROM countess_session_requests as csr
+    // `;
+    
+    // console.log("old timestamp", countessSessionRequests[0].timestamp, "new timestamp", selectTable[0].timestamp)
 
     console.log(`Seeded ${insertedCountessSessionRequests.length} countessSessionRequests`);
 

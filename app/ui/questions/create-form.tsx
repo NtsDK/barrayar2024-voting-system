@@ -21,6 +21,7 @@ import StringInput from "../common/string-input";
 import CommonSelect from "../common/common-select";
 import { QUESTION_TYPE_LIST } from "./questionTypeList";
 import { QUESTION_STATUS_LIST } from "./questionStatusList";
+import HiddenInput from "../common/hidden-input";
 
 type FormProps = {
   sessionId: string;
@@ -33,12 +34,7 @@ export default function Form({ sessionId, persons }: FormProps) {
   return (
     <form action={dispatch}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <input
-          type="hidden"
-          id="session_id"
-          name="session_id"
-          value={sessionId}
-        />
+        <HiddenInput name="session_id" value={sessionId} />
 
         <CommonSelect
           id="type"

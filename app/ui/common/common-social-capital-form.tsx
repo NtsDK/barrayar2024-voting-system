@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useFormState } from "react-dom";
+import HiddenInput from "./hidden-input";
 
 type CommonSocialCapitalFormProps<State> = {
   baseNumber: number;
@@ -30,9 +31,7 @@ export default function CommonSocialCapitalForm<State>({
       }}
       className="flex"
     >
-      <input
-        type="hidden"
-        id="social_capital"
+      <HiddenInput
         name="social_capital"
         value={(() => {
           try {
