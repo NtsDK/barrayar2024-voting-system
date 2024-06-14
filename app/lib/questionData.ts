@@ -26,3 +26,38 @@ export async function fetchQuestionById(id: string) {
     console.error("Database Error:", error);
   }
 }
+
+export async function fetchCountessRequestQuestions() {
+  noStore();
+  // const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const data = await sql<SessionQuestion[]>`
+      SELECT
+        session_questions.id,
+        session_questions.session_id,
+        session_questions.type,
+        session_questions.question_text,
+        session_questions.answer1,
+        session_questions.answer1_advocate_id,
+        session_questions.answer2,
+        session_questions.answer2_advocate_id,
+        session_questions.status,
+        session_questions.vote_log
+      FROM session_questions
+      WHERE session_questions.session_id IN (
+        SELECT 
+          council_sessions.id
+        FROM 
+          council_sessions
+        WHERE
+          council_sessions.status = 'countessVoting'
+      )
+      ORDER BY session_questions.question_text;
+    `;
+    return data;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch sessions.");
+  }
+}

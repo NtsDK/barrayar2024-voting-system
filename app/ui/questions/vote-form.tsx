@@ -34,6 +34,7 @@ import { getDefaultVoteLog, voteList } from "./vorHouseList";
 import clsx from "clsx";
 import HiddenInput from "../common/hidden-input";
 import { VoteLog } from "@/app/lib/voteDefinitions";
+import CheckButton from "../common/check-button";
 
 type FormProps = {
   question: SessionQuestion;
@@ -143,27 +144,5 @@ export default function VoteOnQuestionForm({ question, vorHouses }: FormProps) {
         <Button type="submit">Изменить вопрос</Button>
       </div>
     </form>
-  );
-}
-
-function CheckButton({
-  checked,
-  onClick,
-}: {
-  onClick: () => void;
-  checked: boolean;
-}) {
-  return (
-    <button
-      type="button"
-      className="rounded-md border p-2 hover:bg-gray-100"
-      onClick={onClick}
-    >
-      <CheckIcon
-        className={clsx("w-5", {
-          invisible: !checked,
-        })}
-      />
-    </button>
   );
 }

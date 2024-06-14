@@ -3,11 +3,13 @@ import Form from "@/app/ui/countess-requests/create-form";
 import { COUNTESS_REQUESTS_ROUTE } from "@/routes";
 import { fetchCountessRequestSessions } from "@/app/lib/sessionData";
 import { fetchVorHousesWithoutCountessRequests } from "@/app/lib/countessRequestData";
+import { fetchCountessRequestQuestions } from "@/app/lib/questionData";
 
 export default async function Page() {
-  const [sessions, vorHouses] = await Promise.all([
+  const [sessions, vorHouses, questions] = await Promise.all([
     fetchCountessRequestSessions(),
     fetchVorHousesWithoutCountessRequests(),
+    fetchCountessRequestQuestions(),
   ]);
   return (
     <main>
@@ -22,7 +24,11 @@ export default async function Page() {
         ]}
       />
       {sessions.length === 1 && vorHouses.length > 0 && (
-        <Form session={sessions[0]} vorHouses={vorHouses} />
+        <Form
+          session={sessions[0]}
+          vorHouses={vorHouses}
+          questions={questions}
+        />
       )}
       {sessions.length === 0 && (
         <div>Сейчас нет открытых голосований графинь</div>

@@ -1,0 +1,86 @@
+import { UnaffiliatedCount } from "@/app/lib/voteDefinitions";
+import CheckButton from "../common/check-button";
+import { Dispatch, SetStateAction } from "react";
+
+interface UnaffiliatedCountEditorProps {
+  unaffiliatedCounts: UnaffiliatedCount[];
+  setUnaffiliatedCounts: Dispatch<SetStateAction<UnaffiliatedCount[]>>;
+}
+
+export default function UnaffiliatedCountEditor(
+  props: UnaffiliatedCountEditorProps
+) {
+  const { unaffiliatedCounts, setUnaffiliatedCounts } = props;
+  function onUnaffiliatedChange(index: number, type: UnaffiliatedCount) {
+    const copy = [...unaffiliatedCounts];
+    copy[index] = type;
+    setUnaffiliatedCounts(copy);
+  }
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th className="p-2">#</th>
+          <th className="p-2  w-32 border-r-2 border-gray-800">Свободный</th>
+          {/* <th className="p-2  w-32 border-r-2 border-gray-800">Воздержаться</th> */}
+          <th className="p-2 w-32">За графа</th>
+          <th className="p-2 w-32 border-r-2 border-gray-800">Против графа</th>
+          <th className="p-2 w-32">Ответ 1</th>
+          <th className="p-2 w-32">Ответ 2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td className="text-center border-r-2 border-gray-800">0ск</td>
+          {/* <td className="text-center border-r-2 border-gray-800">5ск</td> */}
+          <td className="text-center">10ск</td>
+          <td className="text-center border-r-2 border-gray-800">10ск</td>
+          <td className="text-center">20ск</td>
+          <td className="text-center">20ск</td>
+        </tr>
+        {unaffiliatedCounts.map((el, index) => (
+          <tr key={index}>
+            <td>{index + 1}</td>
+            <td className="text-center border-r-2 border-gray-800">
+              <CheckButton
+                checked={el === "unaffiliated"}
+                onClick={() => onUnaffiliatedChange(index, "unaffiliated")}
+              />
+            </td>
+            {/* <td className="text-center border-r-2 border-gray-800">
+              <CheckButton
+                checked={el === "abstain"}
+                onClick={() => onUnaffiliatedChange(index, "abstain")}
+              />
+            </td> */}
+            <td className="text-center">
+              <CheckButton
+                checked={el === "forCount"}
+                onClick={() => onUnaffiliatedChange(index, "forCount")}
+              />
+            </td>
+            <td className="text-center border-r-2 border-gray-800">
+              <CheckButton
+                checked={el === "againstCount"}
+                onClick={() => onUnaffiliatedChange(index, "againstCount")}
+              />
+            </td>
+            <td className="text-center">
+              <CheckButton
+                checked={el === "answer1"}
+                onClick={() => onUnaffiliatedChange(index, "answer1")}
+              />
+            </td>
+            <td className="text-center">
+              <CheckButton
+                checked={el === "answer2"}
+                onClick={() => onUnaffiliatedChange(index, "answer2")}
+              />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}

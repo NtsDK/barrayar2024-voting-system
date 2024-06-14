@@ -54,7 +54,9 @@ export type CountessesVoteLog = VoteLog["countesses"];
 export type CountessQuestionRequest = {
   vorHouseId: string;
   familyName: string;
+  // свои графы
   affiliatedCounts: AffiliatedCount[];
+  // свободные графы
   unaffiliatedCounts: UnaffiliatedCount[];
 };
 

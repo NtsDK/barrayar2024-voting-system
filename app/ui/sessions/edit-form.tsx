@@ -12,7 +12,7 @@ import { useFormState } from "react-dom";
 import { CouncilSession } from "@/app/lib/definitions2";
 import { updateSession } from "@/app/lib/sessionActions";
 import { COUNCIL_SESSION_STATUS_I18N } from "@/constants";
-import { VORHOUSES_ROUTE } from "@/routes";
+import { SESSIONS_ROUTE, VORHOUSES_ROUTE } from "@/routes";
 import { STATUS_LIST } from "./statusList";
 import CommonSelect from "../common/common-select";
 import SessionDateTimeSelect from "./session-date-time-select";
@@ -54,7 +54,7 @@ export default function EditSessionForm({
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href={VORHOUSES_ROUTE}
+          href={SESSIONS_ROUTE}
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Отмена

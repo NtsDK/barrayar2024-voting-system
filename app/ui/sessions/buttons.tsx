@@ -19,6 +19,7 @@ export function UpdateSession({ id }: { id: string }) {
   return (
     <Link
       href={`${SESSIONS_ROUTE}/${id}/edit`}
+      title="Изменить заседание"
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <PencilIcon className="w-5" />
@@ -30,7 +31,10 @@ export function DeleteSession({ id }: { id: string }) {
   const deleteSessionWithId = deleteSession.bind(null, id);
   return (
     <form action={deleteSessionWithId}>
-      <button className="rounded-md border p-2 hover:bg-gray-100">
+      <button
+        className="rounded-md border p-2 hover:bg-gray-100"
+        title="Удалить заседание"
+      >
         <span className="sr-only">Удалить</span>
         <TrashIcon className="w-5" />
       </button>
