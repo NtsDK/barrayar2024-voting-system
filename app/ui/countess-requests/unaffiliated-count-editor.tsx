@@ -1,6 +1,7 @@
 import { UnaffiliatedCount } from "@/app/lib/voteDefinitions";
 import CheckButton from "../common/check-button";
 import { Dispatch, SetStateAction } from "react";
+import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 interface UnaffiliatedCountEditorProps {
   unaffiliatedCounts: UnaffiliatedCount[];
@@ -77,6 +78,20 @@ export default function UnaffiliatedCountEditor(
                 checked={el === "answer2"}
                 onClick={() => onUnaffiliatedChange(index, "answer2")}
               />
+            </td>
+            <td>
+              <button
+                type="button"
+                className="rounded-md border p-2 hover:bg-gray-100"
+                onClick={() => {
+                  setUnaffiliatedCounts(
+                    unaffiliatedCounts.filter((_, index2) => index2 !== index)
+                  );
+                }}
+              >
+                <span className="sr-only">Удалить</span>
+                <TrashIcon className="w-5" />
+              </button>
             </td>
           </tr>
         ))}

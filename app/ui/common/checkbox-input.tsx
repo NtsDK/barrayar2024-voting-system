@@ -27,7 +27,7 @@ export default function CheckboxInput({
             name={id}
             type="checkbox"
             defaultChecked={defaultChecked !== null ? defaultChecked : false}
-            className="peer block w-24 rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+            className="peer block w-24 h-8 rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
           />
         </div>
       </div>

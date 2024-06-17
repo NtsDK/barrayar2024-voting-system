@@ -57,7 +57,25 @@ export const countessQuestionRequestSchema: JSONSchemaType<CountessQuestionReque
 export const questionRequestsSchema: JSONSchemaType<QuestionRequests> = {
   type: "object",
   additionalProperties: countessQuestionRequestSchema,
+  minProperties: 1,
   required: [],
 };
 
 export const validateQuestionRequests = ajv.compile(questionRequestsSchema);
+
+export function assertQuestionRequests(question_requests: any) {
+  if (!validateQuestionRequests(question_requests)) {
+    console.error(
+      "Parse resource error",
+      question_requests,
+      JSON.stringify(validateQuestionRequests.errors, null, "  ")
+    );
+
+    throw new Error(
+      "Parse resource error: " +
+        question_requests +
+        ", " +
+        JSON.stringify(validateQuestionRequests.errors, null, "  ")
+    );
+  }
+}

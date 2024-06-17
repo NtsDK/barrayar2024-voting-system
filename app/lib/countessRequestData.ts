@@ -4,8 +4,10 @@ import {
   CountessSessionRequest,
   CountessSessionRequestTable,
   CountessSessionRequestTable2,
+  QuestionRequests,
 } from "./voteDefinitions";
 import { MinimalVorHouse, VorHouse } from "./definitions2";
+import { assertQuestionRequests } from "./voteValidation";
 
 export async function fetchCountessRequests(): Promise<
   CountessSessionRequestTable2[]
@@ -111,10 +113,11 @@ export async function fetchVorHousesWithoutCountessRequests(): Promise<
 }
 
 function parseCountessSessionRequest(el: CountessSessionRequestTable) {
-  let question_requests = {};
-  try {
-    question_requests = JSON.parse(el.question_requests);
-  } catch {}
+  let question_requests: QuestionRequests = {};
+  // try {
+  question_requests = JSON.parse(el.question_requests);
+  assertQuestionRequests(question_requests);
+  // } catch {}
 
   return {
     ...el,

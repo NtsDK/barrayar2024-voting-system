@@ -9,23 +9,37 @@ import {
 import Link from "next/link";
 import { Button } from "@/app/ui/common/button";
 import { useFormState } from "react-dom";
-import { MinimalVorHouse, Person } from "@/app/lib/definitions2";
+import {
+  MinimalVorHouse,
+  Person,
+  SessionQuestion,
+} from "@/app/lib/definitions2";
 import { updatePerson } from "@/app/lib/personActions";
 import { COUNTESS_REQUESTS_ROUTE, PERSONS_ROUTE } from "@/routes";
 import StringInput from "../common/string-input";
-import { CountessSessionRequestTable2 } from "@/app/lib/voteDefinitions";
+import {
+  CountInfo,
+  CountessSessionRequestTable2,
+  QuestionRequests,
+} from "@/app/lib/voteDefinitions";
 import ErrorMessage from "../error-message";
 import { updateCountessRequest } from "@/app/lib/countessRequestActions";
 import HiddenInput from "../common/hidden-input";
 import CommonSelect from "../common/common-select";
 import CheckboxInput from "../common/checkbox-input";
+import { useState } from "react";
+import { defaultCountInfo } from "./utils";
+import CountSection from "./count-section";
+import { assertQuestionRequests } from "@/app/lib/voteValidation";
 
 export default function EditCountessRequestForm({
   countessRequest,
   vorHouses,
+  questions,
 }: {
   countessRequest: CountessSessionRequestTable2;
   vorHouses: MinimalVorHouse[];
+  questions: SessionQuestion[];
 }) {
   const initialState = { message: null, errors: {} };
   const updateCountessRequestWithId = updateCountessRequest.bind(
@@ -47,11 +61,44 @@ export default function EditCountessRequestForm({
     },
     {}
   );
+
+  const [countInfoList, setCountInfoList] = useState<CountInfo[]>(
+    questions.map(
+      (q) => countessRequest.question_requests[q.id] || defaultCountInfo()
+    )
+  );
+
+  function dispatchWrapper(payload: FormData) {
+    const house_id = payload.get("house_id") as string;
+    const { family_name } = vorHouses2.find(
+      (el) => el.id === house_id
+    ) as MinimalVorHouse;
+    // console.log("payload", );
+    const question_requests: QuestionRequests = {};
+    questions.forEach((question, index) => {
+      question_requests[question.id] = {
+        vorHouseId: house_id,
+        familyName: family_name,
+        affiliatedCounts: countInfoList[index].affiliatedCounts,
+        unaffiliatedCounts: countInfoList[index].unaffiliatedCounts,
+      };
+    });
+    // формально проверка лишняя
+    assertQuestionRequests(question_requests);
+
+    payload.append(
+      "question_requests",
+      JSON.stringify(question_requests, null, "  ")
+    );
+
+    dispatch(payload);
+  }
+
   return (
-    <form action={dispatch}>
+    <form action={dispatchWrapper}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <ErrorMessage formState={state} />
-        <HiddenInput name="question_requests" value={"{}"} />
+        {/* <HiddenInput name="question_requests" value={"{}"} /> */}
         <HiddenInput
           name="timestamp"
           value={countessRequest.timestamp.toISOString()}
@@ -68,6 +115,11 @@ export default function EditCountessRequestForm({
           label="Нужно ли обновить время изменения заявки"
           defaultChecked={true}
           errors={state.errors}
+        />
+        <CountSection
+          questions={questions}
+          countInfoList={countInfoList}
+          setCountInfoList={setCountInfoList}
         />
       </div>
       <div className="mt-6 flex justify-end gap-4">

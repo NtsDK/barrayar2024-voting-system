@@ -32,7 +32,11 @@ import CheckButton from "../common/check-button";
 import AffiliatedCountEditor from "./affiliated-count-editor";
 import UnaffiliatedCountEditor from "./unaffiliated-count-editor";
 import { defaultCountInfo } from "./utils";
-import { validateQuestionRequests } from "@/app/lib/voteValidation";
+import {
+  assertQuestionRequests,
+  validateQuestionRequests,
+} from "@/app/lib/voteValidation";
+import CountSection from "./count-section";
 
 interface FormProps {
   session: CouncilSession;
@@ -53,11 +57,9 @@ export default function Form(props: FormProps) {
     {}
   );
 
-  const [countInfoList, setCountInfoList] = useState<CountInfo[]>([
-    defaultCountInfo(),
-    defaultCountInfo(),
-    defaultCountInfo(),
-  ]);
+  const [countInfoList, setCountInfoList] = useState<CountInfo[]>(
+    questions.map(() => defaultCountInfo())
+  );
 
   function dispatchWrapper(payload: FormData) {
     const house_id = payload.get("house_id") as string;
@@ -74,20 +76,8 @@ export default function Form(props: FormProps) {
         unaffiliatedCounts: countInfoList[index].unaffiliatedCounts,
       };
     });
-    if (!validateQuestionRequests(question_requests)) {
-      console.error(
-        "Parse resource error",
-        question_requests,
-        JSON.stringify(validateQuestionRequests.errors, null, "  ")
-      );
-
-      throw new Error(
-        "Parse resource error: " +
-          question_requests +
-          ", " +
-          JSON.stringify(validateQuestionRequests.errors, null, "  ")
-      );
-    }
+    // формально проверка лишняя
+    assertQuestionRequests(question_requests);
 
     payload.append(
       "question_requests",
@@ -110,46 +100,11 @@ export default function Form(props: FormProps) {
           valueList={vorHouses.map((house) => house.id)}
           i18n={houseNameIndex}
         />
-        {questions.map((question, index) => (
-          <div key={question.id} className="mb-20">
-            <div className="mb-6">
-              <div className="text-xl mb-6">
-                Вопрос {index + 1}: {question.question_text}
-              </div>
-              <div className="mb-6">Ответ 1: {question.answer1}</div>
-              <div className="mb-6">Ответ 2: {question.answer2}</div>
-            </div>
-
-            <div className="mb-6">
-              <div className="mb-4">Свои графы</div>
-              <AffiliatedCountEditor
-                affiliatedCounts={countInfoList[index].affiliatedCounts}
-                setAffiliatedCounts={(affiliatedCounts) => {
-                  const copy = [...countInfoList];
-                  copy[index] = {
-                    ...copy[index],
-                    affiliatedCounts,
-                  };
-                  setCountInfoList(copy);
-                }}
-              />
-            </div>
-            <div>
-              <div className="mb-4">Свободные графы</div>
-              <UnaffiliatedCountEditor
-                unaffiliatedCounts={countInfoList[index].unaffiliatedCounts}
-                setUnaffiliatedCounts={(unaffiliatedCounts) => {
-                  const copy = [...countInfoList];
-                  copy[index] = {
-                    ...copy[index],
-                    unaffiliatedCounts,
-                  };
-                  setCountInfoList(copy);
-                }}
-              />
-            </div>
-          </div>
-        ))}
+        <CountSection
+          questions={questions}
+          countInfoList={countInfoList}
+          setCountInfoList={setCountInfoList}
+        />
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link

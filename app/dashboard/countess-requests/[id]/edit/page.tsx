@@ -6,13 +6,15 @@ import {
   fetchCountessRequestById,
   fetchVorHousesWithoutCountessRequests,
 } from "@/app/lib/countessRequestData";
+import { fetchCountessRequestQuestions } from "@/app/lib/questionData";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
 
-  const [countessRequest, vorHouses] = await Promise.all([
+  const [countessRequest, vorHouses, questions] = await Promise.all([
     fetchCountessRequestById(id),
     fetchVorHousesWithoutCountessRequests(),
+    fetchCountessRequestQuestions(),
   ]);
 
   if (!countessRequest) {
@@ -30,7 +32,11 @@ export default async function Page({ params }: { params: { id: string } }) {
           },
         ]}
       />
-      <Form countessRequest={countessRequest} vorHouses={vorHouses} />
+      <Form
+        countessRequest={countessRequest}
+        vorHouses={vorHouses}
+        questions={questions}
+      />
     </main>
   );
 }
