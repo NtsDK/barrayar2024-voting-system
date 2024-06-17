@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from "react";
 
 interface UnaffiliatedCountEditorProps {
   unaffiliatedCounts: UnaffiliatedCount[];
-  setUnaffiliatedCounts: Dispatch<SetStateAction<UnaffiliatedCount[]>>;
+  setUnaffiliatedCounts: (counts: UnaffiliatedCount[]) => void;
 }
 
 export default function UnaffiliatedCountEditor(

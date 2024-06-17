@@ -26,6 +26,9 @@ export type CountessSessionRequestTable = {
   question_requests: string;
 };
 
+// индекс по id запроса
+export type QuestionRequests = Record<string, CountessQuestionRequest>;
+
 export type CountessSessionRequestTable2 = {
   id: string;
   // id фор семьи
@@ -37,7 +40,7 @@ export type CountessSessionRequestTable2 = {
   // время внесения заявки
   timestamp: Date;
   // строковое представление запроса
-  question_requests: Record<string, CountessQuestionRequest>;
+  question_requests: QuestionRequests;
 };
 
 export type Vote = "notFilled" | "answer1" | "answer2" | "abstain" | "absent";
@@ -57,6 +60,11 @@ export type CountessQuestionRequest = {
   // свои графы
   affiliatedCounts: AffiliatedCount[];
   // свободные графы
+  unaffiliatedCounts: UnaffiliatedCount[];
+};
+
+export type CountInfo = {
+  affiliatedCounts: AffiliatedCount[];
   unaffiliatedCounts: UnaffiliatedCount[];
 };
 

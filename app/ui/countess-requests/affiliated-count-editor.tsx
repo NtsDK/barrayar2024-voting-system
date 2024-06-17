@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from "react";
 
 interface AffiliatedCountEditorProps {
   affiliatedCounts: AffiliatedCount[];
-  setAffiliatedCounts: Dispatch<SetStateAction<AffiliatedCount[]>>;
+  setAffiliatedCounts: (counts: AffiliatedCount[]) => void;
 }
 
 export default function AffiliatedCountEditor(

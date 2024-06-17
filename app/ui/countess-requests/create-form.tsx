@@ -23,12 +23,16 @@ import HiddenInput from "../common/hidden-input";
 import { useState } from "react";
 import {
   AffiliatedCount,
+  CountInfo,
   CountessQuestionRequest,
+  QuestionRequests,
   UnaffiliatedCount,
 } from "@/app/lib/voteDefinitions";
 import CheckButton from "../common/check-button";
 import AffiliatedCountEditor from "./affiliated-count-editor";
 import UnaffiliatedCountEditor from "./unaffiliated-count-editor";
+import { defaultCountInfo } from "./utils";
+import { validateQuestionRequests } from "@/app/lib/voteValidation";
 
 interface FormProps {
   session: CouncilSession;
@@ -48,28 +52,57 @@ export default function Form(props: FormProps) {
     },
     {}
   );
-  // const [questionRequest, setQuestionRequest] =
-  //   useState<CountessQuestionRequest>({
-  //     familyName: "",
-  //     vorHouseId: "",
-  //     affiliatedCounts: ["unaffiliated", "unaffiliated", "unaffiliated"],
-  //     unaffiliatedCounts: ["unaffiliated", "unaffiliated"],
-  //   });
-  const [affiliatedCounts, setAffiliatedCounts] = useState<AffiliatedCount[]>([
-    "unaffiliated",
-    "unaffiliated",
-    "unaffiliated",
+
+  const [countInfoList, setCountInfoList] = useState<CountInfo[]>([
+    defaultCountInfo(),
+    defaultCountInfo(),
+    defaultCountInfo(),
   ]);
-  const [unaffiliatedCounts, setUnaffiliatedCounts] = useState<
-    UnaffiliatedCount[]
-  >(["unaffiliated", "unaffiliated"]);
+
+  function dispatchWrapper(payload: FormData) {
+    const house_id = payload.get("house_id") as string;
+    const { family_name } = vorHouses.find(
+      (el) => el.id === house_id
+    ) as MinimalVorHouse;
+    // console.log("payload", );
+    const question_requests: QuestionRequests = {};
+    questions.forEach((question, index) => {
+      question_requests[question.id] = {
+        vorHouseId: house_id,
+        familyName: family_name,
+        affiliatedCounts: countInfoList[index].affiliatedCounts,
+        unaffiliatedCounts: countInfoList[index].unaffiliatedCounts,
+      };
+    });
+    if (!validateQuestionRequests(question_requests)) {
+      console.error(
+        "Parse resource error",
+        question_requests,
+        JSON.stringify(validateQuestionRequests.errors, null, "  ")
+      );
+
+      throw new Error(
+        "Parse resource error: " +
+          question_requests +
+          ", " +
+          JSON.stringify(validateQuestionRequests.errors, null, "  ")
+      );
+    }
+
+    payload.append(
+      "question_requests",
+      JSON.stringify(question_requests, null, "  ")
+    );
+
+    dispatch(payload);
+  }
 
   return (
-    <form action={dispatch}>
+    <form action={dispatchWrapper}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <ErrorMessage formState={state} />
         <HiddenInput name="session_id" value={session.id} />
-        <HiddenInput name="question_requests" value={"{}"} />
+        {/* <HiddenInput name="question_requests" value={"{}"} /> */}
         <CommonSelect
           id="house_id"
           label="Фор семья"
@@ -90,15 +123,29 @@ export default function Form(props: FormProps) {
             <div className="mb-6">
               <div className="mb-4">Свои графы</div>
               <AffiliatedCountEditor
-                affiliatedCounts={affiliatedCounts}
-                setAffiliatedCounts={setAffiliatedCounts}
+                affiliatedCounts={countInfoList[index].affiliatedCounts}
+                setAffiliatedCounts={(affiliatedCounts) => {
+                  const copy = [...countInfoList];
+                  copy[index] = {
+                    ...copy[index],
+                    affiliatedCounts,
+                  };
+                  setCountInfoList(copy);
+                }}
               />
             </div>
             <div>
               <div className="mb-4">Свободные графы</div>
               <UnaffiliatedCountEditor
-                unaffiliatedCounts={unaffiliatedCounts}
-                setUnaffiliatedCounts={setUnaffiliatedCounts}
+                unaffiliatedCounts={countInfoList[index].unaffiliatedCounts}
+                setUnaffiliatedCounts={(unaffiliatedCounts) => {
+                  const copy = [...countInfoList];
+                  copy[index] = {
+                    ...copy[index],
+                    unaffiliatedCounts,
+                  };
+                  setCountInfoList(copy);
+                }}
               />
             </div>
           </div>
