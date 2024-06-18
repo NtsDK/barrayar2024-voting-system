@@ -54,7 +54,8 @@ export default function VoteOnQuestionForm({ question, vorHouses }: FormProps) {
   const [voteLog, setVoteLog] = useState<VoteLog>(
     question.vote_log === ""
       ? getDefaultVoteLog(vorHouses)
-      : JSON.parse(question.vote_log)
+      : // TODO validate vote log
+        JSON.parse(question.vote_log)
   );
   return (
     <form action={dispatch}>

@@ -1,16 +1,106 @@
+import { assert } from "./utils";
 import {
+  AffiliatedCount,
   CountVoteStatus,
-  CountessesVoteLog,
+  CountessActions,
+  CountessQuestionRequest,
+  // CountessesVoteLog,
   CountsVoteLog,
   Vote,
-  VoteComputeResult,
+  // VoteComputeResult,
 } from "./voteDefinitions";
 
-export default function computeVotes(
+export function canPrecomputeVotes(countVoteLog: CountsVoteLog) {
+  return Object.values(countVoteLog).every((vote) => vote.vote !== "notFilled");
+}
+
+export default function precomputeVotes(
   countVoteLog: CountsVoteLog,
-  countessesVoteLog: CountessesVoteLog
-): VoteComputeResult {
-  const countIndex = Object.values(countVoteLog).reduce(
+  countessesVoteLog: CountessQuestionRequest[],
+  socCapitalValues: Record<CountessActions, number>
+): CountVoteStatus {
+  assert(canPrecomputeVotes(countVoteLog), "Есть незаполненные графы");
+
+  const { countVoteIndex, countVoteStatus } = computeCountVotes(countVoteLog);
+
+  // считаем голоса аффилированных графов
+  // const { affiliatedCountessIndex, unaffiliatedCountsByCountesses } =
+  //   computeAffiliatedCountVotes(countVoteLog, countessesVoteLog);
+
+  // считаем голоса неаффилированных графов
+
+  return countVoteStatus;
+}
+
+// export function computeAffiliatedCountVotes(
+//   countVoteLog: CountsVoteLog,
+//   countessesVoteLog: CountessQuestionRequest[]
+// ) {
+//   const affiliatedCountessIndex: Record<
+//     Exclude<Vote, "notFilled" | "absent">,
+//     number
+//   > = {
+//     answer1: 0,
+//     answer2: 0,
+//     abstain: 0,
+//   };
+
+//   let unaffiliatedCountsByCountesses = 0;
+
+//   countessesVoteLog.forEach(({ affiliatedCounts, vorHouseId }) => {
+//     const countVote = countVoteLog[vorHouseId].vote;
+//     affiliatedCounts.forEach((voteType) => {
+//       switch (voteType) {
+//         // ничего не делаем
+//         case "unaffiliated":
+//           unaffiliatedCountsByCountesses++;
+//           break;
+//         case "answer1": {
+//           affiliatedCountessIndex.answer1++;
+//           break;
+//         }
+//         case "answer2": {
+//           affiliatedCountessIndex.answer2++;
+//           break;
+//         }
+//         case "abstain": {
+//           if (countVote === "absent") {
+//             unaffiliatedCountsByCountesses++;
+//           } else {
+//             affiliatedCountessIndex.abstain++;
+//           }
+//           break;
+//         }
+//         case "forCount": {
+//           if (countVote === "absent") {
+//             unaffiliatedCountsByCountesses++;
+//           } else if (countVote === "answer1" || countVote === "answer2") {
+//             affiliatedCountessIndex[countVote]++;
+//           }
+//           break;
+//         }
+//         case "againstCount": {
+//           if (countVote === "absent") {
+//             unaffiliatedCountsByCountesses++;
+//           } else if (countVote === "answer1" || countVote === "answer2") {
+//             affiliatedCountessIndex[
+//               countVote === "answer1" ? "answer2" : "answer1"
+//             ]++;
+//           }
+//           break;
+//         }
+//       }
+//     });
+//   });
+
+//   return {
+//     affiliatedCountessIndex,
+//     unaffiliatedCountsByCountesses,
+//   };
+// }
+
+export function computeCountVotes(countVoteLog: CountsVoteLog) {
+  const countVoteIndex = Object.values(countVoteLog).reduce(
     (acc: Record<Vote, number>, vote) => {
       acc[vote.vote]++;
       return acc;
@@ -23,70 +113,16 @@ export default function computeVotes(
       absent: 0,
     }
   );
-  if (countIndex.notFilled > 0) {
-    return "notAllCountVotes";
-  }
 
   const countVoteStatus: CountVoteStatus =
-    countIndex.answer1 === countIndex.answer2
+    countVoteIndex.answer1 === countVoteIndex.answer2
       ? "draw"
-      : countIndex.answer1 > countIndex.answer2
+      : countVoteIndex.answer1 > countVoteIndex.answer2
       ? "answer1"
       : "answer2";
 
-  // считаем голоса аффилированных графов
-
-  const countessIndex: Record<Vote, number> = {
-    answer1: 0,
-    answer2: 0,
-    notFilled: 0,
-    abstain: 0,
-    absent: 0,
+  return {
+    countVoteIndex,
+    countVoteStatus,
   };
-
-  countessesVoteLog.forEach(({ affiliatedCounts, vorHouseId }) => {
-    affiliatedCounts.forEach((voteType) => {
-      switch (voteType) {
-        // ничего не делаем
-        // case "unaffiliated":
-        case "answer1": {
-          countessIndex.answer1++;
-          break;
-        }
-        case "answer2": {
-          countessIndex.answer2++;
-          break;
-        }
-        case "abstain": {
-          countessIndex.abstain++;
-          break;
-        }
-        case "forCount": {
-          const countVote = countVoteLog[vorHouseId].vote;
-          if (countVote === "answer1" || countVote === "answer2") {
-            countessIndex[countVote]++;
-          }
-          break;
-        }
-        case "againstCount": {
-          const countVote = countVoteLog[vorHouseId].vote;
-          if (countVote === "answer1" || countVote === "answer2") {
-            countessIndex[countVote === "answer1" ? "answer2" : "answer1"]++;
-          }
-          break;
-        }
-      }
-    });
-  });
-
-  // считаем голоса неаффилированных графов
-  const familyNumber = Object.values(countVoteLog).length;
-  let unaffiliatedCountsNumber = (familyNumber - countessesVoteLog.length) * 3;
-  countessesVoteLog.forEach(({ affiliatedCounts, vorHouseId }) => {
-    unaffiliatedCountsNumber += affiliatedCounts.filter(
-      (el) => el === "unaffiliated"
-    ).length;
-  });
-
-  return countVoteStatus;
 }

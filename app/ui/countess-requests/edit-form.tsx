@@ -18,7 +18,7 @@ import { updatePerson } from "@/app/lib/personActions";
 import { COUNTESS_REQUESTS_ROUTE, PERSONS_ROUTE } from "@/routes";
 import StringInput from "../common/string-input";
 import {
-  CountInfo,
+  CountessQuestionRequest,
   CountessSessionRequestTable2,
   QuestionRequests,
 } from "@/app/lib/voteDefinitions";
@@ -28,7 +28,7 @@ import HiddenInput from "../common/hidden-input";
 import CommonSelect from "../common/common-select";
 import CheckboxInput from "../common/checkbox-input";
 import { useState } from "react";
-import { defaultCountInfo } from "./utils";
+import { defaultCountessQuestionRequest } from "./utils";
 import CountSection from "./count-section";
 import { assertQuestionRequests } from "@/app/lib/voteValidation";
 
@@ -62,23 +62,25 @@ export default function EditCountessRequestForm({
     {}
   );
 
-  const [countInfoList, setCountInfoList] = useState<CountInfo[]>(
+  const [countInfoList, setCountInfoList] = useState<CountessQuestionRequest[]>(
     questions.map(
-      (q) => countessRequest.question_requests[q.id] || defaultCountInfo()
+      (q) =>
+        countessRequest.question_requests[q.id] ||
+        defaultCountessQuestionRequest()
     )
   );
 
   function dispatchWrapper(payload: FormData) {
-    const house_id = payload.get("house_id") as string;
-    const { family_name } = vorHouses2.find(
-      (el) => el.id === house_id
-    ) as MinimalVorHouse;
+    // const house_id = payload.get("house_id") as string;
+    // const { family_name } = vorHouses2.find(
+    //   (el) => el.id === house_id
+    // ) as MinimalVorHouse;
     // console.log("payload", );
     const question_requests: QuestionRequests = {};
     questions.forEach((question, index) => {
       question_requests[question.id] = {
-        vorHouseId: house_id,
-        familyName: family_name,
+        // vorHouseId: house_id,
+        // familyName: family_name,
         affiliatedCounts: countInfoList[index].affiliatedCounts,
         unaffiliatedCounts: countInfoList[index].unaffiliatedCounts,
       };

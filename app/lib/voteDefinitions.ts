@@ -46,25 +46,19 @@ export type CountessSessionRequestTable2 = {
 export type Vote = "notFilled" | "answer1" | "answer2" | "abstain" | "absent";
 
 export type VoteLog = {
+  /** Индекс по id фордомов */
   counts: Record<string, { vote: Vote; familyName: string }>;
-  countesses: CountessQuestionRequest[];
+  // countesses: CountessQuestionRequest[];
   // TODO result
 };
 
 export type CountsVoteLog = VoteLog["counts"];
-export type CountessesVoteLog = VoteLog["countesses"];
+// export type CountessesVoteLog = VoteLog["countesses"];
 
 export type CountessQuestionRequest = {
-  vorHouseId: string;
-  familyName: string;
   // свои графы
   affiliatedCounts: AffiliatedCount[];
   // свободные графы
-  unaffiliatedCounts: UnaffiliatedCount[];
-};
-
-export type CountInfo = {
-  affiliatedCounts: AffiliatedCount[];
   unaffiliatedCounts: UnaffiliatedCount[];
 };
 
@@ -85,4 +79,22 @@ export type UnaffiliatedCount =
 
 export type CountVoteStatus = "answer1" | "answer2" | "draw";
 
-export type VoteComputeResult = CountVoteStatus | "notAllCountVotes";
+// export type VoteComputeResult = CountVoteStatus | "notAllCountVotes";
+
+export type CountessActions =
+  | `affiliated_${AffiliatedCount}`
+  | `unaffiliated_${UnaffiliatedCount}`;
+
+export const socCapitalValues: Record<CountessActions, number> = {
+  affiliated_unaffiliated: 0,
+  affiliated_abstain: 5,
+  affiliated_forCount: 10,
+  affiliated_againstCount: 10,
+  affiliated_answer1: 20,
+  affiliated_answer2: 20,
+  unaffiliated_unaffiliated: 0,
+  unaffiliated_forCount: 20,
+  unaffiliated_againstCount: 20,
+  unaffiliated_answer1: 40,
+  unaffiliated_answer2: 40,
+};

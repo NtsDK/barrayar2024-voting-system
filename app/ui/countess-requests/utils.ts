@@ -1,6 +1,6 @@
-import { CountInfo } from "@/app/lib/voteDefinitions";
+import { CountessQuestionRequest } from "@/app/lib/voteDefinitions";
 
-export function defaultCountInfo(): CountInfo {
+export function defaultCountessQuestionRequest(): CountessQuestionRequest {
   return {
     affiliatedCounts: ["unaffiliated", "unaffiliated", "unaffiliated"],
     unaffiliatedCounts: ["unaffiliated"],

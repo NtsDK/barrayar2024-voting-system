@@ -11,8 +11,8 @@ export const countessQuestionRequestSchema: JSONSchemaType<CountessQuestionReque
   {
     type: "object",
     properties: {
-      familyName: { type: "string" },
-      vorHouseId: { type: "string" },
+      // familyName: { type: "string" },
+      // vorHouseId: { type: "string" },
       affiliatedCounts: {
         type: "array",
         items: {
@@ -42,8 +42,8 @@ export const countessQuestionRequestSchema: JSONSchemaType<CountessQuestionReque
       },
     },
     required: [
-      "vorHouseId",
-      "familyName",
+      // "vorHouseId",
+      // "familyName",
       "affiliatedCounts",
       "unaffiliatedCounts",
     ],

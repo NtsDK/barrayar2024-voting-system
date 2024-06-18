@@ -297,23 +297,14 @@ const countessSessionRequests = [
     timestamp: new Date("Aug 21 2024 14:15:16"),
     question_requests: JSON.stringify({
       [idMapping["question1"]]: {
-        vorHouseId: idMapping.house_vorbretten,
-        familyName: vorHouses.find((el) => el.id === "house_vorbretten")
-          .familyName,
         affiliatedCounts: ["unaffiliated", "abstain", "forCount"],
         unaffiliatedCounts: ["unaffiliated", "answer1", "answer2"],
       },
       [idMapping["question2"]]: {
-        vorHouseId: idMapping.house_vorbretten,
-        familyName: vorHouses.find((el) => el.id === "house_vorbretten")
-          .familyName,
         affiliatedCounts: ["abstain", "abstain", "abstain"],
         unaffiliatedCounts: ["answer1", "answer1", "answer1"],
       },
       [idMapping["question3"]]: {
-        vorHouseId: idMapping.house_vorbretten,
-        familyName: vorHouses.find((el) => el.id === "house_vorbretten")
-          .familyName,
         affiliatedCounts: ["forCount", "forCount", "forCount"],
         unaffiliatedCounts: ["answer2", "answer2", "answer2"],
       },

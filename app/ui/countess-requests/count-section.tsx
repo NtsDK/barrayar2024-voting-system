@@ -1,7 +1,7 @@
 import { SessionQuestion } from "@/app/lib/definitions2";
 import AffiliatedCountEditor from "./affiliated-count-editor";
 import UnaffiliatedCountEditor from "./unaffiliated-count-editor";
-import { CountInfo } from "@/app/lib/voteDefinitions";
+import { CountessQuestionRequest } from "@/app/lib/voteDefinitions";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 export default function CountSection({
@@ -9,8 +9,8 @@ export default function CountSection({
   setCountInfoList,
   questions,
 }: {
-  countInfoList: CountInfo[];
-  setCountInfoList: (infos: CountInfo[]) => void;
+  countInfoList: CountessQuestionRequest[];
+  setCountInfoList: (infos: CountessQuestionRequest[]) => void;
   questions: SessionQuestion[];
 }) {
   return (

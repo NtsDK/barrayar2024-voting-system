@@ -23,7 +23,6 @@ import HiddenInput from "../common/hidden-input";
 import { useState } from "react";
 import {
   AffiliatedCount,
-  CountInfo,
   CountessQuestionRequest,
   QuestionRequests,
   UnaffiliatedCount,
@@ -31,7 +30,7 @@ import {
 import CheckButton from "../common/check-button";
 import AffiliatedCountEditor from "./affiliated-count-editor";
 import UnaffiliatedCountEditor from "./unaffiliated-count-editor";
-import { defaultCountInfo } from "./utils";
+import { defaultCountessQuestionRequest } from "./utils";
 import {
   assertQuestionRequests,
   validateQuestionRequests,
@@ -57,21 +56,21 @@ export default function Form(props: FormProps) {
     {}
   );
 
-  const [countInfoList, setCountInfoList] = useState<CountInfo[]>(
-    questions.map(() => defaultCountInfo())
+  const [countInfoList, setCountInfoList] = useState<CountessQuestionRequest[]>(
+    questions.map(() => defaultCountessQuestionRequest())
   );
 
   function dispatchWrapper(payload: FormData) {
-    const house_id = payload.get("house_id") as string;
-    const { family_name } = vorHouses.find(
-      (el) => el.id === house_id
-    ) as MinimalVorHouse;
+    // const house_id = payload.get("house_id") as string;
+    // const { family_name } = vorHouses.find(
+    //   (el) => el.id === house_id
+    // ) as MinimalVorHouse;
     // console.log("payload", );
     const question_requests: QuestionRequests = {};
     questions.forEach((question, index) => {
       question_requests[question.id] = {
-        vorHouseId: house_id,
-        familyName: family_name,
+        // vorHouseId: house_id,
+        // familyName: family_name,
         affiliatedCounts: countInfoList[index].affiliatedCounts,
         unaffiliatedCounts: countInfoList[index].unaffiliatedCounts,
       };
