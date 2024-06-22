@@ -4,7 +4,8 @@ import { Vote, VoteLog } from "@/app/lib/voteDefinitions";
 export const voteList: Vote[] = ["answer1", "answer2", "abstain", "absent"];
 
 export function getDefaultVoteLog(vorHouses: VorHousesTable[]): VoteLog {
-  const voteLog: VoteLog = { counts: {}, countesses: [] };
+  // const voteLog: VoteLog = { counts: {}, countesses: [] };
+  const voteLog: VoteLog = { counts: {} };
   vorHouses.forEach((el) => {
     voteLog.counts[el.id] = {
       vote: "notFilled",
