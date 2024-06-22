@@ -29,20 +29,31 @@ import StringInput from "../common/string-input";
 import CommonSelect from "../common/common-select";
 import { QUESTION_TYPE_LIST } from "./questionTypeList";
 import { QUESTION_STATUS_LIST } from "./questionStatusList";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { getDefaultVoteLog, voteList } from "./vorHouseList";
 import clsx from "clsx";
 import HiddenInput from "../common/hidden-input";
-import { CountsVoteLog, VoteLog } from "@/app/lib/voteDefinitions";
+import {
+  CountessQuestionRequestTable,
+  CountsVoteLog,
+  VoteLog,
+  socCapitalValues,
+} from "@/app/lib/voteDefinitions";
 import CheckButton from "../common/check-button";
 import CountsVoteTable from "./counts-vote-table";
+import precomputeVotes, { canPrecomputeVotes } from "@/app/lib/computeVotes";
 
 type FormProps = {
   question: SessionQuestion;
   vorHouses: VorHousesTable[];
+  countessQuestionRequests: CountessQuestionRequestTable[];
 };
 
-export default function VoteOnQuestionForm({ question, vorHouses }: FormProps) {
+export default function VoteOnQuestionForm({
+  question,
+  vorHouses,
+  countessQuestionRequests,
+}: FormProps) {
   const initialState = { message: null, errors: {} };
   const updateQuestionVoteLognWithId = updateQuestionVoteLog.bind(
     null,
@@ -58,6 +69,13 @@ export default function VoteOnQuestionForm({ question, vorHouses }: FormProps) {
       : // TODO validate vote log
         JSON.parse(question.vote_log).counts
   );
+  const canPrecomputeVotesFlag = useMemo(
+    () => canPrecomputeVotes(countsVoteLog),
+    [countsVoteLog]
+  );
+
+  const [precomputeState, setPrecomputeState] = useState<any>({});
+
   return (
     <form action={dispatch}>
       <HiddenInput
@@ -70,6 +88,27 @@ export default function VoteOnQuestionForm({ question, vorHouses }: FormProps) {
           setCountsVoteLog={setCountsVoteLog}
           vorHouses={vorHouses}
         />
+        <div>
+          <div>
+            Голоса графов распределены: {canPrecomputeVotesFlag ? "Да" : "Нет"}
+          </div>
+          <Button
+            type="button"
+            disabled={!canPrecomputeVotesFlag}
+            onClick={() =>
+              setPrecomputeState(
+                precomputeVotes(
+                  countsVoteLog,
+                  socCapitalValues,
+                  countessQuestionRequests
+                )
+              )
+            }
+          >
+            Подсчитать голосование графинь
+          </Button>
+          <pre>{JSON.stringify(precomputeState, null, "  ")}</pre>
+        </div>
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link

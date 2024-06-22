@@ -39,8 +39,28 @@ export type CountessSessionRequestTable2 = {
   session_id: string;
   // время внесения заявки
   timestamp: Date;
-  // строковое представление запроса
+  // заявка графини на все вопросы
   question_requests: QuestionRequests;
+};
+
+// Заявка графини на голосование по конкретному вопросу.
+// Используется в подсчете голосов.
+export type CountessQuestionRequestTable = {
+  id: string;
+  // id фор семьи
+  house_id: string;
+  // фамилия фор семьи
+  house_name: string;
+  // id голосования
+  session_id: string;
+  // время внесения заявки
+  timestamp: Date;
+  // id вопроса
+  question_id: string;
+  // свои графы
+  affiliatedCounts: CountessQuestionRequest["affiliatedCounts"];
+  // свободные графы
+  unaffiliatedCounts: CountessQuestionRequest["unaffiliatedCounts"];
 };
 
 export type Vote = "notFilled" | "answer1" | "answer2" | "abstain" | "absent";
@@ -85,6 +105,7 @@ export type CountessActions =
   | `affiliated_${AffiliatedCount}`
   | `unaffiliated_${UnaffiliatedCount}`;
 
+// TODO переделать в настраиваемую таблицу
 export const socCapitalValues: Record<CountessActions, number> = {
   affiliated_unaffiliated: 0,
   affiliated_abstain: 5,

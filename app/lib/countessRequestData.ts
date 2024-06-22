@@ -66,6 +66,34 @@ export async function fetchCountessRequestById(
   }
 }
 
+export async function fetchCountessRequestsBySessionId(
+  id: string
+): Promise<CountessSessionRequestTable2[]> {
+  noStore();
+  try {
+    const countessRequests = await sql<CountessSessionRequestTable[]>`
+      SELECT
+        csr.id,
+        csr.house_id,
+        vor_houses.family_name AS house_name,
+        csr.session_id,
+        csr.timestamp,
+        csr.question_requests
+      FROM countess_session_requests as csr
+        INNER JOIN vor_houses ON 
+          vor_houses.id = csr.house_id
+      WHERE csr.session_id = ${id}
+      ORDER BY
+        csr.timestamp;
+    `;
+
+    return countessRequests.map(parseCountessSessionRequest);
+  } catch (err) {
+    console.error("Database Error:", err);
+    throw new Error("Failed to fetch CountessRequests.");
+  }
+}
+
 export async function fetchVorHousesWithoutCountessRequests(): Promise<
   MinimalVorHouse[]
 > {
