@@ -1,4 +1,4 @@
-import { assert } from "./utils";
+import { assert } from "../utils";
 import {
   AffiliatedCount,
   CountVoteStatus,
@@ -9,13 +9,13 @@ import {
   CountsVoteLog,
   Vote,
   // VoteComputeResult,
-} from "./voteDefinitions";
+} from "../voteDefinitions";
 
 export function canPrecomputeVotes(countsVoteLog: CountsVoteLog) {
   return Object.values(countsVoteLog).every((vote) => vote.vote !== "notFilled");
 }
 
-export default function precomputeVotes(
+export function precomputeVotes(
   countsVoteLog: CountsVoteLog,
   socCapitalValues: Record<CountessActions, number>,
   countessQuestionRequests: CountessQuestionRequestTable[],
@@ -182,7 +182,7 @@ export function computeAffiliatedCountVotes(
 }
 
 /** Считает голоса графов */
-export function computeCountVotes(countsVoteLog: CountsVoteLog) {
+function computeCountVotes(countsVoteLog: CountsVoteLog) {
   const countsVoteIndex = Object.values(countsVoteLog).reduce(
     (acc: Record<Vote, number>, vote) => {
       acc[vote.vote]++;
