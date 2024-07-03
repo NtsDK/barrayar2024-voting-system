@@ -5,13 +5,7 @@ import { fetchCountessRequests } from "@/app/lib/countessRequestData";
 import { DeleteCountessRequest, UpdateCountessRequest } from "./buttons";
 // import { DeletePerson, UpdatePerson } from "./buttons";
 
-export default async function CountessRequestsTable({
-  query,
-  currentPage,
-}: {
-  query: string;
-  currentPage: number;
-}) {
+export default async function CountessRequestsTable({ query, currentPage }: { query: string; currentPage: number }) {
   const countessRequests = await fetchCountessRequests();
 
   return (
@@ -24,7 +18,7 @@ export default async function CountessRequestsTable({
                 <div>{countessRequest.house_name}</div>
                 <div>{countessRequest.session_id}</div>
                 <div>{countessRequest.timestamp.toLocaleString()}</div>
-                <div>{JSON.stringify(countessRequest.question_requests)}</div>
+                <pre>{JSON.stringify(countessRequest.question_requests, null, "  ")}</pre>
               </div>
               <div className="flex-grow-0 flex-shrink-0">
                 <div className="flex justify-end gap-3">
