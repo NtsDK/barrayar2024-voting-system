@@ -11,6 +11,7 @@ import {
   // VoteComputeResult,
 } from "../voteDefinitions";
 import { computeAffiliatedCountVotes } from "./computeAffiliatedCountVotes";
+import { computeUnaffiliatedCountVotes } from "./computeUnaffiliatedCountVotes";
 
 export function canPrecomputeVotes(countsVoteLog: CountsVoteLog) {
   return Object.values(countsVoteLog).every((vote) => vote.vote !== "notFilled");
@@ -39,6 +40,12 @@ export function precomputeVotes(
   const totalUnaffiliatedCounts = unaffiliatedCountsByCountesses + unaffiliatedCountsByRequestsAbsense;
 
   // считаем голоса неаффилированных графов
+  const {
+    restUnaffiliatedCounts,
+    unaffiliatedCountsSocCapitalExpenses,
+    unaffiliatedCountsVoteIndex,
+    unaffiliatedCountsVoteLog,
+  } = computeUnaffiliatedCountVotes(countsVoteLog, countessQuestionRequests, socCapitalValues, totalUnaffiliatedCounts);
 
   return {
     // голосование графов
@@ -54,6 +61,10 @@ export function precomputeVotes(
     unaffiliatedCountsByCountesses,
     unaffiliatedCountsByRequestsAbsense,
     totalUnaffiliatedCounts,
+    unaffiliatedCountsVoteIndex,
+    unaffiliatedCountsVoteLog,
+    unaffiliatedCountsSocCapitalExpenses,
+    restUnaffiliatedCounts,
   };
 }
 

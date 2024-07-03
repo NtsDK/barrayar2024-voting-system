@@ -73,7 +73,7 @@ export function computeAffiliatedCountVotes(
   countessQuestionRequests.forEach((countessQuestionRequest) => {
     const { affiliatedCounts, house_id } = countessQuestionRequest;
     const countVote = countsVoteLog[house_id].vote;
-    const affiliatedCountLogger = makeAffiliatedCountLogger(countessQuestionRequest, socCapitalValues, countVote);
+    const logger = makeAffiliatedCountLogger(countessQuestionRequest, socCapitalValues, countVote);
     const addExpense = makeAddExpense(affiliatedCountsSocCapitalExpenses, countessQuestionRequest, socCapitalValues);
     affiliatedCounts.forEach((voteType) => {
       switch (voteType) {
@@ -83,44 +83,48 @@ export function computeAffiliatedCountVotes(
           break;
         case "answer1": {
           affiliatedCountsVoteIndex.answer1++;
-          affiliatedCountsVoteLog.push(affiliatedCountLogger("vote", voteType));
+          affiliatedCountsVoteLog.push(logger("vote", voteType));
           addExpense(voteType);
           break;
         }
         case "answer2": {
           affiliatedCountsVoteIndex.answer2++;
-          affiliatedCountsVoteLog.push(affiliatedCountLogger("vote", voteType));
+          affiliatedCountsVoteLog.push(logger("vote", voteType));
           addExpense(voteType);
           break;
         }
         case "abstain": {
           if (countVote === "absent") {
             unaffiliatedCountsByCountesses++;
+            affiliatedCountsVoteLog.push(logger("absence", voteType));
           } else {
             affiliatedCountsVoteIndex.abstain++;
             addExpense(voteType);
+            affiliatedCountsVoteLog.push(logger("vote", voteType));
           }
-          affiliatedCountsVoteLog.push(affiliatedCountLogger(countVote === "absent" ? "absence" : "vote", voteType));
           break;
         }
         case "forCount": {
           if (countVote === "absent") {
             unaffiliatedCountsByCountesses++;
+            affiliatedCountsVoteLog.push(logger("absence", voteType));
           } else if (countVote === "answer1" || countVote === "answer2" || countVote === "abstain") {
             affiliatedCountsVoteIndex[countVote]++;
             addExpense(voteType);
+            affiliatedCountsVoteLog.push(logger("vote", voteType));
           }
-          affiliatedCountsVoteLog.push(affiliatedCountLogger(countVote === "absent" ? "absence" : "vote", voteType));
           break;
         }
         case "againstCount": {
           if (countVote === "absent") {
             unaffiliatedCountsByCountesses++;
+            affiliatedCountsVoteLog.push(logger("absence", voteType));
           } else if (countVote === "answer1" || countVote === "answer2" || countVote === "abstain") {
+            // TODO разобраться с контрголосованием
             affiliatedCountsVoteIndex[countVote === "answer1" ? "answer2" : "answer1"]++;
             addExpense(voteType);
+            affiliatedCountsVoteLog.push(logger("vote", voteType));
           }
-          affiliatedCountsVoteLog.push(affiliatedCountLogger(countVote === "absent" ? "absence" : "vote", voteType));
           break;
         }
       }
