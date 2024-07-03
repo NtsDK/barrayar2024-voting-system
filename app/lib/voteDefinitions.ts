@@ -63,7 +63,9 @@ export type CountessQuestionRequestTable = {
   unaffiliatedCounts: CountessQuestionRequest["unaffiliatedCounts"];
 };
 
-export type Vote = "notFilled" | "answer1" | "answer2" | "abstain" | "absent";
+export type MeaningfulVote = "answer1" | "answer2" | "abstain";
+
+export type Vote = MeaningfulVote | "notFilled" | "absent";
 
 export type VoteLog = {
   /** Индекс по id фордомов */
@@ -101,9 +103,7 @@ export type CountVoteStatus = "answer1" | "answer2" | "draw";
 
 // export type VoteComputeResult = CountVoteStatus | "notAllCountVotes";
 
-export type CountessActions =
-  | `affiliated_${AffiliatedCount}`
-  | `unaffiliated_${UnaffiliatedCount}`;
+export type CountessActions = `affiliated_${AffiliatedCount}` | `unaffiliated_${UnaffiliatedCount}`;
 
 // TODO переделать в настраиваемую таблицу
 export const socCapitalValues: Record<CountessActions, number> = {
@@ -118,4 +118,10 @@ export const socCapitalValues: Record<CountessActions, number> = {
   unaffiliated_againstCount: 20,
   unaffiliated_answer1: 40,
   unaffiliated_answer2: 40,
+};
+
+export type VoteSummaryRow = {
+  name: string;
+  voteIndex: Record<MeaningfulVote, number>;
+  voteStatus?: CountVoteStatus;
 };

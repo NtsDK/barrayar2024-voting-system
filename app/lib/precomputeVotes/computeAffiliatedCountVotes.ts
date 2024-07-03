@@ -1,12 +1,12 @@
 import { assert } from "../utils";
 import {
   AffiliatedCount,
-  CountVoteStatus,
   CountessActions,
   CountessQuestionRequest,
   CountessQuestionRequestTable,
   // CountessesVoteLog,
   CountsVoteLog,
+  MeaningfulVote,
   Vote,
   // VoteComputeResult,
 } from "../voteDefinitions";
@@ -58,7 +58,7 @@ export function computeAffiliatedCountVotes(
   countessQuestionRequests: CountessQuestionRequestTable[],
   socCapitalValues: Record<CountessActions, number>,
 ) {
-  const affiliatedCountsVoteIndex: Record<Exclude<Vote, "notFilled" | "absent">, number> = {
+  const affiliatedCountsVoteIndex: Record<MeaningfulVote, number> = {
     answer1: 0,
     answer2: 0,
     abstain: 0,
@@ -120,8 +120,8 @@ export function computeAffiliatedCountVotes(
             unaffiliatedCountsByCountesses++;
             affiliatedCountsVoteLog.push(logger("absence", voteType));
           } else if (countVote === "answer1" || countVote === "answer2" || countVote === "abstain") {
-            // TODO разобраться с контрголосованием
-            affiliatedCountsVoteIndex[countVote === "answer1" ? "answer2" : "answer1"]++;
+            const counterVote = countVote === "answer1" ? "answer2" : countVote === "answer2" ? "answer1" : "abstain";
+            affiliatedCountsVoteIndex[counterVote]++;
             addExpense(voteType);
             affiliatedCountsVoteLog.push(logger("vote", voteType));
           }

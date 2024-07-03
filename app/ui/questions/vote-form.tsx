@@ -17,7 +17,13 @@ import { useMemo, useState } from "react";
 import { getDefaultVoteLog, voteList } from "./vorHouseList";
 import clsx from "clsx";
 import HiddenInput from "../common/hidden-input";
-import { CountessQuestionRequestTable, CountsVoteLog, VoteLog, socCapitalValues } from "@/app/lib/voteDefinitions";
+import {
+  CountessQuestionRequestTable,
+  CountsVoteLog,
+  MeaningfulVote,
+  VoteLog,
+  socCapitalValues,
+} from "@/app/lib/voteDefinitions";
 import CheckButton from "../common/check-button";
 import CountsVoteTable from "./counts-vote-table";
 import precomputeVotes, { canPrecomputeVotes } from "@/app/lib/precomputeVotes";
@@ -41,6 +47,7 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
   const canPrecomputeVotesFlag = useMemo(() => canPrecomputeVotes(countsVoteLog), [countsVoteLog]);
 
   const [precomputeState, setPrecomputeState] = useState<any>({});
+  const [masterVote, setMasterVote] = useState<MeaningfulVote>("abstain");
 
   return (
     <form action={dispatch}>
@@ -53,7 +60,7 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
             type="button"
             disabled={!canPrecomputeVotesFlag}
             onClick={() =>
-              setPrecomputeState(precomputeVotes(countsVoteLog, socCapitalValues, countessQuestionRequests))
+              setPrecomputeState(precomputeVotes(countsVoteLog, socCapitalValues, countessQuestionRequests, masterVote))
             }
           >
             Подсчитать голосование графинь

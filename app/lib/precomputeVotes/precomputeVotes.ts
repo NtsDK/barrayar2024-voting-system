@@ -7,11 +7,13 @@ import {
   CountessQuestionRequestTable,
   // CountessesVoteLog,
   CountsVoteLog,
+  MeaningfulVote,
   Vote,
   // VoteComputeResult,
 } from "../voteDefinitions";
 import { computeAffiliatedCountVotes } from "./computeAffiliatedCountVotes";
 import { computeUnaffiliatedCountVotes } from "./computeUnaffiliatedCountVotes";
+import { summarizeVotes } from "./summarizeVotes";
 
 export function canPrecomputeVotes(countsVoteLog: CountsVoteLog) {
   return Object.values(countsVoteLog).every((vote) => vote.vote !== "notFilled");
@@ -21,11 +23,11 @@ export function precomputeVotes(
   countsVoteLog: CountsVoteLog,
   socCapitalValues: Record<CountessActions, number>,
   countessQuestionRequests: CountessQuestionRequestTable[],
-  // countessesVoteLog: CountessQuestionRequest[],
+  masterVote: MeaningfulVote,
 ) {
   assert(canPrecomputeVotes(countsVoteLog), "Есть незаполненные графы");
 
-  const { countsVoteIndex, countsVoteStatus } = computeCountVotes(countsVoteLog);
+  const { countsVoteIndex } = computeCountVotes(countsVoteLog);
 
   // считаем голоса аффилированных графов
   const {
@@ -47,21 +49,31 @@ export function precomputeVotes(
     unaffiliatedCountsVoteLog,
   } = computeUnaffiliatedCountVotes(countsVoteLog, countessQuestionRequests, socCapitalValues, totalUnaffiliatedCounts);
 
-  return {
-    // голосование графов
+  const { summary, voteStatus } = summarizeVotes(
     countsVoteIndex,
-    countsVoteStatus,
+    affiliatedCountsVoteIndex,
+    unaffiliatedCountsVoteIndex,
+    masterVote,
+  );
+
+  return {
+    // суммаризация
+    summary,
+    voteStatus,
+    // голосование графов
+    // countsVoteIndex,
+    // countsVoteStatus,
     // голосование графинь
     countessQuestionRequestsCount: countessQuestionRequests.length,
     // голосование аффилированных графов
-    affiliatedCountsVoteIndex,
+    // affiliatedCountsVoteIndex,
     affiliatedCountsVoteLog,
     affiliatedCountsSocCapitalExpenses,
     // голосование неаффилированных графов
     unaffiliatedCountsByCountesses,
     unaffiliatedCountsByRequestsAbsense,
     totalUnaffiliatedCounts,
-    unaffiliatedCountsVoteIndex,
+    // unaffiliatedCountsVoteIndex,
     unaffiliatedCountsVoteLog,
     unaffiliatedCountsSocCapitalExpenses,
     restUnaffiliatedCounts,
@@ -84,15 +96,7 @@ function computeCountVotes(countsVoteLog: CountsVoteLog) {
     },
   );
 
-  const countsVoteStatus: CountVoteStatus =
-    countsVoteIndex.answer1 === countsVoteIndex.answer2
-      ? "draw"
-      : countsVoteIndex.answer1 > countsVoteIndex.answer2
-      ? "answer1"
-      : "answer2";
-
   return {
     countsVoteIndex,
-    countsVoteStatus,
   };
 }

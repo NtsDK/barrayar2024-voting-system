@@ -1,13 +1,13 @@
 import { assert } from "../utils";
 import {
   UnaffiliatedCount,
-  CountVoteStatus,
   CountessActions,
   CountessQuestionRequest,
   CountessQuestionRequestTable,
   // CountessesVoteLog,
   CountsVoteLog,
   Vote,
+  MeaningfulVote,
   // VoteComputeResult,
 } from "../voteDefinitions";
 
@@ -59,7 +59,7 @@ export function computeUnaffiliatedCountVotes(
   socCapitalValues: Record<CountessActions, number>,
   totalUnaffiliatedCounts: number,
 ) {
-  const unaffiliatedCountsVoteIndex: Record<Exclude<Vote, "notFilled" | "absent">, number> = {
+  const unaffiliatedCountsVoteIndex: Record<MeaningfulVote, number> = {
     answer1: 0,
     answer2: 0,
     abstain: 0,
@@ -123,8 +123,8 @@ export function computeUnaffiliatedCountVotes(
           } else if (restUnaffiliatedCounts === 0) {
             unaffiliatedCountsVoteLog.push(logger("noFreeCounts", voteType));
           } else if (countVote === "answer1" || countVote === "answer2" || countVote === "abstain") {
-            // TODO разобраться с контрголосованием
-            unaffiliatedCountsVoteIndex[countVote === "answer1" ? "answer2" : "answer1"]++;
+            const counterVote = countVote === "answer1" ? "answer2" : countVote === "answer2" ? "answer1" : "abstain";
+            unaffiliatedCountsVoteIndex[counterVote]++;
             addExpense(voteType);
             unaffiliatedCountsVoteLog.push(logger("vote", voteType));
             restUnaffiliatedCounts--;
