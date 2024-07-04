@@ -8,17 +8,9 @@ import {
   CountsVoteLog,
   Vote,
   MeaningfulVote,
+  UnaffiliatedCountVoteLogItem,
   // VoteComputeResult,
 } from "../voteDefinitions";
-
-type UnaffiliatedCountVoteLogItem = {
-  type: "vote" | "absence" | "noFreeCounts";
-  voteType: UnaffiliatedCount;
-  timestamp: Date;
-  house_name: string;
-  socialCapitalChange: number;
-  countVote: Vote;
-};
 
 function makeUnaffiliatedCountLogger(
   countessQuestionRequest: CountessQuestionRequestTable,

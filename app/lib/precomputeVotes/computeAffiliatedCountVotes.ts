@@ -1,6 +1,7 @@
 import { assert } from "../utils";
 import {
   AffiliatedCount,
+  AffiliatedCountVoteLogItem,
   CountessActions,
   CountessQuestionRequest,
   CountessQuestionRequestTable,
@@ -10,15 +11,6 @@ import {
   Vote,
   // VoteComputeResult,
 } from "../voteDefinitions";
-
-type AffiliatedCountVoteLogItem = {
-  type: "vote" | "absence";
-  voteType: AffiliatedCount;
-  timestamp: Date;
-  house_name: string;
-  socialCapitalChange: number;
-  countVote: Vote;
-};
 
 function makeAffiliatedCountLogger(
   countessQuestionRequest: CountessQuestionRequestTable,
@@ -57,7 +49,12 @@ export function computeAffiliatedCountVotes(
   countsVoteLog: CountsVoteLog,
   countessQuestionRequests: CountessQuestionRequestTable[],
   socCapitalValues: Record<CountessActions, number>,
-) {
+): {
+  affiliatedCountsVoteIndex: Record<MeaningfulVote, number>;
+  unaffiliatedCountsByCountesses: number;
+  affiliatedCountsVoteLog: AffiliatedCountVoteLogItem[];
+  affiliatedCountsSocCapitalExpenses: Record<string, { house_name: string; expenses: number }>;
+} {
   const affiliatedCountsVoteIndex: Record<MeaningfulVote, number> = {
     answer1: 0,
     answer2: 0,

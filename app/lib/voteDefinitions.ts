@@ -120,8 +120,52 @@ export const socCapitalValues: Record<CountessActions, number> = {
   unaffiliated_answer2: 40,
 };
 
+/** Элемент подведения итога голосования */
 export type VoteSummaryRow = {
   name: string;
   voteIndex: Record<MeaningfulVote, number>;
   voteStatus?: CountVoteStatus;
+};
+
+/** Информация по учету голоса своего графа */
+export type AffiliatedCountVoteLogItem = {
+  type: "vote" | "absence";
+  voteType: AffiliatedCount;
+  timestamp: Date;
+  house_name: string;
+  socialCapitalChange: number;
+  countVote: Vote;
+};
+
+/** Информация по учету голоса свободного графа */
+export type UnaffiliatedCountVoteLogItem = {
+  type: "vote" | "absence" | "noFreeCounts";
+  voteType: UnaffiliatedCount;
+  timestamp: Date;
+  house_name: string;
+  socialCapitalChange: number;
+  countVote: Vote;
+};
+
+export type PrecomputeVotesResult = {
+  // суммаризация
+  summary: VoteSummaryRow[];
+  voteStatus: CountVoteStatus;
+  // голосование графов
+  // countsVoteIndex,
+  // countsVoteStatus,
+  // голосование графинь
+  countessQuestionRequestsCount: number;
+  // голосование аффилированных графов
+  // affiliatedCountsVoteIndex,
+  affiliatedCountsVoteLog: AffiliatedCountVoteLogItem[];
+  affiliatedCountsSocCapitalExpenses: Record<string, { house_name: string; expenses: number }>;
+  // голосование неаффилированных графов
+  unaffiliatedCountsByCountesses: number;
+  unaffiliatedCountsByRequestsAbsense: number;
+  totalUnaffiliatedCounts: number;
+  // unaffiliatedCountsVoteIndex,
+  unaffiliatedCountsVoteLog: UnaffiliatedCountVoteLogItem[];
+  unaffiliatedCountsSocCapitalExpenses: Record<string, { house_name: string; expenses: number }>;
+  restUnaffiliatedCounts: number;
 };

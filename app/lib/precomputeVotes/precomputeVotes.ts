@@ -1,6 +1,7 @@
 import { assert } from "../utils";
 import {
   AffiliatedCount,
+  AffiliatedCountVoteLogItem,
   CountVoteStatus,
   CountessActions,
   CountessQuestionRequest,
@@ -8,7 +9,11 @@ import {
   // CountessesVoteLog,
   CountsVoteLog,
   MeaningfulVote,
+  PrecomputeVotesResult,
+  UnaffiliatedCount,
+  UnaffiliatedCountVoteLogItem,
   Vote,
+  VoteSummaryRow,
   // VoteComputeResult,
 } from "../voteDefinitions";
 import { computeAffiliatedCountVotes } from "./computeAffiliatedCountVotes";
@@ -24,7 +29,7 @@ export function precomputeVotes(
   socCapitalValues: Record<CountessActions, number>,
   countessQuestionRequests: CountessQuestionRequestTable[],
   masterVote: MeaningfulVote,
-) {
+): PrecomputeVotesResult {
   assert(canPrecomputeVotes(countsVoteLog), "Есть незаполненные графы");
 
   const { countsVoteIndex } = computeCountVotes(countsVoteLog);
