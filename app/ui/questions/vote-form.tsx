@@ -65,11 +65,11 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
 
   const [precomputeState, setPrecomputeState] = useState<PrecomputeVotesResult>();
 
+  const [masterVote, setMasterVote] = useState<MeaningfulVote>("abstain");
+
   useEffect(() => {
     setPrecomputeState(undefined);
-  }, [countsVoteLog]);
-
-  const [masterVote, setMasterVote] = useState<MeaningfulVote>("abstain");
+  }, [countsVoteLog, masterVote]);
 
   const votingEnabled = question.status === "raised";
 
@@ -91,7 +91,23 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
           className="mb-8"
         />
         <div className="mb-8">
-          <div>Голоса графов распределены: {canPrecomputeVotesFlag ? "Да" : "Нет"}</div>
+          <div className="mb-8">Голоса графов распределены: {canPrecomputeVotesFlag ? "Да" : "Нет"}</div>
+          <div className="mb-8">
+            <div className="mb-4">Мастер голос</div>
+            <div className="flex">
+              {(["answer1", "answer2", "abstain"] as const).map((el) => (
+                <Button
+                  type="button"
+                  onClick={() => setMasterVote(el)}
+                  className={clsx("mr-4", {
+                    "opacity-50": masterVote !== el,
+                  })}
+                >
+                  {COUNT_VOTE_REQUEST_I18N[el]}
+                </Button>
+              ))}
+            </div>
+          </div>
           <Button type="button" disabled={!(votingEnabled && canPrecomputeVotesFlag)} onClick={onPrecomputeVotes}>
             Подсчитать голосование графинь
           </Button>

@@ -319,7 +319,7 @@ const countessSessionRequests = [
     question_requests: JSON.stringify({
       [idMapping["question1"]]: {
         affiliatedCounts: ["unaffiliated", "abstain", "forCount"],
-        unaffiliatedCounts: ["unaffiliated", "unaffiliated", "answer1"],
+        unaffiliatedCounts: ["unaffiliated", "answer2", "answer1"],
       },
       [idMapping["question2"]]: {
         affiliatedCounts: ["answer1", "answer1", "forCount"],
