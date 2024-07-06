@@ -1,11 +1,11 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { sql } from "@/db";
-import { SessionQuestion } from "./definitions2";
+import { RawSessionQuestion, SessionQuestion } from "./definitions2";
 
 export async function fetchQuestionById(id: string) {
   noStore();
   try {
-    const data = await sql<SessionQuestion[]>`
+    const data = await sql<RawSessionQuestion[]>`
       SELECT
         session_questions.id,
         session_questions.session_id,
@@ -21,7 +21,7 @@ export async function fetchQuestionById(id: string) {
       WHERE session_questions.id = ${id};
     `;
 
-    return data[0];
+    return rawSessionQuestionToSessionQuestion(data[0]);
   } catch (error) {
     console.error("Database Error:", error);
   }
@@ -32,7 +32,7 @@ export async function fetchCountessRequestQuestions() {
   // const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
-    const data = await sql<SessionQuestion[]>`
+    const data = await sql<RawSessionQuestion[]>`
       SELECT
         session_questions.id,
         session_questions.session_id,
@@ -55,9 +55,24 @@ export async function fetchCountessRequestQuestions() {
       )
       ORDER BY session_questions.question_text;
     `;
-    return data;
+    return data.map((item) => rawSessionQuestionToSessionQuestion(item));
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch sessions.");
   }
+}
+
+function rawSessionQuestionToSessionQuestion(rawSessionQuestion: RawSessionQuestion): SessionQuestion {
+  return {
+    id: rawSessionQuestion.id,
+    session_id: rawSessionQuestion.session_id,
+    type: rawSessionQuestion.type,
+    question_text: rawSessionQuestion.question_text,
+    answer1: rawSessionQuestion.answer1,
+    answer1_advocate_id: rawSessionQuestion.answer1_advocate_id,
+    answer2: rawSessionQuestion.answer2,
+    answer2_advocate_id: rawSessionQuestion.answer2_advocate_id,
+    status: rawSessionQuestion.status,
+    vote_log: JSON.parse(rawSessionQuestion.vote_log),
+  };
 }

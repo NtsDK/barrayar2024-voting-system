@@ -1,19 +1,18 @@
 import { VorHousesTable } from "@/app/lib/definitions2";
-import { Vote, VoteLog } from "@/app/lib/voteDefinitions";
+import { CountsVoteLog, Vote, VoteLog } from "@/app/lib/voteDefinitions";
 
 export const voteList: Vote[] = ["answer1", "answer2", "abstain", "absent"];
 
-export function getDefaultVoteLog(vorHouses: VorHousesTable[]): VoteLog {
-  // const voteLog: VoteLog = { counts: {}, countesses: [] };
-  const voteLog: VoteLog = { counts: {} };
+export function getDefaultCountsVoteLog(vorHouses: VorHousesTable[]): CountsVoteLog {
+  const countsVoteLog: CountsVoteLog = {};
   vorHouses.forEach((el) => {
-    voteLog.counts[el.id] = {
+    countsVoteLog[el.id] = {
       vote: "notFilled",
       familyName: el.family_name,
     };
   });
 
-  return voteLog;
+  return countsVoteLog;
 }
 
 // type VorHouseName = {

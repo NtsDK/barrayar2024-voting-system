@@ -232,7 +232,7 @@ const sessionQuestions = [
     answer2: "Да, с присвоением титула и фамилии графиня Форскакунаева",
     answer2_advocate_id: null,
     status: "raised",
-    voteLog: "",
+    voteLog: "{}",
   },
   {
     id: "question2",
@@ -244,7 +244,7 @@ const sessionQuestions = [
     answer2: "Нет, не разрешить",
     answer2_advocate_id: null,
     status: "raised",
-    voteLog: "",
+    voteLog: "{}",
   },
   {
     id: "question3",
@@ -256,7 +256,7 @@ const sessionQuestions = [
     answer2: "Бобик",
     answer2_advocate_id: null,
     status: "raised",
-    voteLog: "",
+    voteLog: "{}",
   },
 ];
 

@@ -21,7 +21,7 @@ import CommonSelect from "../common/common-select";
 import { QUESTION_TYPE_LIST } from "./questionTypeList";
 import { QUESTION_STATUS_LIST } from "./questionStatusList";
 import { useEffect, useMemo, useState } from "react";
-import { getDefaultVoteLog, voteList } from "./vorHouseList";
+import { getDefaultCountsVoteLog, voteList } from "./vorHouseList";
 import clsx from "clsx";
 import HiddenInput from "../common/hidden-input";
 import {
@@ -52,24 +52,20 @@ type FormProps = {
 };
 
 export default function VoteOnQuestionForm({ question, vorHouses, countessQuestionRequests }: FormProps) {
+  // question.vote_log
   const initialState = { message: null, errors: {} };
   const updateQuestionVoteLognWithId = updateQuestionVoteLog.bind(null, question.id);
   const [state, dispatch] = useFormState(updateQuestionVoteLognWithId, initialState);
   const [countsVoteLog, setCountsVoteLog] = useState<CountsVoteLog>(
-    question.vote_log === ""
-      ? getDefaultVoteLog(vorHouses).counts
-      : // TODO validate vote log
-        JSON.parse(question.vote_log).counts,
+    question.vote_log.counts || getDefaultCountsVoteLog(vorHouses),
   );
   const canPrecomputeVotesFlag = useMemo(() => canPrecomputeVotes(countsVoteLog), [countsVoteLog]);
 
-  const [precomputeState, setPrecomputeState] = useState<PrecomputeVotesResult>();
+  const [precomputeState, setPrecomputeState] = useState<PrecomputeVotesResult | undefined>(
+    question.vote_log.precomputeVotesResult,
+  );
 
-  const [masterVote, setMasterVote] = useState<MeaningfulVote>("abstain");
-
-  useEffect(() => {
-    setPrecomputeState(undefined);
-  }, [countsVoteLog, masterVote]);
+  const [masterVote, setMasterVote] = useState<MeaningfulVote>(precomputeState?.masterVote || "abstain");
 
   const votingEnabled = question.status === "raised";
 
@@ -80,12 +76,18 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
   precomputeState?.socCapitalExpenses;
   return (
     <form action={dispatch}>
-      <HiddenInput name="vote_log" value={JSON.stringify({ counts: countsVoteLog })} />
+      <HiddenInput
+        name="vote_log"
+        value={JSON.stringify({ counts: countsVoteLog, precomputeVotesResult: precomputeState } satisfies VoteLog)}
+      />
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <div className="mb-8">Статус вопроса: {SESSION_QUESTION_STATUS_I18N[question.status]}</div>
         <CountsVoteTable
           countsVoteLog={countsVoteLog}
-          setCountsVoteLog={setCountsVoteLog}
+          setCountsVoteLog={(countsVoteLog: CountsVoteLog) => {
+            setCountsVoteLog(countsVoteLog);
+            setPrecomputeState(undefined);
+          }}
           vorHouses={vorHouses}
           votingEnabled={votingEnabled}
           className="mb-8"
@@ -98,7 +100,10 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
               {(["answer1", "answer2", "abstain"] as const).map((el) => (
                 <Button
                   type="button"
-                  onClick={() => setMasterVote(el)}
+                  onClick={() => {
+                    setMasterVote(el);
+                    setPrecomputeState(undefined);
+                  }}
                   className={clsx("mr-4", {
                     "opacity-50": masterVote !== el,
                   })}

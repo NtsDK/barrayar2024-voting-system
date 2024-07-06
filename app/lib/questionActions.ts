@@ -8,6 +8,7 @@ import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { sql } from "@/db";
 import { SESSIONS_ROUTE } from "@/routes";
+import { VoteLog } from "./voteDefinitions";
 
 const FormSchema = z.object({
   id: z.string(),
@@ -68,16 +69,8 @@ export async function createQuestion(prevState: State, formData: FormData) {
       message: "Пропущены необходимые поля. Ошибка создания вопроса.",
     };
   }
-  const {
-    answer1,
-    answer1_advocate_id,
-    answer2,
-    answer2_advocate_id,
-    question_text,
-    status,
-    type,
-    session_id,
-  } = validatedFields.data;
+  const { answer1, answer1_advocate_id, answer2, answer2_advocate_id, question_text, status, type, session_id } =
+    validatedFields.data;
 
   try {
     await sql`
@@ -103,7 +96,7 @@ export async function createQuestion(prevState: State, formData: FormData) {
         ${answer2},
         ${answer2_advocate_id},
         ${status},
-        ''
+        ${JSON.stringify({} satisfies VoteLog)}
       )
     `;
   } catch (error) {
@@ -115,11 +108,7 @@ export async function createQuestion(prevState: State, formData: FormData) {
   redirect(SESSIONS_ROUTE);
 }
 
-export async function updateQuestion(
-  id: string,
-  prevState: State,
-  formData: FormData
-) {
+export async function updateQuestion(id: string, prevState: State, formData: FormData) {
   const validatedFields = UpdateQuestion.safeParse({
     type: formData.get("type"),
     question_text: formData.get("question_text"),
@@ -139,15 +128,8 @@ export async function updateQuestion(
     };
   }
 
-  const {
-    answer1,
-    answer1_advocate_id,
-    answer2,
-    answer2_advocate_id,
-    question_text,
-    status,
-    type,
-  } = validatedFields.data;
+  const { answer1, answer1_advocate_id, answer2, answer2_advocate_id, question_text, status, type } =
+    validatedFields.data;
 
   // const amountInCents = amount * 100;
 
@@ -172,11 +154,7 @@ export async function updateQuestion(
   redirect(SESSIONS_ROUTE);
 }
 
-export async function updateQuestionVoteLog(
-  id: string,
-  prevState: State,
-  formData: FormData
-) {
+export async function updateQuestionVoteLog(id: string, prevState: State, formData: FormData) {
   const validatedFields = UpdateQuestionVoteLog.safeParse({
     vote_log: formData.get("vote_log"),
   });

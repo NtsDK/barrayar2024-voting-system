@@ -84,6 +84,8 @@ export function precomputeVotes(
     totalUnaffiliatedCounts,
     unaffiliatedCountsVoteLog,
     restUnaffiliatedCounts,
+    // голос мастера
+    masterVote,
   };
 }
 

@@ -1,3 +1,5 @@
+import { VoteLog } from "./voteDefinitions";
+
 // игровой персонаж
 export type Person = {
   id: string;
@@ -33,15 +35,10 @@ export type CouncilSession = {
 };
 
 /** запланировано, подготовка, голосование графинь, голосование графов, завершено */
-export type CouncilSessionStatus =
-  | "planned"
-  | "preparing"
-  | "countessVoting"
-  | "countVoting"
-  | "finished";
+export type CouncilSessionStatus = "planned" | "preparing" | "countessVoting" | "countVoting" | "finished";
 
 // вопросы на голосовании
-export type SessionQuestion = {
+export type RawSessionQuestion = {
   id: string;
   // id заседания
   session_id: string;
@@ -65,15 +62,35 @@ export type SessionQuestion = {
   vote_log: string;
 };
 
+// вопросы на голосовании
+export type SessionQuestion = {
+  id: string;
+  // id заседания
+  session_id: string;
+  // вопрос может быть мастерским (управляется мастерами) или
+  // игроцким (управляется игроками)
+  type: SessionQuestionType;
+  // вопрос на голосовании
+  question_text: string;
+  // ответ 1
+  answer1: string;
+  // адвокат ответа 1
+  answer1_advocate_id: string | null;
+  // ответ 2
+  answer2: string;
+  // адвокат ответа 2
+  answer2_advocate_id: string | null;
+  // итог/статус вопроса
+  // состояние вопроса
+  status: SessionQuestionStatus;
+  // лог голосования
+  vote_log: VoteLog;
+};
+
 export type SessionQuestionType = "master" | "player";
 
 /** поднят, ответ1, ответ2, перенос, вопрос снят */
-export type SessionQuestionStatus =
-  | "raised"
-  | "answer1"
-  | "answer2"
-  | "rescheduling"
-  | "canceled";
+export type SessionQuestionStatus = "raised" | "answer1" | "answer2" | "rescheduling" | "canceled";
 
 // #region производные типы
 

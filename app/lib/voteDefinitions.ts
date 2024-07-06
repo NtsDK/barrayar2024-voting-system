@@ -71,12 +71,11 @@ export type Vote = MeaningfulVote | "notFilled" | "absent";
 
 export type VoteLog = {
   /** Индекс по id фордомов */
-  counts: Record<string, { vote: Vote; familyName: string }>;
-  // countesses: CountessQuestionRequest[];
-  // TODO result
+  counts?: CountsVoteLog;
+  precomputeVotesResult?: PrecomputeVotesResult;
 };
 
-export type CountsVoteLog = VoteLog["counts"];
+export type CountsVoteLog = Record<string, { vote: Vote; familyName: string }>;
 // export type CountessesVoteLog = VoteLog["countesses"];
 
 export type CountessQuestionRequest = {
@@ -169,6 +168,8 @@ export type PrecomputeVotesResult = {
   totalUnaffiliatedCounts: number;
   unaffiliatedCountsVoteLog: UnaffiliatedCountVoteLogItem[];
   restUnaffiliatedCounts: number;
+  // голос мастера
+  masterVote: MeaningfulVote;
 };
 
 /** Информация о суммарном расходе соц капитала графини на вопрос */
