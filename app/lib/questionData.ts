@@ -1,6 +1,8 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { sql } from "@/db";
 import { RawSessionQuestion, SessionQuestion } from "./definitions2";
+import { VoteLog } from "./voteDefinitions";
+import { assertVoteLog } from "./voteValidation";
 
 export async function fetchQuestionById(id: string) {
   noStore();
@@ -63,6 +65,20 @@ export async function fetchCountessRequestQuestions() {
 }
 
 function rawSessionQuestionToSessionQuestion(rawSessionQuestion: RawSessionQuestion): SessionQuestion {
+  let vote_log: VoteLog = {};
+  try {
+    vote_log = JSON.parse(rawSessionQuestion.vote_log, (key, value) => {
+      if (key === "timestamp") {
+        return new Date(value);
+      }
+      return value;
+    });
+    assertVoteLog(vote_log);
+  } catch (err) {
+    console.error("rawSessionQuestionToSessionQuestion", err);
+    vote_log = {};
+  }
+
   return {
     id: rawSessionQuestion.id,
     session_id: rawSessionQuestion.session_id,
@@ -73,6 +89,6 @@ function rawSessionQuestionToSessionQuestion(rawSessionQuestion: RawSessionQuest
     answer2: rawSessionQuestion.answer2,
     answer2_advocate_id: rawSessionQuestion.answer2_advocate_id,
     status: rawSessionQuestion.status,
-    vote_log: JSON.parse(rawSessionQuestion.vote_log),
+    vote_log,
   };
 }

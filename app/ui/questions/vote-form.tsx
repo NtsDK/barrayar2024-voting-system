@@ -99,6 +99,7 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
             <div className="flex">
               {(["answer1", "answer2", "abstain"] as const).map((el) => (
                 <Button
+                  key={el}
                   type="button"
                   onClick={() => {
                     setMasterVote(el);
