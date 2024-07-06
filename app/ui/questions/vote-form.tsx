@@ -5,7 +5,14 @@ import Link from "next/link";
 import { CheckIcon, ClockIcon, CurrencyDollarIcon, UserCircleIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/common/button";
 import { Person, SessionQuestion, SessionQuestionStatus, VorHousesTable } from "@/app/lib/definitions2";
-import { COUNT_VOTE_STATUS_I18N, SESSION_QUESTION_STATUS_I18N, SESSION_QUESTION_TYPE_I18N } from "@/constants";
+import {
+  COUNT_VOTE_REQUEST_I18N,
+  COUNT_VOTE_STATUS_I18N,
+  REQUEST_STATUS_I18N,
+  SESSION_QUESTION_STATUS_I18N,
+  SESSION_QUESTION_TYPE_I18N,
+  VOTE_I18N,
+} from "@/constants";
 import { SESSIONS_ROUTE } from "@/routes";
 import { updateQuestion, updateQuestionVoteLog } from "@/app/lib/questionActions";
 import PersonSelect from "../common/person-select";
@@ -18,12 +25,14 @@ import { getDefaultVoteLog, voteList } from "./vorHouseList";
 import clsx from "clsx";
 import HiddenInput from "../common/hidden-input";
 import {
+  AffiliatedCountVoteLogItem,
   CountVoteStatus,
   CountessQuestionRequestTable,
   CountsVoteLog,
   MeaningfulVote,
   PrecomputeVotesResult,
   SocCapitalExpenseRecord,
+  UnaffiliatedCountVoteLogItem,
   VoteLog,
   VoteSummaryRow,
   socCapitalValues,
@@ -33,6 +42,8 @@ import CountsVoteTable from "./counts-vote-table";
 import precomputeVotes, { canPrecomputeVotes } from "@/app/lib/precomputeVotes";
 import { VotingSummary } from "./voting-summary";
 import { ChangesToApply } from "./changes-to-apply";
+import { CountVoteLogCard } from "./count-vote-log-card";
+import { DetailedVoteLog } from "./detailed-vote-log";
 
 type FormProps = {
   question: SessionQuestion;
@@ -91,10 +102,12 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
             <ChangesToApply
               questionStatus={precomputeState.questionStatus}
               socCapitalExpenses={precomputeState.socCapitalExpenses}
+              className="mb-8"
             />
+            <DetailedVoteLog precomputeState={precomputeState} />
           </>
         )}
-        {/* <pre>{JSON.stringify(precomputeState, null, "  ")}</pre> */}
+        {/* <pre>{JSON.stringify(precomputeState?.affiliatedCountsVoteLog, null, "  ")}</pre> */}
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link

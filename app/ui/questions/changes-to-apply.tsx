@@ -5,12 +5,14 @@ import { SESSION_QUESTION_STATUS_I18N } from "@/constants";
 interface ChangesToApplyProps {
   questionStatus: SessionQuestionStatus;
   socCapitalExpenses: SocCapitalExpenseRecord[];
+  className?: string;
 }
 
-export function ChangesToApply({ questionStatus, socCapitalExpenses }: ChangesToApplyProps) {
+export function ChangesToApply({ questionStatus, socCapitalExpenses, className }: ChangesToApplyProps) {
   return (
-    <div>
+    <div className={className}>
       <div className="mb-4">Новый статус вопроса: {SESSION_QUESTION_STATUS_I18N[questionStatus]}</div>
+      <div className="mb-2 font-semibold">Расходы соц капитала</div>
       <table>
         <thead>
           <tr>

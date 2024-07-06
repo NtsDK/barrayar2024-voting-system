@@ -10,7 +10,7 @@ export default function CheckButton({
 }: {
   onClick: () => void;
   checked: boolean;
-  votingEnabled: boolean;
+  votingEnabled?: boolean;
 }) {
   return (
     <button

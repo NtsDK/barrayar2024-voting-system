@@ -4,6 +4,7 @@ import { voteList } from "./vorHouseList";
 import { CountsVoteLog } from "@/app/lib/voteDefinitions";
 
 import clsx from "clsx";
+import { VOTE_I18N } from "@/constants";
 
 type CountsVoteTableProps = {
   countsVoteLog: CountsVoteLog;
@@ -28,16 +29,16 @@ export default function CountsVoteTable({
             Фамилия
           </th>
           <th scope="col" className="px-3 py-5 font-medium">
-            Ответ 1
+            {VOTE_I18N.answer1}
           </th>
           <th scope="col" className="px-3 py-5 font-medium">
-            Ответ 2
+            {VOTE_I18N.answer2}
           </th>
           <th scope="col" className="px-3 py-5 font-medium">
-            Воздержался
+            {VOTE_I18N.abstain}
           </th>
           <th scope="col" className="px-3 py-5 font-medium">
-            Отсутствует
+            {VOTE_I18N.absent}
           </th>
         </tr>
       </thead>

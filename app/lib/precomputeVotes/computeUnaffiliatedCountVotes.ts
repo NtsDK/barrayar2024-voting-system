@@ -18,13 +18,18 @@ function makeUnaffiliatedCountLogger(
   socCapitalValues: Record<CountessActions, number>,
   countVote: Vote,
 ) {
-  return (type: "vote" | "absence" | "noFreeCounts", voteType: UnaffiliatedCount): UnaffiliatedCountVoteLogItem => ({
+  return (
+    type: "vote" | "absence" | "noFreeCounts",
+    voteType: UnaffiliatedCount,
+    appliedVote?: MeaningfulVote,
+  ): UnaffiliatedCountVoteLogItem => ({
     type,
     timestamp: countessQuestionRequest.timestamp,
     house_name: countessQuestionRequest.house_name,
     voteType,
     socialCapitalChange: type === "vote" ? socCapitalValues[`unaffiliated_${voteType}`] : 0,
     countVote,
+    appliedVote,
   });
 }
 
@@ -78,7 +83,7 @@ export function computeUnaffiliatedCountVotes(
         case "answer1": {
           if (restUnaffiliatedCounts > 0) {
             unaffiliatedCountsVoteIndex.answer1++;
-            unaffiliatedCountsVoteLog.push(logger("vote", voteType));
+            unaffiliatedCountsVoteLog.push(logger("vote", voteType, "answer1"));
             addExpense(voteType);
             restUnaffiliatedCounts--;
           } else {
@@ -89,7 +94,7 @@ export function computeUnaffiliatedCountVotes(
         case "answer2": {
           if (restUnaffiliatedCounts > 0) {
             unaffiliatedCountsVoteIndex.answer2++;
-            unaffiliatedCountsVoteLog.push(logger("vote", voteType));
+            unaffiliatedCountsVoteLog.push(logger("vote", voteType, "answer2"));
             addExpense(voteType);
             restUnaffiliatedCounts--;
           } else {
@@ -105,7 +110,7 @@ export function computeUnaffiliatedCountVotes(
           } else if (countVote === "answer1" || countVote === "answer2" || countVote === "abstain") {
             unaffiliatedCountsVoteIndex[countVote]++;
             addExpense(voteType);
-            unaffiliatedCountsVoteLog.push(logger("vote", voteType));
+            unaffiliatedCountsVoteLog.push(logger("vote", voteType, countVote));
             restUnaffiliatedCounts--;
           }
           break;
@@ -119,7 +124,7 @@ export function computeUnaffiliatedCountVotes(
             const counterVote = countVote === "answer1" ? "answer2" : countVote === "answer2" ? "answer1" : "abstain";
             unaffiliatedCountsVoteIndex[counterVote]++;
             addExpense(voteType);
-            unaffiliatedCountsVoteLog.push(logger("vote", voteType));
+            unaffiliatedCountsVoteLog.push(logger("vote", voteType, countVote));
             restUnaffiliatedCounts--;
           }
 

@@ -18,13 +18,18 @@ function makeAffiliatedCountLogger(
   socCapitalValues: Record<CountessActions, number>,
   countVote: Vote,
 ) {
-  return (type: "vote" | "absence", voteType: AffiliatedCount): AffiliatedCountVoteLogItem => ({
+  return (
+    type: "vote" | "absence",
+    voteType: AffiliatedCount,
+    appliedVote?: MeaningfulVote,
+  ): AffiliatedCountVoteLogItem => ({
     type,
     timestamp: countessQuestionRequest.timestamp,
     house_name: countessQuestionRequest.house_name,
     voteType,
     socialCapitalChange: type === "vote" ? socCapitalValues[`affiliated_${voteType}`] : 0,
     countVote,
+    appliedVote,
   });
 }
 
@@ -81,13 +86,13 @@ export function computeAffiliatedCountVotes(
           break;
         case "answer1": {
           affiliatedCountsVoteIndex.answer1++;
-          affiliatedCountsVoteLog.push(logger("vote", voteType));
+          affiliatedCountsVoteLog.push(logger("vote", voteType, "answer1"));
           addExpense(voteType);
           break;
         }
         case "answer2": {
           affiliatedCountsVoteIndex.answer2++;
-          affiliatedCountsVoteLog.push(logger("vote", voteType));
+          affiliatedCountsVoteLog.push(logger("vote", voteType, "answer2"));
           addExpense(voteType);
           break;
         }
@@ -98,7 +103,7 @@ export function computeAffiliatedCountVotes(
           } else {
             affiliatedCountsVoteIndex.abstain++;
             addExpense(voteType);
-            affiliatedCountsVoteLog.push(logger("vote", voteType));
+            affiliatedCountsVoteLog.push(logger("vote", voteType, "abstain"));
           }
           break;
         }
@@ -109,7 +114,7 @@ export function computeAffiliatedCountVotes(
           } else if (countVote === "answer1" || countVote === "answer2" || countVote === "abstain") {
             affiliatedCountsVoteIndex[countVote]++;
             addExpense(voteType);
-            affiliatedCountsVoteLog.push(logger("vote", voteType));
+            affiliatedCountsVoteLog.push(logger("vote", voteType, countVote));
           }
           break;
         }
@@ -121,7 +126,7 @@ export function computeAffiliatedCountVotes(
             const counterVote = countVote === "answer1" ? "answer2" : countVote === "answer2" ? "answer1" : "abstain";
             affiliatedCountsVoteIndex[counterVote]++;
             addExpense(voteType);
-            affiliatedCountsVoteLog.push(logger("vote", voteType));
+            affiliatedCountsVoteLog.push(logger("vote", voteType, counterVote));
           }
           break;
         }

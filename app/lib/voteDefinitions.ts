@@ -137,6 +137,7 @@ export type AffiliatedCountVoteLogItem = {
   house_name: string;
   socialCapitalChange: number;
   countVote: Vote;
+  appliedVote?: MeaningfulVote;
 };
 
 /** Информация по учету голоса свободного графа */
@@ -147,6 +148,7 @@ export type UnaffiliatedCountVoteLogItem = {
   house_name: string;
   socialCapitalChange: number;
   countVote: Vote;
+  appliedVote?: MeaningfulVote;
 };
 
 // Хранит информацию по расходам соц капитала в одном голосовании. Ключ house_id
