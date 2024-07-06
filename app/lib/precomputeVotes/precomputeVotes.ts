@@ -10,6 +10,8 @@ import {
   CountsVoteLog,
   MeaningfulVote,
   PrecomputeVotesResult,
+  SocCapitalExpenseRecord,
+  SocCapitalExpenses,
   UnaffiliatedCount,
   UnaffiliatedCountVoteLogItem,
   Vote,
@@ -54,35 +56,63 @@ export function precomputeVotes(
     unaffiliatedCountsVoteLog,
   } = computeUnaffiliatedCountVotes(countsVoteLog, countessQuestionRequests, socCapitalValues, totalUnaffiliatedCounts);
 
-  const { summary, voteStatus } = summarizeVotes(
+  const { summary, questionStatus } = summarizeVotes(
     countsVoteIndex,
     affiliatedCountsVoteIndex,
     unaffiliatedCountsVoteIndex,
     masterVote,
   );
 
+  const socCapitalExpenses = calcSocCapitalExpenses(
+    affiliatedCountsSocCapitalExpenses,
+    unaffiliatedCountsSocCapitalExpenses,
+  );
+
   return {
-    // суммаризация
+    // суммаризация итогов голосования
     summary,
-    voteStatus,
-    // голосование графов
-    // countsVoteIndex,
-    // countsVoteStatus,
+    questionStatus,
+    // подсчет расходов по соцкапиталу
+    socCapitalExpenses,
     // голосование графинь
     countessQuestionRequestsCount: countessQuestionRequests.length,
     // голосование аффилированных графов
-    // affiliatedCountsVoteIndex,
     affiliatedCountsVoteLog,
-    affiliatedCountsSocCapitalExpenses,
     // голосование неаффилированных графов
     unaffiliatedCountsByCountesses,
     unaffiliatedCountsByRequestsAbsense,
     totalUnaffiliatedCounts,
-    // unaffiliatedCountsVoteIndex,
     unaffiliatedCountsVoteLog,
-    unaffiliatedCountsSocCapitalExpenses,
     restUnaffiliatedCounts,
   };
+}
+
+function calcSocCapitalExpenses(
+  affiliatedCountsSocCapitalExpenses: SocCapitalExpenses,
+  unaffiliatedCountsSocCapitalExpenses: SocCapitalExpenses,
+): SocCapitalExpenseRecord[] {
+  const expenses: SocCapitalExpenseRecord[] = [];
+
+  const houseIds = new Set<string>([
+    ...Object.keys(affiliatedCountsSocCapitalExpenses),
+    ...Object.keys(unaffiliatedCountsSocCapitalExpenses),
+  ]);
+
+  for (const houseId of Array.from(houseIds)) {
+    const aff = affiliatedCountsSocCapitalExpenses[houseId];
+    const unaff = unaffiliatedCountsSocCapitalExpenses[houseId];
+    expenses.push({
+      house_id: houseId,
+      house_name: aff?.house_name || unaff?.house_name,
+      affiliatedCountsExpenses: aff?.expenses || 0,
+      unaffiliatedCountsExpenses: unaff?.expenses || 0,
+      totalCountsExpenses: (aff?.expenses || 0) + (unaff?.expenses || 0),
+    });
+  }
+
+  expenses.sort((a, b) => a.house_name.localeCompare(b.house_name));
+
+  return expenses;
 }
 
 /** Считает голоса графов */

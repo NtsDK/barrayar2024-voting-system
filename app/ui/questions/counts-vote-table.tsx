@@ -3,11 +3,14 @@ import CheckButton from "../common/check-button";
 import { voteList } from "./vorHouseList";
 import { CountsVoteLog } from "@/app/lib/voteDefinitions";
 
+import clsx from "clsx";
+
 type CountsVoteTableProps = {
   countsVoteLog: CountsVoteLog;
   setCountsVoteLog: (countsVoteLog: CountsVoteLog) => void;
   vorHouses: VorHousesTable[];
   votingEnabled: boolean;
+  className?: string;
 };
 
 export default function CountsVoteTable({
@@ -15,9 +18,10 @@ export default function CountsVoteTable({
   countsVoteLog,
   setCountsVoteLog,
   votingEnabled,
+  className,
 }: CountsVoteTableProps) {
   return (
-    <table className="hidden min-w-full text-gray-900 md:table">
+    <table className={clsx("hidden min-w-full text-gray-900 md:table", className)}>
       <thead className="rounded-lg text-left text-sm font-normal">
         <tr>
           <th scope="col" className="px-4 py-5 font-medium sm:pl-6">

@@ -9,6 +9,7 @@ import {
   Vote,
   MeaningfulVote,
   UnaffiliatedCountVoteLogItem,
+  SocCapitalExpenses,
   // VoteComputeResult,
 } from "../voteDefinitions";
 
@@ -28,7 +29,7 @@ function makeUnaffiliatedCountLogger(
 }
 
 function makeAddExpense(
-  socCapitalExpenses: Record<string, { house_name: string; expenses: number }>,
+  socCapitalExpenses: SocCapitalExpenses,
   countessQuestionRequest: CountessQuestionRequestTable,
   socCapitalValues: Record<CountessActions, number>,
 ) {
@@ -61,7 +62,7 @@ export function computeUnaffiliatedCountVotes(
 
   const unaffiliatedCountsVoteLog: UnaffiliatedCountVoteLogItem[] = [];
 
-  const unaffiliatedCountsSocCapitalExpenses: Record<string, { house_name: string; expenses: number }> = {};
+  const unaffiliatedCountsSocCapitalExpenses: SocCapitalExpenses = {};
 
   countessQuestionRequests.forEach((countessQuestionRequest) => {
     const { unaffiliatedCounts, house_id } = countessQuestionRequest;

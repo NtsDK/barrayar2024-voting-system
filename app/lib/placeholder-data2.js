@@ -45,6 +45,7 @@ const idMapping = {
   princess_beatrice: "6332fa19-c52a-41f0-9f47-a78feb39159e",
 
   countess_request_1: "9aba1f9d-a164-4503-a033-ad8c9a69bde3",
+  countess_request_2: "84ec8afb-f783-4c89-9f13-7fed0671665d",
 };
 
 const persons = [
@@ -292,7 +293,7 @@ const houseMembers = [
 const countessSessionRequests = [
   {
     id: "countess_request_1",
-    house_id: "house_vorbretten",
+    house_id: "house_vorlakial",
     session_id: "session1",
     timestamp: new Date("Aug 21 2024 14:15:16"),
     question_requests: JSON.stringify({
@@ -307,6 +308,26 @@ const countessSessionRequests = [
       [idMapping["question3"]]: {
         affiliatedCounts: ["forCount", "forCount", "forCount"],
         unaffiliatedCounts: ["answer2", "answer2", "answer2"],
+      },
+    }),
+  },
+  {
+    id: "countess_request_2",
+    house_id: "house_vorbretten",
+    session_id: "session1",
+    timestamp: new Date("Aug 21 2024 14:17:16"),
+    question_requests: JSON.stringify({
+      [idMapping["question1"]]: {
+        affiliatedCounts: ["unaffiliated", "abstain", "forCount"],
+        unaffiliatedCounts: ["unaffiliated", "unaffiliated", "answer1"],
+      },
+      [idMapping["question2"]]: {
+        affiliatedCounts: ["answer1", "answer1", "forCount"],
+        unaffiliatedCounts: ["answer1", "answer1", "answer1"],
+      },
+      [idMapping["question3"]]: {
+        affiliatedCounts: ["unaffiliated", "answer1", "forCount"],
+        unaffiliatedCounts: ["unaffiliated", "unaffiliated", "unaffiliated"],
       },
     }),
   },

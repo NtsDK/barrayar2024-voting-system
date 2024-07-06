@@ -1,3 +1,4 @@
+import { SessionQuestionStatus } from "../definitions2";
 import { CountVoteStatus, MeaningfulVote, VoteSummaryRow } from "../voteDefinitions";
 
 export function summarizeVotes(
@@ -5,7 +6,7 @@ export function summarizeVotes(
   affiliatedCountsVoteIndex: Record<MeaningfulVote, number>,
   unaffiliatedCountsVoteIndex: Record<MeaningfulVote, number>,
   masterVote: MeaningfulVote,
-): { summary: VoteSummaryRow[]; voteStatus: CountVoteStatus } {
+): { summary: VoteSummaryRow[]; questionStatus: SessionQuestionStatus } {
   const summary: VoteSummaryRow[] = [];
   summary.push({
     name: "Голоса графов",
@@ -32,7 +33,7 @@ export function summarizeVotes(
   if (totalVoteStatus !== "draw") {
     return {
       summary,
-      voteStatus: totalVoteStatus,
+      questionStatus: totalVoteStatus,
     };
   }
 
@@ -46,7 +47,7 @@ export function summarizeVotes(
   if (countsVoteStatus !== "draw") {
     return {
       summary,
-      voteStatus: countsVoteStatus,
+      questionStatus: countsVoteStatus,
     };
   }
 
@@ -60,9 +61,12 @@ export function summarizeVotes(
     voteStatus: totalVoteStatus2,
   });
 
+  totalVoteStatus2;
+
   return {
     summary,
-    voteStatus: totalVoteStatus2,
+    questionStatus:
+      totalVoteStatus2 === "answer1" || totalVoteStatus2 === "answer2" ? totalVoteStatus2 : "rescheduling",
   };
 }
 

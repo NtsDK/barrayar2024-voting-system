@@ -1,3 +1,5 @@
+import { SessionQuestionStatus } from "./definitions2";
+
 // Заявка графини на голосование в базе
 export type CountessSessionRequest = {
   id: string;
@@ -147,25 +149,31 @@ export type UnaffiliatedCountVoteLogItem = {
   countVote: Vote;
 };
 
+// Хранит информацию по расходам соц капитала в одном голосовании. Ключ house_id
+export type SocCapitalExpenses = Record<string, { house_name: string; expenses: number }>;
+
 export type PrecomputeVotesResult = {
   // суммаризация
   summary: VoteSummaryRow[];
-  voteStatus: CountVoteStatus;
-  // голосование графов
-  // countsVoteIndex,
-  // countsVoteStatus,
+  questionStatus: SessionQuestionStatus;
+  socCapitalExpenses: SocCapitalExpenseRecord[];
   // голосование графинь
   countessQuestionRequestsCount: number;
   // голосование аффилированных графов
-  // affiliatedCountsVoteIndex,
   affiliatedCountsVoteLog: AffiliatedCountVoteLogItem[];
-  affiliatedCountsSocCapitalExpenses: Record<string, { house_name: string; expenses: number }>;
   // голосование неаффилированных графов
   unaffiliatedCountsByCountesses: number;
   unaffiliatedCountsByRequestsAbsense: number;
   totalUnaffiliatedCounts: number;
-  // unaffiliatedCountsVoteIndex,
   unaffiliatedCountsVoteLog: UnaffiliatedCountVoteLogItem[];
-  unaffiliatedCountsSocCapitalExpenses: Record<string, { house_name: string; expenses: number }>;
   restUnaffiliatedCounts: number;
+};
+
+/** Информация о суммарном расходе соц капитала графини на вопрос */
+export type SocCapitalExpenseRecord = {
+  house_id: string;
+  house_name: string;
+  affiliatedCountsExpenses: number;
+  unaffiliatedCountsExpenses: number;
+  totalCountsExpenses: number;
 };
