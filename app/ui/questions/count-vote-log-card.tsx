@@ -29,7 +29,7 @@ export function CountVoteLogCard({
       </div>
       <div className="pl-6">
         {arr.map(([label, text]) => (
-          <div>
+          <div key={label}>
             <span className="w-48 inline-block">{label}</span>
             <span>{text}</span>
           </div>

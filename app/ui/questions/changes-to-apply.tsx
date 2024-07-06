@@ -24,7 +24,7 @@ export function ChangesToApply({ questionStatus, socCapitalExpenses, className }
         </thead>
         <tbody>
           {socCapitalExpenses.map((row) => (
-            <tr>
+            <tr key={row.house_id}>
               <td>{row.house_name}</td>
               <td className="text-right">{row.affiliatedCountsExpenses}</td>
               <td className="text-right">{row.unaffiliatedCountsExpenses}</td>

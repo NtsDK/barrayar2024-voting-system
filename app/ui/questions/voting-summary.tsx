@@ -20,8 +20,8 @@ export function VotingSummary({ summary, className }: VotingSummaryProps) {
           </tr>
         </thead>
         <tbody>
-          {summary.map((row) => (
-            <tr>
+          {summary.map((row, index) => (
+            <tr key={row.name + index}>
               <td>{row.name}</td>
               <td className="text-right">{row.voteIndex.answer1}</td>
               <td className="text-right">{row.voteIndex.answer2}</td>
