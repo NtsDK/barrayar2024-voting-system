@@ -52,16 +52,24 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
   const [precomputeState, setPrecomputeState] = useState<PrecomputeVotesResult>();
   const [masterVote, setMasterVote] = useState<MeaningfulVote>("abstain");
 
+  const votingEnabled = question.status === "raised";
+
   return (
     <form action={dispatch}>
       <HiddenInput name="vote_log" value={JSON.stringify({ counts: countsVoteLog })} />
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
-        <CountsVoteTable countsVoteLog={countsVoteLog} setCountsVoteLog={setCountsVoteLog} vorHouses={vorHouses} />
+        <div>Статус вопроса: {SESSION_QUESTION_STATUS_I18N[question.status]}</div>
+        <CountsVoteTable
+          countsVoteLog={countsVoteLog}
+          setCountsVoteLog={setCountsVoteLog}
+          vorHouses={vorHouses}
+          votingEnabled={votingEnabled}
+        />
         <div>
           <div>Голоса графов распределены: {canPrecomputeVotesFlag ? "Да" : "Нет"}</div>
           <Button
             type="button"
-            disabled={!canPrecomputeVotesFlag}
+            disabled={!(votingEnabled && canPrecomputeVotesFlag)}
             onClick={() =>
               setPrecomputeState(precomputeVotes(countsVoteLog, socCapitalValues, countessQuestionRequests, masterVote))
             }
@@ -82,7 +90,9 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
         >
           Отмена
         </Link>
-        <Button type="submit">Сохранить вопрос</Button>
+        <Button type="submit" disabled={!votingEnabled}>
+          Сохранить вопрос
+        </Button>
       </div>
     </form>
   );

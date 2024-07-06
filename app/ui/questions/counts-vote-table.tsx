@@ -7,12 +7,14 @@ type CountsVoteTableProps = {
   countsVoteLog: CountsVoteLog;
   setCountsVoteLog: (countsVoteLog: CountsVoteLog) => void;
   vorHouses: VorHousesTable[];
+  votingEnabled: boolean;
 };
 
 export default function CountsVoteTable({
   vorHouses,
   countsVoteLog,
   setCountsVoteLog,
+  votingEnabled,
 }: CountsVoteTableProps) {
   return (
     <table className="hidden min-w-full text-gray-900 md:table">
@@ -41,16 +43,12 @@ export default function CountsVoteTable({
             key={vorHouse.id}
             className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
           >
-            <td className="whitespace-nowrap py-3 pl-6 pr-3">
-              {vorHouse.family_name}
-            </td>
+            <td className="whitespace-nowrap py-3 pl-6 pr-3">{vorHouse.family_name}</td>
             {voteList.map((vote) => (
-              <td
-                key={`${vorHouse.id}_${vote}`}
-                className="whitespace-nowrap px-3 py-3"
-              >
+              <td key={`${vorHouse.id}_${vote}`} className="whitespace-nowrap px-3 py-3">
                 <CheckButton
                   checked={countsVoteLog[vorHouse.id].vote === vote}
+                  votingEnabled={votingEnabled}
                   onClick={() =>
                     setCountsVoteLog({
                       ...countsVoteLog,
@@ -67,18 +65,11 @@ export default function CountsVoteTable({
         ))}
         <tr className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg">
           <td className="whitespace-nowrap py-3 pl-6 pr-3">
-            Всего{" "}
-            {vorHouses.length -
-              Object.values(countsVoteLog).filter(
-                (el) => el.vote === "notFilled"
-              ).length}
+            Всего {vorHouses.length - Object.values(countsVoteLog).filter((el) => el.vote === "notFilled").length}
           </td>
           {voteList.map((vote) => (
             <td key={vote} className="whitespace-nowrap px-3 py-3">
-              {
-                Object.values(countsVoteLog).filter((el) => el.vote === vote)
-                  .length
-              }
+              {Object.values(countsVoteLog).filter((el) => el.vote === vote).length}
             </td>
           ))}
         </tr>
