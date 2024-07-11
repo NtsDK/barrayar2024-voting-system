@@ -37,13 +37,13 @@ import {
   VoteSummaryRow,
   socCapitalValues,
 } from "@/app/lib/voteDefinitions";
-import CheckButton from "../common/check-button";
 import CountsVoteTable from "./counts-vote-table";
 import precomputeVotes, { canPrecomputeVotes } from "@/app/lib/precomputeVotes";
 import { VotingSummary } from "./voting-summary";
 import { ChangesToApply } from "./changes-to-apply";
 import { CountVoteLogCard } from "./count-vote-log-card";
 import { DetailedVoteLog } from "./detailed-vote-log";
+import { ErrorPanel } from "../common/error-panel";
 
 type FormProps = {
   question: SessionQuestion;
@@ -81,6 +81,7 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
         value={JSON.stringify({ counts: countsVoteLog, precomputeVotesResult: precomputeState } satisfies VoteLog)}
       />
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
+        <ErrorPanel errors={state.errors} />
         <div className="mb-8">Статус вопроса: {SESSION_QUESTION_STATUS_I18N[question.status]}</div>
         <CountsVoteTable
           countsVoteLog={countsVoteLog}
@@ -138,7 +139,10 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
         >
           Отмена
         </Link>
-        <Button type="submit" disabled={!votingEnabled}>
+        <Button type="submit" disabled={!votingEnabled} name="update_type" value="apply">
+          Применить результаты голосования
+        </Button>
+        <Button type="submit" disabled={!votingEnabled} name="update_type" value="save">
           Сохранить вопрос
         </Button>
       </div>

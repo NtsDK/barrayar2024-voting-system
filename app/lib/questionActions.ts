@@ -9,6 +9,7 @@ import { AuthError } from "next-auth";
 import { sql } from "@/db";
 import { SESSIONS_ROUTE } from "@/routes";
 import { VoteLog } from "./voteDefinitions";
+import { assert } from "./utils";
 
 const FormSchema = z.object({
   id: z.string(),
@@ -21,14 +22,16 @@ const FormSchema = z.object({
   answer2_advocate_id: z.string().min(1),
   status: z.enum(["raised", "answer1", "answer2", "rescheduling", "canceled"]),
   vote_log: z.string(),
+  update_type: z.enum(["save", "apply"]),
 });
 
-const CreateQuestion = FormSchema.omit({ id: true, vote_log: true });
+const CreateQuestion = FormSchema.omit({ id: true, vote_log: true, update_type: true });
 
 const UpdateQuestion = FormSchema.omit({
   id: true,
   session_id: true,
   vote_log: true,
+  update_type: true,
 });
 
 const UpdateQuestionVoteLog = FormSchema.omit({
@@ -155,8 +158,10 @@ export async function updateQuestion(id: string, prevState: State, formData: For
 }
 
 export async function updateQuestionVoteLog(id: string, prevState: State, formData: FormData) {
+  // console.log('formData.get("update_type")', formData.get("update_type"), new Date().toLocaleString());
   const validatedFields = UpdateQuestionVoteLog.safeParse({
     vote_log: formData.get("vote_log"),
+    update_type: formData.get("update_type"),
   });
 
   if (!validatedFields.success) {
@@ -166,15 +171,40 @@ export async function updateQuestionVoteLog(id: string, prevState: State, formDa
     };
   }
 
-  const { vote_log } = validatedFields.data;
+  const { vote_log, update_type } = validatedFields.data;
 
   try {
-    await sql`
-        UPDATE session_questions
-        SET 
-          vote_log = ${vote_log}
-        WHERE id = ${id}
-      `;
+    if (update_type === "save") {
+      await sql`
+          UPDATE session_questions
+          SET 
+            vote_log = ${vote_log}
+          WHERE id = ${id}
+        `;
+    } else {
+      const voteLog: VoteLog = JSON.parse(vote_log);
+      assert(voteLog.precomputeVotesResult);
+      const { questionStatus, socCapitalExpenses } = voteLog.precomputeVotesResult;
+
+      const res = await sql.begin((sql) => [
+        sql`
+          UPDATE session_questions
+            SET 
+              status = ${questionStatus},
+              vote_log = ${vote_log}
+            WHERE id = ${id}
+        `,
+        ...socCapitalExpenses.map(
+          (record) => sql`
+          UPDATE vor_houses
+            SET 
+              social_capital = social_capital - ${record.totalCountsExpenses}
+            WHERE id = ${record.house_id}
+        `,
+        ),
+      ]);
+      // console.log("apply question votes", res);
+    }
   } catch (error) {
     return { message: "Database Error: Failed to Update Question Vote Log." };
   }
