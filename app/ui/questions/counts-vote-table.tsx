@@ -53,7 +53,7 @@ export default function CountsVoteTable({
               <td key={`${vorHouse.id}_${vote}`} className="whitespace-nowrap px-3 py-3">
                 <CheckButton
                   checked={countsVoteLog[vorHouse.id].vote === vote}
-                  votingEnabled={votingEnabled}
+                  disabled={!votingEnabled}
                   onClick={() =>
                     setCountsVoteLog({
                       ...countsVoteLog,
