@@ -82,6 +82,17 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
       />
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <ErrorPanel errors={state.errors} />
+        <div className="mb-8">
+          <div className="mb-4">
+            Вопрос: <span className="italic">{question.question_text}</span>
+          </div>
+          <div className="mb-4">
+            Ответ 1: <span className="italic">{question.answer1}</span>
+          </div>
+          <div>
+            Ответ 2: <span className="italic">{question.answer2}</span>
+          </div>
+        </div>
         <div className="mb-8">Статус вопроса: {SESSION_QUESTION_STATUS_I18N[question.status]}</div>
         <CountsVoteTable
           countsVoteLog={countsVoteLog}

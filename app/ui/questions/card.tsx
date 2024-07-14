@@ -1,16 +1,8 @@
-import {
-  BanknotesIcon,
-  ClockIcon,
-  UserGroupIcon,
-  InboxIcon,
-} from "@heroicons/react/24/outline";
+import { BanknotesIcon, ClockIcon, UserGroupIcon, InboxIcon } from "@heroicons/react/24/outline";
 import { lusitana } from "@/app/ui/fonts";
 import { fetchCardData } from "@/app/lib/data";
 import { SessionQuestionsList } from "@/app/lib/definitions2";
-import {
-  SESSION_QUESTION_STATUS_I18N,
-  SESSION_QUESTION_TYPE_I18N,
-} from "@/constants";
+import { SESSION_QUESTION_STATUS_I18N, SESSION_QUESTION_TYPE_I18N } from "@/constants";
 import clsx from "clsx";
 import { DeleteQuestion, UpdateQuestion, VoteOnQuestion } from "./buttons";
 
@@ -33,19 +25,36 @@ export function Card(props: CardProps) {
   } = props.question;
 
   return (
-    <div className={clsx("m-4", props.className)}>
-      <div>{question_text}</div>
-      <div className="flex justify-end gap-3">
+    <div className={clsx("m-4 flex", props.className)}>
+      <div className="flex-auto">
+        <div className="mb-4">
+          <div className="text-lg">{question_text}</div>
+          <div className="text-gray-600 italic">{SESSION_QUESTION_TYPE_I18N[type]}</div>
+        </div>
+
+        <div className="mb-4">
+          Статус вопроса: <span className="italic">{SESSION_QUESTION_STATUS_I18N[status]}</span>
+        </div>
+
+        <div className="mb-4 ml-8">
+          <div>
+            Ответ 1: <span className="italic">{answer1}</span>
+          </div>
+          {answer1_advocate_name && <div className="ml-8 text-gray-600 italic">{answer1_advocate_name}</div>}
+        </div>
+        <div className="ml-8">
+          <div>
+            Ответ 2: <span className="italic">{answer2}</span>
+          </div>
+          {answer2_advocate_name && <div className="ml-8 text-gray-600 italic">{answer2_advocate_name}</div>}
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-3 flex-grow-0 flex-shrink-0 h-10">
         <VoteOnQuestion id={id} sessionId={session_id} />
         <UpdateQuestion id={id} sessionId={session_id} />
         <DeleteQuestion id={id} />
       </div>
-      <div className="ml-8">{SESSION_QUESTION_TYPE_I18N[type]}</div>
-      <div className="ml-8">{SESSION_QUESTION_STATUS_I18N[status]}</div>
-      <div>{answer1}</div>
-      <div className="ml-8">{answer1_advocate_name}</div>
-      <div>{answer2}</div>
-      <div className="ml-8">{answer2_advocate_name}</div>
     </div>
   );
 }
