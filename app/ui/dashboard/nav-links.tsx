@@ -19,6 +19,7 @@ import {
   VORHOUSES_ROUTE,
   SESSIONS_ROUTE,
   COUNTESS_REQUESTS_ROUTE,
+  SOC_CAP_COSTS_ROUTE,
 } from "@/routes";
 
 // Map of links to display in the side navigation.
@@ -34,8 +35,9 @@ const links = [
   { name: "Персонажи", href: PERSONS_ROUTE, icon: UserIcon },
   { name: "Фор семьи", href: VORHOUSES_ROUTE, icon: UserGroupIcon },
   { name: "Заседания", href: SESSIONS_ROUTE, icon: HandRaisedIcon },
-  { name: "Принцессы", href: PRINCESSES_ROUTE, icon: TrophyIcon },
+  // { name: "Принцессы", href: PRINCESSES_ROUTE, icon: TrophyIcon },
   { name: "Соц. кап.", href: SOC_CAP_ROUTE, icon: ScaleIcon },
+  { name: "Соц. кап. цены", href: SOC_CAP_COSTS_ROUTE, icon: ScaleIcon },
   { name: "Заявки графинь", href: COUNTESS_REQUESTS_ROUTE, icon: EnvelopeIcon },
 ];
 
@@ -53,7 +55,7 @@ export default function NavLinks() {
               "flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3",
               {
                 "bg-sky-100 text-blue-600": pathname === link.href,
-              }
+              },
             )}
           >
             <LinkIcon className="w-6" />

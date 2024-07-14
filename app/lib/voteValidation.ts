@@ -7,6 +7,7 @@ import {
   CountsVoteLog,
   PrecomputeVotesResult,
   QuestionRequests,
+  SocCapCostsSettings,
   SocCapitalExpenseRecord,
   UnaffiliatedCountVoteLogItem,
   VoteLog,
@@ -214,5 +215,54 @@ export function assertVoteLog(vote_log: any) {
     console.error("Parse resource error", vote_log, JSON.stringify(validateVoteLog.errors, null, "  "));
 
     throw new Error("Parse resource error: " + vote_log + ", " + JSON.stringify(validateVoteLog.errors, null, "  "));
+  }
+}
+
+const socCapCostsSettingsSchema: JSONSchemaType<SocCapCostsSettings> = {
+  type: "object",
+  properties: {
+    affiliated_abstain: { type: "number" },
+    affiliated_againstCount: { type: "number" },
+    affiliated_answer1: { type: "number" },
+    affiliated_answer2: { type: "number" },
+    affiliated_forCount: { type: "number" },
+    affiliated_unaffiliated: { type: "number" },
+    unaffiliated_againstCount: { type: "number" },
+    unaffiliated_answer1: { type: "number" },
+    unaffiliated_answer2: { type: "number" },
+    unaffiliated_forCount: { type: "number" },
+    unaffiliated_unaffiliated: { type: "number" },
+  },
+  required: [
+    "affiliated_abstain",
+    "affiliated_againstCount",
+    "affiliated_answer1",
+    "affiliated_answer2",
+    "affiliated_forCount",
+    "affiliated_unaffiliated",
+    "unaffiliated_againstCount",
+    "unaffiliated_answer1",
+    "unaffiliated_answer2",
+    "unaffiliated_forCount",
+    "unaffiliated_unaffiliated",
+  ],
+};
+
+export const validateSocCapCostsSettings = ajv.compile(socCapCostsSettingsSchema);
+
+export function assertSocCapCostsSettings(socCapCostsSettings: any) {
+  if (!validateSocCapCostsSettings(socCapCostsSettings)) {
+    console.error(
+      "Parse resource error",
+      socCapCostsSettings,
+      JSON.stringify(validateSocCapCostsSettings.errors, null, "  "),
+    );
+
+    throw new Error(
+      "Parse resource error: " +
+        socCapCostsSettings +
+        ", " +
+        JSON.stringify(validateSocCapCostsSettings.errors, null, "  "),
+    );
   }
 }

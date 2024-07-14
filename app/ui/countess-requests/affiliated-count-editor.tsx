@@ -1,4 +1,4 @@
-import { AffiliatedCount, socCapitalValues } from "@/app/lib/voteDefinitions";
+import { AffiliatedCount, socCapCostsSettingsDefault } from "@/app/lib/voteDefinitions";
 import CheckButton from "../common/check-button";
 import { Dispatch, SetStateAction } from "react";
 import { COUNT_VOTE_REQUEST_I18N } from "@/constants";
@@ -31,12 +31,16 @@ export default function AffiliatedCountEditor(props: AffiliatedCountEditorProps)
       <tbody>
         <tr>
           <td></td>
-          <td className="text-center border-r-2 border-gray-800">{socCapitalValues.affiliated_unaffiliated}ск</td>
-          <td className="text-center border-r-2 border-gray-800">{socCapitalValues.affiliated_abstain}ск</td>
-          <td className="text-center">{socCapitalValues.affiliated_forCount}ск</td>
-          <td className="text-center border-r-2 border-gray-800">{socCapitalValues.affiliated_againstCount}ск</td>
-          <td className="text-center">{socCapitalValues.affiliated_answer1}ск</td>
-          <td className="text-center">{socCapitalValues.affiliated_answer2}ск</td>
+          <td className="text-center border-r-2 border-gray-800">
+            {socCapCostsSettingsDefault.affiliated_unaffiliated}ск
+          </td>
+          <td className="text-center border-r-2 border-gray-800">{socCapCostsSettingsDefault.affiliated_abstain}ск</td>
+          <td className="text-center">{socCapCostsSettingsDefault.affiliated_forCount}ск</td>
+          <td className="text-center border-r-2 border-gray-800">
+            {socCapCostsSettingsDefault.affiliated_againstCount}ск
+          </td>
+          <td className="text-center">{socCapCostsSettingsDefault.affiliated_answer1}ск</td>
+          <td className="text-center">{socCapCostsSettingsDefault.affiliated_answer2}ск</td>
         </tr>
         {affiliatedCounts.map((el, index) => (
           <tr key={index}>

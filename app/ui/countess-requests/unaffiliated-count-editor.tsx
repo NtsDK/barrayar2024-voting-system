@@ -1,4 +1,4 @@
-import { UnaffiliatedCount, socCapitalValues } from "@/app/lib/voteDefinitions";
+import { UnaffiliatedCount, socCapCostsSettingsDefault } from "@/app/lib/voteDefinitions";
 import CheckButton from "../common/check-button";
 import { Dispatch, SetStateAction } from "react";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
@@ -32,12 +32,16 @@ export default function UnaffiliatedCountEditor(props: UnaffiliatedCountEditorPr
       <tbody>
         <tr>
           <td></td>
-          <td className="text-center border-r-2 border-gray-800">{socCapitalValues.unaffiliated_unaffiliated}ск</td>
+          <td className="text-center border-r-2 border-gray-800">
+            {socCapCostsSettingsDefault.unaffiliated_unaffiliated}ск
+          </td>
           {/* <td className="text-center border-r-2 border-gray-800">5ск</td> */}
-          <td className="text-center">{socCapitalValues.unaffiliated_forCount}ск</td>
-          <td className="text-center border-r-2 border-gray-800">{socCapitalValues.unaffiliated_againstCount}ск</td>
-          <td className="text-center">{socCapitalValues.unaffiliated_answer1}ск</td>
-          <td className="text-center">{socCapitalValues.unaffiliated_answer2}ск</td>
+          <td className="text-center">{socCapCostsSettingsDefault.unaffiliated_forCount}ск</td>
+          <td className="text-center border-r-2 border-gray-800">
+            {socCapCostsSettingsDefault.unaffiliated_againstCount}ск
+          </td>
+          <td className="text-center">{socCapCostsSettingsDefault.unaffiliated_answer1}ск</td>
+          <td className="text-center">{socCapCostsSettingsDefault.unaffiliated_answer2}ск</td>
         </tr>
         {unaffiliatedCounts.map((el, index) => (
           <tr key={index}>

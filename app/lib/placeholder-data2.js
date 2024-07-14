@@ -350,6 +350,23 @@ const countessSessionRequests = [
   },
 ];
 
+const socCapCosts = {
+  id: "socCapCosts",
+  settings: JSON.stringify({
+    affiliated_unaffiliated: 0,
+    affiliated_abstain: 5,
+    affiliated_forCount: 10,
+    affiliated_againstCount: 10,
+    affiliated_answer1: 20,
+    affiliated_answer2: 20,
+    unaffiliated_unaffiliated: 0,
+    unaffiliated_forCount: 20,
+    unaffiliated_againstCount: 20,
+    unaffiliated_answer1: 40,
+    unaffiliated_answer2: 40,
+  }),
+};
+
 module.exports = {
   idMapping,
   persons,
@@ -359,4 +376,5 @@ module.exports = {
   princesses,
   houseMembers,
   countessSessionRequests,
+  socCapCosts,
 };

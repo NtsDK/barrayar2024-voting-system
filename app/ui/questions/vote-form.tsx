@@ -35,7 +35,7 @@ import {
   UnaffiliatedCountVoteLogItem,
   VoteLog,
   VoteSummaryRow,
-  socCapitalValues,
+  socCapCostsSettingsDefault,
 } from "@/app/lib/voteDefinitions";
 import CountsVoteTable from "./counts-vote-table";
 import precomputeVotes, { canPrecomputeVotes } from "@/app/lib/precomputeVotes";
@@ -70,7 +70,9 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
   const votingEnabled = question.status === "raised";
 
   function onPrecomputeVotes() {
-    setPrecomputeState(precomputeVotes(countsVoteLog, socCapitalValues, countessQuestionRequests, masterVote));
+    setPrecomputeState(
+      precomputeVotes(countsVoteLog, socCapCostsSettingsDefault, countessQuestionRequests, masterVote),
+    );
   }
 
   precomputeState?.socCapitalExpenses;

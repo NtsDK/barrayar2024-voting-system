@@ -107,7 +107,7 @@ export type CountVoteStatus = "answer1" | "answer2" | "draw";
 export type CountessActions = `affiliated_${AffiliatedCount}` | `unaffiliated_${UnaffiliatedCount}`;
 
 // TODO переделать в настраиваемую таблицу
-export const socCapitalValues: Record<CountessActions, number> = {
+export const socCapCostsSettingsDefault: Record<CountessActions, number> = {
   affiliated_unaffiliated: 0,
   affiliated_abstain: 5,
   affiliated_forCount: 10,
@@ -119,6 +119,20 @@ export const socCapitalValues: Record<CountessActions, number> = {
   unaffiliated_againstCount: 20,
   unaffiliated_answer1: 40,
   unaffiliated_answer2: 40,
+};
+
+export type SocCapCosts = {
+  id: string;
+  // Цены на соц кап строкой
+  settings: string;
+};
+
+export type SocCapCostsSettings = Record<CountessActions, number>;
+
+export type SocCapCostsTable = {
+  id: string;
+  // Цены на соц кап
+  settings: SocCapCostsSettings;
 };
 
 /** Элемент подведения итога голосования */

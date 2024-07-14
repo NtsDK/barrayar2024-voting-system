@@ -9,6 +9,7 @@ const {
   princesses,
   houseMembers,
   countessSessionRequests,
+  socCapCosts,
 } = require("../app/lib/placeholder-data2.js");
 const bcrypt = require("bcrypt");
 
@@ -23,6 +24,8 @@ const bcrypt = require("bcrypt");
   await client.sql`DROP TABLE IF EXISTS princesses`;
   await client.sql`DROP TABLE IF EXISTS house_members`;
   await client.sql`DROP TABLE IF EXISTS countess_session_requests`;
+  await client.sql`DROP TABLE IF EXISTS soc_cap_costs`;
+  await initUuidOssp(client);
   await seedPersons(client);
   await seedVorHouses(client);
   await seedCouncilSessions(client);
@@ -30,15 +33,24 @@ const bcrypt = require("bcrypt");
   await seedPrincesses(client);
   await seedHouseMembers(client);
   await seedCountessSessionRequests(client);
+  await seedSocCapCosts(client);
 
   await client.end();
 })().catch((err) => {
   console.error("An error occurred while attempting to seed the database:", err);
 });
 
-async function seedPersons(client) {
+async function initUuidOssp(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+  } catch (error) {
+    console.error("Error seeding uuid-ossp extension:", error);
+    throw error;
+  }
+}
+
+async function seedPersons(client) {
+  try {
     // Create the "persons" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS persons (
@@ -76,8 +88,6 @@ async function seedPersons(client) {
 
 async function seedVorHouses(client) {
   try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
     // Create the "vorHouses" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS vor_houses (
@@ -122,8 +132,6 @@ async function seedVorHouses(client) {
 
 async function seedCouncilSessions(client) {
   try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
     // Create the "council_sessions" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS council_sessions (
@@ -166,8 +174,6 @@ async function seedCouncilSessions(client) {
 
 async function seedSessionQuestions(client) {
   try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
     // Create the "session_questions" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS session_questions (
@@ -233,8 +239,6 @@ async function seedSessionQuestions(client) {
 
 async function seedPrincesses(client) {
   try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
     // Create the "session_questions" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS princesses (
@@ -282,8 +286,6 @@ async function seedPrincesses(client) {
 
 async function seedHouseMembers(client) {
   try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
     // Create the "session_questions" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS house_members (
@@ -324,8 +326,6 @@ async function seedHouseMembers(client) {
 
 async function seedCountessSessionRequests(client) {
   try {
-    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
     // Create the "countess_session_requests" table if it doesn't exist
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS countess_session_requests (
@@ -382,6 +382,41 @@ async function seedCountessSessionRequests(client) {
     };
   } catch (error) {
     console.error("Error seeding countess_session_requests:", error);
+    throw error;
+  }
+}
+
+async function seedSocCapCosts(client) {
+  try {
+    // Create the "countess_session_requests" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS soc_cap_costs (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        settings TEXT NOT NULL
+      );
+    `;
+
+    console.log(`Created "soc_cap_costs" table`);
+
+    // Insert data into the "soc_cap_costs" table
+    const insertedSocCapCosts = await client.sql`
+        INSERT INTO soc_cap_costs (
+          id,
+          settings
+        )
+        VALUES (
+          ${idMapping(socCapCosts.id)}, 
+          ${socCapCosts.settings}
+        )
+      `;
+    console.log(`Seeded soc_cap_costs`);
+
+    return {
+      createTable,
+      socCapCosts: insertedSocCapCosts,
+    };
+  } catch (error) {
+    console.error("Error seeding soc_cap_costs:", error);
     throw error;
   }
 }
