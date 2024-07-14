@@ -1,5 +1,5 @@
 // import postgres from 'postgres'
-const postgres = require("postgres")
+const postgres = require("postgres");
 const {
   idMapping,
   persons,
@@ -8,13 +8,13 @@ const {
   councilSessions,
   princesses,
   houseMembers,
-  countessSessionRequests
-} = require('../app/lib/placeholder-data2.js');
-const bcrypt = require('bcrypt');
+  countessSessionRequests,
+} = require("../app/lib/placeholder-data2.js");
+const bcrypt = require("bcrypt");
 
 (async function main() {
-  const sql = postgres()
-  const client = {sql, end: () => sql.end()}
+  const sql = postgres();
+  const client = { sql, end: () => sql.end() };
 
   await client.sql`DROP TABLE IF EXISTS persons`;
   await client.sql`DROP TABLE IF EXISTS vor_houses`;
@@ -33,12 +33,8 @@ const bcrypt = require('bcrypt');
 
   await client.end();
 })().catch((err) => {
-  console.error(
-    'An error occurred while attempting to seed the database:',
-    err,
-  );
+  console.error("An error occurred while attempting to seed the database:", err);
 });
-
 
 async function seedPersons(client) {
   try {
@@ -60,7 +56,7 @@ async function seedPersons(client) {
         // const hashedPassword = await bcrypt.hash(user.password, 10);
         return client.sql`
           INSERT INTO persons (id, name, comment)
-          VALUES (${idMapping[person.id]}, ${person.name}, ${person.comment})
+          VALUES (${idMapping(person.id)}, ${person.name}, ${person.comment})
           ON CONFLICT (id) DO NOTHING;
         `;
       }),
@@ -73,7 +69,7 @@ async function seedPersons(client) {
       persons: insertedPersons,
     };
   } catch (error) {
-    console.error('Error seeding persons:', error);
+    console.error("Error seeding persons:", error);
     throw error;
   }
 }
@@ -101,10 +97,10 @@ async function seedVorHouses(client) {
         (vorHouse) => client.sql`
         INSERT INTO vor_houses (id, family_name, count_id, countess_id, social_capital)
         VALUES (
-          ${idMapping[vorHouse.id]}, 
+          ${idMapping(vorHouse.id)}, 
           ${vorHouse.familyName}, 
-          ${idMapping[vorHouse.count_id] || client.sql`uuid_nil()`}, 
-          ${idMapping[vorHouse.countess_id] || client.sql`uuid_nil()`},
+          ${idMapping(vorHouse.count_id) || client.sql`uuid_nil()`}, 
+          ${idMapping(vorHouse.countess_id) || client.sql`uuid_nil()`},
           ${vorHouse.socialCapital}
         )
         ON CONFLICT (id) DO NOTHING;
@@ -119,7 +115,7 @@ async function seedVorHouses(client) {
       vorHouses: insertedVorHouses,
     };
   } catch (error) {
-    console.error('Error seeding vorHouses:', error);
+    console.error("Error seeding vorHouses:", error);
     throw error;
   }
 }
@@ -146,7 +142,7 @@ async function seedCouncilSessions(client) {
         (councilSession) => client.sql`
           INSERT INTO council_sessions (id, title, date_time, status)
           VALUES (
-            ${idMapping[councilSession.id]}, 
+            ${idMapping(councilSession.id)}, 
             ${councilSession.title},
             ${councilSession.dateTime}, 
             ${councilSession.status}
@@ -163,7 +159,7 @@ async function seedCouncilSessions(client) {
       councilSessions: insertedCouncilSessions,
     };
   } catch (error) {
-    console.error('Error seeding council_sessions:', error);
+    console.error("Error seeding council_sessions:", error);
     throw error;
   }
 }
@@ -207,14 +203,14 @@ async function seedSessionQuestions(client) {
             vote_log
           )
           VALUES (
-            ${idMapping[sessionQuestion.id]}, 
-            ${idMapping[sessionQuestion.session_id]}, 
+            ${idMapping(sessionQuestion.id)}, 
+            ${idMapping(sessionQuestion.session_id)}, 
             ${sessionQuestion.type}, 
             ${sessionQuestion.questionText}, 
             ${sessionQuestion.answer1}, 
-            ${idMapping[sessionQuestion.answer1_advocate_id] || client.sql`uuid_nil()`}, 
+            ${idMapping(sessionQuestion.answer1_advocate_id) || client.sql`uuid_nil()`}, 
             ${sessionQuestion.answer2}, 
-            ${idMapping[sessionQuestion.answer2_advocate_id] || client.sql`uuid_nil()`}, 
+            ${idMapping(sessionQuestion.answer2_advocate_id) || client.sql`uuid_nil()`}, 
             ${sessionQuestion.status}, 
             ${sessionQuestion.voteLog}
           )
@@ -230,7 +226,7 @@ async function seedSessionQuestions(client) {
       sessionQuestions: insertedSessionQuestions,
     };
   } catch (error) {
-    console.error('Error seeding sessionQuestions:', error);
+    console.error("Error seeding sessionQuestions:", error);
     throw error;
   }
 }
@@ -262,7 +258,7 @@ async function seedPrincesses(client) {
             negative_social_capital
           )
           VALUES (
-            ${idMapping[princess.id]}, 
+            ${idMapping(princess.id)}, 
             ${princess.name}, 
             ${princess.positiveSocialCapital}, 
             ${princess.negativeSocialCapital}
@@ -279,7 +275,7 @@ async function seedPrincesses(client) {
       princesses: insertedPrincesses,
     };
   } catch (error) {
-    console.error('Error seeding princesses:', error);
+    console.error("Error seeding princesses:", error);
     throw error;
   }
 }
@@ -307,8 +303,8 @@ async function seedHouseMembers(client) {
             person_id
           )
           VALUES (
-            ${idMapping[houseMember.house_id]}, 
-            ${idMapping[houseMember.person_id]}
+            ${idMapping(houseMember.house_id)}, 
+            ${idMapping(houseMember.person_id)}
           )
         `,
       ),
@@ -321,11 +317,10 @@ async function seedHouseMembers(client) {
       houseMembers: insertedHouseMembers,
     };
   } catch (error) {
-    console.error('Error seeding houseMembers:', error);
+    console.error("Error seeding houseMembers:", error);
     throw error;
   }
 }
-
 
 async function seedCountessSessionRequests(client) {
   try {
@@ -356,9 +351,9 @@ async function seedCountessSessionRequests(client) {
             question_requests
           )
           VALUES (
-            ${idMapping[countessSessionRequest.id]}, 
-            ${idMapping[countessSessionRequest.house_id]}, 
-            ${idMapping[countessSessionRequest.session_id]},
+            ${idMapping(countessSessionRequest.id)}, 
+            ${idMapping(countessSessionRequest.house_id)}, 
+            ${idMapping(countessSessionRequest.session_id)},
             ${countessSessionRequest.timestamp},
             ${countessSessionRequest.question_requests}
           )
@@ -376,7 +371,7 @@ async function seedCountessSessionRequests(client) {
     //     csr.question_requests
     //   FROM countess_session_requests as csr
     // `;
-    
+
     // console.log("old timestamp", countessSessionRequests[0].timestamp, "new timestamp", selectTable[0].timestamp)
 
     console.log(`Seeded ${insertedCountessSessionRequests.length} countessSessionRequests`);
@@ -386,8 +381,7 @@ async function seedCountessSessionRequests(client) {
       countessSessionRequests: insertedCountessSessionRequests,
     };
   } catch (error) {
-    console.error('Error seeding countess_session_requests:', error);
+    console.error("Error seeding countess_session_requests:", error);
     throw error;
   }
 }
-
