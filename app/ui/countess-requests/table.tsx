@@ -13,12 +13,13 @@ export default async function CountessRequestsTable({ query, currentPage }: { qu
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           {countessRequests.map((countessRequest) => (
-            <div key={countessRequest.id} className="flex">
+            <div key={countessRequest.id} className="flex m-6">
               <div className="flex-auto">
-                <div>{countessRequest.house_name}</div>
-                <div>{countessRequest.session_id}</div>
-                <div>{countessRequest.timestamp.toLocaleString()}</div>
-                <pre>{JSON.stringify(countessRequest.question_requests, null, "  ")}</pre>
+                <div className="text-lg">
+                  <span className="mr-8">{countessRequest.session_title}</span> {countessRequest.house_name}
+                </div>
+                <div className="text-gray-600 italic">{countessRequest.timestamp.toLocaleString()}</div>
+                {/* <pre>{JSON.stringify(countessRequest.question_requests, null, "  ")}</pre> */}
               </div>
               <div className="flex-grow-0 flex-shrink-0">
                 <div className="flex justify-end gap-3">
