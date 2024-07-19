@@ -21,7 +21,7 @@ export type VorHouse = {
   social_capital: number;
 };
 
-export type MinimalVorHouse = Pick<VorHouse, "id" | "family_name">;
+export type MinimalVorHouse = Pick<VorHouse, "id" | "family_name" | "social_capital">;
 
 // заседание совета
 export type CouncilSession = {

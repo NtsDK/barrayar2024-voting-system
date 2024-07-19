@@ -20,9 +20,10 @@ import HiddenInput from "../common/hidden-input";
 import CommonSelect from "../common/common-select";
 import CheckboxInput from "../common/checkbox-input";
 import { useState } from "react";
-import { defaultCountessQuestionRequest } from "./utils";
+import { countSocCapCountInfoList, defaultCountessQuestionRequest } from "./utils";
 import CountSection from "./count-section";
 import { assertQuestionRequests } from "@/app/lib/voteValidation";
+import { SocCapMessages } from "./soc-cap-messages";
 
 export default function EditCountessRequestForm({
   countessRequest,
@@ -39,9 +40,14 @@ export default function EditCountessRequestForm({
   const updateCountessRequestWithId = updateCountessRequest.bind(null, countessRequest.id);
   const [state, dispatch] = useFormState(updateCountessRequestWithId, initialState);
   const vorHouses2: MinimalVorHouse[] = [
-    { id: countessRequest.house_id, family_name: countessRequest.house_name },
+    {
+      id: countessRequest.house_id,
+      family_name: countessRequest.house_name,
+      social_capital: countessRequest.house_social_capital,
+    },
     ...vorHouses,
   ];
+  // console.log("vorHouses2", vorHouses2);
   const houseNameIndex = vorHouses2.reduce((acc: Record<string, string>, house) => {
     acc[house.id] = house.family_name;
     return acc;
@@ -74,6 +80,11 @@ export default function EditCountessRequestForm({
     dispatch(payload);
   }
 
+  const [houseId, setHouseId] = useState(vorHouses2[0].id);
+
+  const vorHouseSocCap = vorHouses2.find((el) => el.id === houseId)?.social_capital || 0;
+  const requestSocCap = countSocCapCountInfoList(countInfoList, socCapCostsSettings);
+
   return (
     <form action={dispatchWrapper}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -83,15 +94,19 @@ export default function EditCountessRequestForm({
         <CommonSelect
           id="house_id"
           label="Фор семья"
-          defaultValue={vorHouses2[0].id}
+          // defaultValue={vorHouses2[0].id}
+          value={houseId}
+          onChange={(ev) => setHouseId(ev.target.value)}
           valueList={vorHouses2.map((house) => house.id)}
           i18n={houseNameIndex}
+          className="mb-8"
         />
         <CheckboxInput
           id="should_update_timestamp"
           label="Нужно ли обновить время изменения заявки"
           defaultChecked={true}
           errors={state.errors}
+          className="mb-8"
         />
         <CountSection
           questions={questions}
@@ -101,13 +116,16 @@ export default function EditCountessRequestForm({
         />
       </div>
       <div className="mt-6 flex justify-end gap-4">
+        <SocCapMessages requestSocCap={requestSocCap} vorHouseSocCap={vorHouseSocCap} />
         <Link
           href={COUNTESS_REQUESTS_ROUTE}
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Отмена
         </Link>
-        <Button type="submit">Изменить заявку</Button>
+        <Button type="submit" disabled={vorHouseSocCap < requestSocCap}>
+          Изменить заявку
+        </Button>
       </div>
     </form>
   );

@@ -19,9 +19,10 @@ import {
   SocCapCostsSettings,
   UnaffiliatedCount,
 } from "@/app/lib/voteDefinitions";
-import { defaultCountessQuestionRequest } from "./utils";
+import { countSocCapCountInfoList, defaultCountessQuestionRequest } from "./utils";
 import { assertQuestionRequests, validateQuestionRequests } from "@/app/lib/voteValidation";
 import CountSection from "./count-section";
+import { SocCapMessages } from "./soc-cap-messages";
 
 interface FormProps {
   session: CouncilSession;
@@ -67,6 +68,11 @@ export default function Form(props: FormProps) {
     dispatch(payload);
   }
 
+  const [houseId, setHouseId] = useState(vorHouses[0].id);
+
+  const vorHouseSocCap = vorHouses.find((el) => el.id === houseId)?.social_capital || 0;
+  const requestSocCap = countSocCapCountInfoList(countInfoList, socCapCostsSettings);
+
   return (
     <form action={dispatchWrapper}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -76,9 +82,12 @@ export default function Form(props: FormProps) {
         <CommonSelect
           id="house_id"
           label="Фор семья"
-          defaultValue={vorHouses[0].id}
+          // defaultValue={vorHouses[0].id}
+          value={houseId}
+          onChange={(ev) => setHouseId(ev.target.value)}
           valueList={vorHouses.map((house) => house.id)}
           i18n={houseNameIndex}
+          className="mb-8"
         />
         <CountSection
           questions={questions}
@@ -88,13 +97,16 @@ export default function Form(props: FormProps) {
         />
       </div>
       <div className="mt-6 flex justify-end gap-4">
+        <SocCapMessages requestSocCap={requestSocCap} vorHouseSocCap={vorHouseSocCap} />
         <Link
           href={COUNTESS_REQUESTS_ROUTE}
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Отмена
         </Link>
-        <Button type="submit">Создать заявку</Button>
+        <Button type="submit" disabled={vorHouseSocCap < requestSocCap}>
+          Создать заявку
+        </Button>
       </div>
     </form>
   );

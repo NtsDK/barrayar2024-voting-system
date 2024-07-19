@@ -19,16 +19,16 @@ export default function CountSection({
     <div>
       {questions.map((question, index) => (
         <div key={question.id} className="mb-20">
-          <div className="mb-6">
-            <div className="text-xl mb-6">
+          <div className="mb-10">
+            <div className="text-2xl mb-6">
               Вопрос {index + 1}: {question.question_text}
             </div>
             <div className="mb-6">Ответ 1: {question.answer1}</div>
             <div className="mb-6">Ответ 2: {question.answer2}</div>
           </div>
 
-          <div className="mb-6">
-            <div className="mb-4">Свои графы</div>
+          <div className="mb-10">
+            <div className="mb-4 text-xl">Свои графы</div>
             <AffiliatedCountEditor
               affiliatedCounts={countInfoList[index].affiliatedCounts}
               setAffiliatedCounts={(affiliatedCounts) => {
@@ -43,7 +43,7 @@ export default function CountSection({
             />
           </div>
           <div>
-            <div className="mb-4">
+            <div className="mb-4 text-xl">
               Свободные графы{" "}
               <button
                 type="button"

@@ -9,9 +9,7 @@ import {
 import { MinimalVorHouse, VorHouse } from "./definitions2";
 import { assertQuestionRequests } from "./voteValidation";
 
-export async function fetchCountessRequests(): Promise<
-  CountessSessionRequestTable2[]
-> {
+export async function fetchCountessRequests(): Promise<CountessSessionRequestTable2[]> {
   noStore();
   try {
     const countessRequests = await sql<CountessSessionRequestTable[]>`
@@ -19,6 +17,7 @@ export async function fetchCountessRequests(): Promise<
         csr.id,
         csr.house_id,
         vor_houses.family_name AS house_name,
+        vor_houses.social_capital AS house_social_capital,
         csr.session_id,
         csr.timestamp,
         csr.question_requests
@@ -29,9 +28,7 @@ export async function fetchCountessRequests(): Promise<
         csr.timestamp
     `;
 
-    const list2: CountessSessionRequestTable2[] = countessRequests.map(
-      parseCountessSessionRequest
-    );
+    const list2: CountessSessionRequestTable2[] = countessRequests.map(parseCountessSessionRequest);
 
     return list2;
   } catch (err) {
@@ -40,9 +37,7 @@ export async function fetchCountessRequests(): Promise<
   }
 }
 
-export async function fetchCountessRequestById(
-  id: string
-): Promise<CountessSessionRequestTable2> {
+export async function fetchCountessRequestById(id: string): Promise<CountessSessionRequestTable2> {
   noStore();
   try {
     const countessRequests = await sql<CountessSessionRequestTable[]>`
@@ -50,6 +45,7 @@ export async function fetchCountessRequestById(
         csr.id,
         csr.house_id,
         vor_houses.family_name AS house_name,
+        vor_houses.social_capital AS house_social_capital,
         csr.session_id,
         csr.timestamp,
         csr.question_requests
@@ -66,9 +62,7 @@ export async function fetchCountessRequestById(
   }
 }
 
-export async function fetchCountessRequestsBySessionId(
-  id: string
-): Promise<CountessSessionRequestTable2[]> {
+export async function fetchCountessRequestsBySessionId(id: string): Promise<CountessSessionRequestTable2[]> {
   noStore();
   try {
     const countessRequests = await sql<CountessSessionRequestTable[]>`
@@ -76,6 +70,7 @@ export async function fetchCountessRequestsBySessionId(
         csr.id,
         csr.house_id,
         vor_houses.family_name AS house_name,
+        vor_houses.social_capital AS house_social_capital,
         csr.session_id,
         csr.timestamp,
         csr.question_requests
@@ -94,19 +89,19 @@ export async function fetchCountessRequestsBySessionId(
   }
 }
 
-export async function fetchVorHousesWithoutCountessRequests(): Promise<
-  MinimalVorHouse[]
-> {
+export async function fetchVorHousesWithoutCountessRequests(): Promise<MinimalVorHouse[]> {
   noStore();
   try {
     const minimalVorHouseList = await sql<MinimalVorHouse[]>`
     SELECT
       vor_houses2.id,
-      vor_houses2.family_name
+      vor_houses2.family_name,
+      vor_houses2.social_capital
     FROM (
       SELECT
         vor_houses.id,
         vor_houses.family_name,
+        vor_houses.social_capital,
         used_house_ids.house_id as countess_house_id,
         CASE WHEN used_house_ids.house_id <> uuid_nil()
           THEN TRUE

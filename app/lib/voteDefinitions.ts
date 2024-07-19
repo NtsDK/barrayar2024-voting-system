@@ -20,6 +20,8 @@ export type CountessSessionRequestTable = {
   house_id: string;
   // фамилия фор семьи
   house_name: string;
+  // социальный капитал фор семьи
+  house_social_capital: number;
   // id голосования
   session_id: string;
   // время внесения заявки
@@ -37,6 +39,8 @@ export type CountessSessionRequestTable2 = {
   house_id: string;
   // фамилия фор семьи
   house_name: string;
+  // социальный капитал фор семьи
+  house_social_capital: number;
   // id голосования
   session_id: string;
   // время внесения заявки
