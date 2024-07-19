@@ -11,35 +11,49 @@ import { SOC_CAP_ROUTE } from "@/routes";
 import PersonSelect from "../common/person-select";
 import StringInput from "../common/string-input";
 import { State, addVorHouseMember } from "@/app/lib/vorHouseMemberActions";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CommonSocialCapitalForm from "../common/common-social-capital-form";
 import { AffiliatedCount, SocCapCostsTable, UnaffiliatedCount } from "@/app/lib/voteDefinitions";
 import { COUNT_VOTE_REQUEST_I18N } from "@/constants";
-
-async function updateSocCapCostsTable(id: string, prevState: State, formData: FormData) {
-  return { message: null, errors: {} };
-}
+import { updateSocCapCostsTable } from "@/app/lib/socCapCostsActions";
+import HiddenInput from "../common/hidden-input";
 
 const affiliatedCountTypes: AffiliatedCount[] = [
-  "unaffiliated",
+  // "unaffiliated",
   "abstain",
   "forCount",
   "againstCount",
   "answer1",
   "answer2",
 ];
-const unaffiliatedCountTypes: UnaffiliatedCount[] = ["unaffiliated", "forCount", "againstCount", "answer1", "answer2"];
+const unaffiliatedCountTypes: UnaffiliatedCount[] = [
+  // "unaffiliated",
+  "forCount",
+  "againstCount",
+  "answer1",
+  "answer2",
+];
 
 export default function ChangeSocialCapitalCostsForm({ socCapCostsTable }: { socCapCostsTable: SocCapCostsTable }) {
   const initialState = { message: null, errors: {} };
   const updateSocCapCostsTableWithId = updateSocCapCostsTable.bind(null, socCapCostsTable.id);
   const [state, dispatch] = useFormState(updateSocCapCostsTableWithId, initialState);
 
-  const [originalSettings] = useState(socCapCostsTable.settings);
   const [settings, setSettings] = useState(socCapCostsTable.settings);
 
+  const [saveKey, setSaveKey] = useState(Math.random());
+  const originalSettings = useMemo(() => {
+    return socCapCostsTable.settings;
+  }, [saveKey]);
+
+  function dispatchWrapper(payload: FormData) {
+    setSaveKey(Math.random());
+    dispatch(payload);
+  }
+
   return (
-    <form action={dispatch}>
+    <form action={dispatchWrapper}>
+      <HiddenInput name="settings" value={JSON.stringify(settings)} />
       {/* <pre>{JSON.stringify(socCapCostsTable, null, "  ")}</pre> */}
       <div className="flex">
         <table className="m-4 mr-12">
@@ -86,7 +100,6 @@ export default function ChangeSocialCapitalCostsForm({ socCapCostsTable }: { soc
             {unaffiliatedCountTypes.map((unaffiliatedCountType) => (
               <tr key={unaffiliatedCountType}>
                 <td>{COUNT_VOTE_REQUEST_I18N[unaffiliatedCountType]}</td>
-                {/* <td>{settings[`unaffiliated_${unaffiliatedCountType}`]}</td> */}
                 <td>
                   <input
                     value={settings[`unaffiliated_${unaffiliatedCountType}`]}

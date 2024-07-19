@@ -2,21 +2,12 @@
 
 import { useFormState } from "react-dom";
 import Link from "next/link";
-import {
-  CheckIcon,
-  ClockIcon,
-  CurrencyDollarIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
+import { CheckIcon, ClockIcon, CurrencyDollarIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/common/button";
 import { COUNTESS_REQUESTS_ROUTE } from "@/routes";
 import StringInput from "../common/string-input";
 import { createCountessRequest } from "@/app/lib/countessRequestActions";
-import {
-  CouncilSession,
-  MinimalVorHouse,
-  SessionQuestion,
-} from "@/app/lib/definitions2";
+import { CouncilSession, MinimalVorHouse, SessionQuestion } from "@/app/lib/definitions2";
 import ErrorMessage from "../error-message";
 import CommonSelect from "../common/common-select";
 import HiddenInput from "../common/hidden-input";
@@ -25,39 +16,32 @@ import {
   AffiliatedCount,
   CountessQuestionRequest,
   QuestionRequests,
+  SocCapCostsSettings,
   UnaffiliatedCount,
 } from "@/app/lib/voteDefinitions";
-import CheckButton from "../common/check-button";
-import AffiliatedCountEditor from "./affiliated-count-editor";
-import UnaffiliatedCountEditor from "./unaffiliated-count-editor";
 import { defaultCountessQuestionRequest } from "./utils";
-import {
-  assertQuestionRequests,
-  validateQuestionRequests,
-} from "@/app/lib/voteValidation";
+import { assertQuestionRequests, validateQuestionRequests } from "@/app/lib/voteValidation";
 import CountSection from "./count-section";
 
 interface FormProps {
   session: CouncilSession;
   vorHouses: MinimalVorHouse[];
   questions: SessionQuestion[];
+  socCapCostsSettings: SocCapCostsSettings;
 }
 
 export default function Form(props: FormProps) {
-  const { session, vorHouses, questions } = props;
+  const { session, vorHouses, questions, socCapCostsSettings } = props;
   const initialState = { message: null, errors: {} };
   const [state, dispatch] = useFormState(createCountessRequest, initialState);
   // console.log("state", state);
-  const houseNameIndex = vorHouses.reduce(
-    (acc: Record<string, string>, house) => {
-      acc[house.id] = house.family_name;
-      return acc;
-    },
-    {}
-  );
+  const houseNameIndex = vorHouses.reduce((acc: Record<string, string>, house) => {
+    acc[house.id] = house.family_name;
+    return acc;
+  }, {});
 
   const [countInfoList, setCountInfoList] = useState<CountessQuestionRequest[]>(
-    questions.map(() => defaultCountessQuestionRequest())
+    questions.map(() => defaultCountessQuestionRequest()),
   );
 
   function dispatchWrapper(payload: FormData) {
@@ -78,10 +62,7 @@ export default function Form(props: FormProps) {
     // формально проверка лишняя
     assertQuestionRequests(question_requests);
 
-    payload.append(
-      "question_requests",
-      JSON.stringify(question_requests, null, "  ")
-    );
+    payload.append("question_requests", JSON.stringify(question_requests, null, "  "));
 
     dispatch(payload);
   }
@@ -103,6 +84,7 @@ export default function Form(props: FormProps) {
           questions={questions}
           countInfoList={countInfoList}
           setCountInfoList={setCountInfoList}
+          socCapCostsSettings={socCapCostsSettings}
         />
       </div>
       <div className="mt-6 flex justify-end gap-4">

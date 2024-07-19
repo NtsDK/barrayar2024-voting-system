@@ -1,17 +1,19 @@
 import { SessionQuestion } from "@/app/lib/definitions2";
 import AffiliatedCountEditor from "./affiliated-count-editor";
 import UnaffiliatedCountEditor from "./unaffiliated-count-editor";
-import { CountessQuestionRequest } from "@/app/lib/voteDefinitions";
+import { CountessQuestionRequest, SocCapCostsSettings } from "@/app/lib/voteDefinitions";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 export default function CountSection({
   countInfoList,
   setCountInfoList,
   questions,
+  socCapCostsSettings,
 }: {
   countInfoList: CountessQuestionRequest[];
   setCountInfoList: (infos: CountessQuestionRequest[]) => void;
   questions: SessionQuestion[];
+  socCapCostsSettings: SocCapCostsSettings;
 }) {
   return (
     <div>
@@ -37,6 +39,7 @@ export default function CountSection({
                 };
                 setCountInfoList(copy);
               }}
+              socCapCostsSettings={socCapCostsSettings}
             />
           </div>
           <div>
@@ -49,16 +52,12 @@ export default function CountSection({
                   const copy = [...countInfoList];
                   copy[index] = {
                     ...copy[index],
-                    unaffiliatedCounts: [
-                      ...copy[index].unaffiliatedCounts,
-                      "unaffiliated",
-                    ],
+                    unaffiliatedCounts: [...copy[index].unaffiliatedCounts, "unaffiliated"],
                   };
                   setCountInfoList(copy);
                 }}
               >
-                <PlusIcon className="w-5" />{" "}
-                <span className="sr-only">Добавить графа</span>
+                <PlusIcon className="w-5" /> <span className="sr-only">Добавить графа</span>
               </button>
             </div>
             <UnaffiliatedCountEditor
@@ -71,6 +70,7 @@ export default function CountSection({
                 };
                 setCountInfoList(copy);
               }}
+              socCapCostsSettings={socCapCostsSettings}
             />
           </div>
         </div>

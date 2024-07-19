@@ -4,12 +4,14 @@ import { COUNTESS_REQUESTS_ROUTE } from "@/routes";
 import { fetchCountessRequestSessions } from "@/app/lib/sessionData";
 import { fetchVorHousesWithoutCountessRequests } from "@/app/lib/countessRequestData";
 import { fetchCountessRequestQuestions } from "@/app/lib/questionData";
+import { fetchSocCapCosts } from "@/app/lib/socCapCostsData";
 
 export default async function Page() {
-  const [sessions, vorHouses, questions] = await Promise.all([
+  const [sessions, vorHouses, questions, socCapCostsTable] = await Promise.all([
     fetchCountessRequestSessions(),
     fetchVorHousesWithoutCountessRequests(),
     fetchCountessRequestQuestions(),
+    fetchSocCapCosts(),
   ]);
   return (
     <main>
@@ -23,24 +25,20 @@ export default async function Page() {
           },
         ]}
       />
-      {sessions.length === 1 && vorHouses.length > 0 && (
+      {sessions.length === 1 && vorHouses.length > 0 && socCapCostsTable && (
         <Form
           session={sessions[0]}
           vorHouses={vorHouses}
           questions={questions}
+          socCapCostsSettings={socCapCostsTable.settings}
         />
       )}
-      {sessions.length === 0 && (
-        <div>Сейчас нет открытых голосований графинь</div>
-      )}
+      {sessions.length === 0 && <div>Сейчас нет открытых голосований графинь</div>}
       {vorHouses.length === 0 && <div>Заявки от всех фор домов поданы</div>}
 
       {sessions.length > 1 && (
         <div>
-          <span>
-            Открыто несколько голосований графинь. Должно быть открыто только
-            одно.
-          </span>
+          <span>Открыто несколько голосований графинь. Должно быть открыто только одно.</span>
           <div>
             {sessions.map((session) => (
               <div key={session.id}>

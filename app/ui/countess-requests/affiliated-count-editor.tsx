@@ -1,4 +1,4 @@
-import { AffiliatedCount, socCapCostsSettingsDefault } from "@/app/lib/voteDefinitions";
+import { AffiliatedCount, SocCapCostsSettings } from "@/app/lib/voteDefinitions";
 import CheckButton from "../common/check-button";
 import { Dispatch, SetStateAction } from "react";
 import { COUNT_VOTE_REQUEST_I18N } from "@/constants";
@@ -6,10 +6,11 @@ import { COUNT_VOTE_REQUEST_I18N } from "@/constants";
 interface AffiliatedCountEditorProps {
   affiliatedCounts: AffiliatedCount[];
   setAffiliatedCounts: (counts: AffiliatedCount[]) => void;
+  socCapCostsSettings: SocCapCostsSettings;
 }
 
 export default function AffiliatedCountEditor(props: AffiliatedCountEditorProps) {
-  const { affiliatedCounts, setAffiliatedCounts } = props;
+  const { affiliatedCounts, setAffiliatedCounts, socCapCostsSettings } = props;
   function onAffiliatedChange(index: number, type: AffiliatedCount) {
     const copy = [...affiliatedCounts];
     copy[index] = type;
@@ -31,16 +32,12 @@ export default function AffiliatedCountEditor(props: AffiliatedCountEditorProps)
       <tbody>
         <tr>
           <td></td>
-          <td className="text-center border-r-2 border-gray-800">
-            {socCapCostsSettingsDefault.affiliated_unaffiliated}ск
-          </td>
-          <td className="text-center border-r-2 border-gray-800">{socCapCostsSettingsDefault.affiliated_abstain}ск</td>
-          <td className="text-center">{socCapCostsSettingsDefault.affiliated_forCount}ск</td>
-          <td className="text-center border-r-2 border-gray-800">
-            {socCapCostsSettingsDefault.affiliated_againstCount}ск
-          </td>
-          <td className="text-center">{socCapCostsSettingsDefault.affiliated_answer1}ск</td>
-          <td className="text-center">{socCapCostsSettingsDefault.affiliated_answer2}ск</td>
+          <td className="text-center border-r-2 border-gray-800">{socCapCostsSettings.affiliated_unaffiliated}ск</td>
+          <td className="text-center border-r-2 border-gray-800">{socCapCostsSettings.affiliated_abstain}ск</td>
+          <td className="text-center">{socCapCostsSettings.affiliated_forCount}ск</td>
+          <td className="text-center border-r-2 border-gray-800">{socCapCostsSettings.affiliated_againstCount}ск</td>
+          <td className="text-center">{socCapCostsSettings.affiliated_answer1}ск</td>
+          <td className="text-center">{socCapCostsSettings.affiliated_answer2}ск</td>
         </tr>
         {affiliatedCounts.map((el, index) => (
           <tr key={index}>

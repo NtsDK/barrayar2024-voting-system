@@ -106,7 +106,6 @@ export type CountVoteStatus = "answer1" | "answer2" | "draw";
 
 export type CountessActions = `affiliated_${AffiliatedCount}` | `unaffiliated_${UnaffiliatedCount}`;
 
-// TODO переделать в настраиваемую таблицу
 export const socCapCostsSettingsDefault: Record<CountessActions, number> = {
   affiliated_unaffiliated: 0,
   affiliated_abstain: 5,

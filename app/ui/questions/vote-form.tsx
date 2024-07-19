@@ -31,11 +31,11 @@ import {
   CountsVoteLog,
   MeaningfulVote,
   PrecomputeVotesResult,
+  SocCapCostsSettings,
   SocCapitalExpenseRecord,
   UnaffiliatedCountVoteLogItem,
   VoteLog,
   VoteSummaryRow,
-  socCapCostsSettingsDefault,
 } from "@/app/lib/voteDefinitions";
 import CountsVoteTable from "./counts-vote-table";
 import precomputeVotes, { canPrecomputeVotes } from "@/app/lib/precomputeVotes";
@@ -49,9 +49,15 @@ type FormProps = {
   question: SessionQuestion;
   vorHouses: VorHousesTable[];
   countessQuestionRequests: CountessQuestionRequestTable[];
+  socCapCostsSettings: SocCapCostsSettings;
 };
 
-export default function VoteOnQuestionForm({ question, vorHouses, countessQuestionRequests }: FormProps) {
+export default function VoteOnQuestionForm({
+  question,
+  vorHouses,
+  countessQuestionRequests,
+  socCapCostsSettings,
+}: FormProps) {
   // question.vote_log
   const initialState = { message: null, errors: {} };
   const updateQuestionVoteLognWithId = updateQuestionVoteLog.bind(null, question.id);
@@ -70,9 +76,7 @@ export default function VoteOnQuestionForm({ question, vorHouses, countessQuesti
   const votingEnabled = question.status === "raised";
 
   function onPrecomputeVotes() {
-    setPrecomputeState(
-      precomputeVotes(countsVoteLog, socCapCostsSettingsDefault, countessQuestionRequests, masterVote),
-    );
+    setPrecomputeState(precomputeVotes(countsVoteLog, socCapCostsSettings, countessQuestionRequests, masterVote));
   }
 
   precomputeState?.socCapitalExpenses;

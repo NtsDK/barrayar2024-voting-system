@@ -1,4 +1,4 @@
-import { UnaffiliatedCount, socCapCostsSettingsDefault } from "@/app/lib/voteDefinitions";
+import { SocCapCostsSettings, UnaffiliatedCount } from "@/app/lib/voteDefinitions";
 import CheckButton from "../common/check-button";
 import { Dispatch, SetStateAction } from "react";
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
@@ -7,10 +7,11 @@ import { COUNT_VOTE_REQUEST_I18N } from "@/constants";
 interface UnaffiliatedCountEditorProps {
   unaffiliatedCounts: UnaffiliatedCount[];
   setUnaffiliatedCounts: (counts: UnaffiliatedCount[]) => void;
+  socCapCostsSettings: SocCapCostsSettings;
 }
 
 export default function UnaffiliatedCountEditor(props: UnaffiliatedCountEditorProps) {
-  const { unaffiliatedCounts, setUnaffiliatedCounts } = props;
+  const { unaffiliatedCounts, setUnaffiliatedCounts, socCapCostsSettings } = props;
   function onUnaffiliatedChange(index: number, type: UnaffiliatedCount) {
     const copy = [...unaffiliatedCounts];
     copy[index] = type;
@@ -32,16 +33,12 @@ export default function UnaffiliatedCountEditor(props: UnaffiliatedCountEditorPr
       <tbody>
         <tr>
           <td></td>
-          <td className="text-center border-r-2 border-gray-800">
-            {socCapCostsSettingsDefault.unaffiliated_unaffiliated}ск
-          </td>
+          <td className="text-center border-r-2 border-gray-800">{socCapCostsSettings.unaffiliated_unaffiliated}ск</td>
           {/* <td className="text-center border-r-2 border-gray-800">5ск</td> */}
-          <td className="text-center">{socCapCostsSettingsDefault.unaffiliated_forCount}ск</td>
-          <td className="text-center border-r-2 border-gray-800">
-            {socCapCostsSettingsDefault.unaffiliated_againstCount}ск
-          </td>
-          <td className="text-center">{socCapCostsSettingsDefault.unaffiliated_answer1}ск</td>
-          <td className="text-center">{socCapCostsSettingsDefault.unaffiliated_answer2}ск</td>
+          <td className="text-center">{socCapCostsSettings.unaffiliated_forCount}ск</td>
+          <td className="text-center border-r-2 border-gray-800">{socCapCostsSettings.unaffiliated_againstCount}ск</td>
+          <td className="text-center">{socCapCostsSettings.unaffiliated_answer1}ск</td>
+          <td className="text-center">{socCapCostsSettings.unaffiliated_answer2}ск</td>
         </tr>
         {unaffiliatedCounts.map((el, index) => (
           <tr key={index}>

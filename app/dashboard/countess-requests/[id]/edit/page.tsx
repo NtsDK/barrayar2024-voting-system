@@ -2,22 +2,21 @@ import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import { notFound } from "next/navigation";
 import Form from "@/app/ui/countess-requests/edit-form";
 import { COUNTESS_REQUESTS_ROUTE, PERSONS_ROUTE } from "@/routes";
-import {
-  fetchCountessRequestById,
-  fetchVorHousesWithoutCountessRequests,
-} from "@/app/lib/countessRequestData";
+import { fetchCountessRequestById, fetchVorHousesWithoutCountessRequests } from "@/app/lib/countessRequestData";
 import { fetchCountessRequestQuestions } from "@/app/lib/questionData";
+import { fetchSocCapCosts } from "@/app/lib/socCapCostsData";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
 
-  const [countessRequest, vorHouses, questions] = await Promise.all([
+  const [countessRequest, vorHouses, questions, socCapCostsTable] = await Promise.all([
     fetchCountessRequestById(id),
     fetchVorHousesWithoutCountessRequests(),
     fetchCountessRequestQuestions(),
+    fetchSocCapCosts(),
   ]);
 
-  if (!countessRequest) {
+  if (!countessRequest || !socCapCostsTable) {
     notFound();
   }
   return (
@@ -36,6 +35,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         countessRequest={countessRequest}
         vorHouses={vorHouses}
         questions={questions}
+        socCapCostsSettings={socCapCostsTable.settings}
       />
     </main>
   );

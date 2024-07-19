@@ -1,19 +1,10 @@
 "use client";
 
-import {
-  CheckIcon,
-  ClockIcon,
-  CurrencyDollarIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
+import { CheckIcon, ClockIcon, CurrencyDollarIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Button } from "@/app/ui/common/button";
 import { useFormState } from "react-dom";
-import {
-  MinimalVorHouse,
-  Person,
-  SessionQuestion,
-} from "@/app/lib/definitions2";
+import { MinimalVorHouse, Person, SessionQuestion } from "@/app/lib/definitions2";
 import { updatePerson } from "@/app/lib/personActions";
 import { COUNTESS_REQUESTS_ROUTE, PERSONS_ROUTE } from "@/routes";
 import StringInput from "../common/string-input";
@@ -21,6 +12,7 @@ import {
   CountessQuestionRequest,
   CountessSessionRequestTable2,
   QuestionRequests,
+  SocCapCostsSettings,
 } from "@/app/lib/voteDefinitions";
 import ErrorMessage from "../error-message";
 import { updateCountessRequest } from "@/app/lib/countessRequestActions";
@@ -36,38 +28,27 @@ export default function EditCountessRequestForm({
   countessRequest,
   vorHouses,
   questions,
+  socCapCostsSettings,
 }: {
   countessRequest: CountessSessionRequestTable2;
   vorHouses: MinimalVorHouse[];
   questions: SessionQuestion[];
+  socCapCostsSettings: SocCapCostsSettings;
 }) {
   const initialState = { message: null, errors: {} };
-  const updateCountessRequestWithId = updateCountessRequest.bind(
-    null,
-    countessRequest.id
-  );
-  const [state, dispatch] = useFormState(
-    updateCountessRequestWithId,
-    initialState
-  );
+  const updateCountessRequestWithId = updateCountessRequest.bind(null, countessRequest.id);
+  const [state, dispatch] = useFormState(updateCountessRequestWithId, initialState);
   const vorHouses2: MinimalVorHouse[] = [
     { id: countessRequest.house_id, family_name: countessRequest.house_name },
     ...vorHouses,
   ];
-  const houseNameIndex = vorHouses2.reduce(
-    (acc: Record<string, string>, house) => {
-      acc[house.id] = house.family_name;
-      return acc;
-    },
-    {}
-  );
+  const houseNameIndex = vorHouses2.reduce((acc: Record<string, string>, house) => {
+    acc[house.id] = house.family_name;
+    return acc;
+  }, {});
 
   const [countInfoList, setCountInfoList] = useState<CountessQuestionRequest[]>(
-    questions.map(
-      (q) =>
-        countessRequest.question_requests[q.id] ||
-        defaultCountessQuestionRequest()
-    )
+    questions.map((q) => countessRequest.question_requests[q.id] || defaultCountessQuestionRequest()),
   );
 
   function dispatchWrapper(payload: FormData) {
@@ -88,10 +69,7 @@ export default function EditCountessRequestForm({
     // формально проверка лишняя
     assertQuestionRequests(question_requests);
 
-    payload.append(
-      "question_requests",
-      JSON.stringify(question_requests, null, "  ")
-    );
+    payload.append("question_requests", JSON.stringify(question_requests, null, "  "));
 
     dispatch(payload);
   }
@@ -101,10 +79,7 @@ export default function EditCountessRequestForm({
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <ErrorMessage formState={state} />
         {/* <HiddenInput name="question_requests" value={"{}"} /> */}
-        <HiddenInput
-          name="timestamp"
-          value={countessRequest.timestamp.toISOString()}
-        />
+        <HiddenInput name="timestamp" value={countessRequest.timestamp.toISOString()} />
         <CommonSelect
           id="house_id"
           label="Фор семья"
@@ -122,6 +97,7 @@ export default function EditCountessRequestForm({
           questions={questions}
           countInfoList={countInfoList}
           setCountInfoList={setCountInfoList}
+          socCapCostsSettings={socCapCostsSettings}
         />
       </div>
       <div className="mt-6 flex justify-end gap-4">
