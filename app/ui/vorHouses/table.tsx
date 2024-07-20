@@ -1,19 +1,9 @@
 import { fetchFilteredVorHouses } from "@/app/lib/vorHouseData";
-import {
-  DeleteVorHouse,
-  UpdateVorHouse,
-  UpdateVorHouseMembers,
-} from "./buttons";
+import { DeleteVorHouse, UpdateVorHouse, UpdateVorHouseMembers } from "./buttons";
 import { useState } from "react";
 import SocialCapitalForm from "./social-capital-form";
 
-export default async function VorHousesTable({
-  query,
-  currentPage,
-}: {
-  query: string;
-  currentPage: number;
-}) {
+export default async function VorHousesTable({ query, currentPage }: { query: string; currentPage: number }) {
   const vorHouses = await fetchFilteredVorHouses(query, currentPage);
 
   return (
@@ -51,18 +41,14 @@ export default async function VorHousesTable({
                       <p>{vorHouse.family_name}</p>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {vorHouse.count_name || ""}
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {vorHouse.countess_name || ""}
-                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">{vorHouse.count_name || ""}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{vorHouse.countess_name || ""}</td>
                   <td className="whitespace-nowrap px-3 py-3 flex">
                     <div className="w-12">{vorHouse.social_capital}</div>
-                    <SocialCapitalForm
+                    {/* <SocialCapitalForm
                       id={vorHouse.id}
                       baseNumber={vorHouse.social_capital}
-                    />
+                    /> */}
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">

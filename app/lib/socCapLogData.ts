@@ -26,7 +26,7 @@ export async function fetchSocCapLog(): Promise<SocCapLogItem[] | undefined> {
       FROM 
         soc_cap_log
       ORDER BY
-        soc_cap_log.timestamp;
+        soc_cap_log.timestamp DESC;
     `;
 
     return data;

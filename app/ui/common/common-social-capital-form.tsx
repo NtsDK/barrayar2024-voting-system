@@ -17,7 +17,7 @@ export default function CommonSocialCapitalForm<State>({
   const [value, setValue] = useState("");
   const [state, dispatch] = useFormState<State, FormData>(async function (
     state: State,
-    payload: FormData
+    payload: FormData,
   ): Promise<State> {
     const res = await updateFunction(state, payload);
     setValue("");
@@ -51,9 +51,7 @@ export default function CommonSocialCapitalForm<State>({
         value={value}
         className="ml-4 peer block w-20 rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500"
       />
-      <button className="rounded-md border p-2 hover:bg-gray-100 ml-4">
-        OK
-      </button>
+      <button className="rounded-md border p-2 hover:bg-gray-100 ml-4">OK</button>
     </form>
   );
 }
