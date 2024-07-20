@@ -1,10 +1,6 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { sql } from "@/db";
-import {
-  CouncilSession,
-  CouncilSessionsList,
-  SessionQuestionsList,
-} from "./definitions2";
+import { CouncilSession, CouncilSessionsList, SessionQuestionsList } from "./definitions2";
 
 // const ITEMS_PER_PAGE = 15;
 
@@ -32,10 +28,7 @@ export async function fetchCountessRequestSessions() {
   }
 }
 
-export async function fetchFilteredCouncilSessions(
-  query: string,
-  currentPage: number
-) {
+export async function fetchFilteredCouncilSessions() {
   noStore();
   // const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
@@ -72,32 +65,22 @@ export async function fetchFilteredCouncilSessions(
         session_questions.question_text ASC
     `;
 
-    const [sessions, questions] = await Promise.all([
-      sessionsPromise,
-      questionsPromise,
-    ]);
+    const [sessions, questions] = await Promise.all([sessionsPromise, questionsPromise]);
 
     const sessions2: CouncilSessionsList[] = sessions.map((session) => ({
       ...session,
       questions: [],
     }));
 
-    const sessionsIndex = sessions2.reduce(
-      (acc: Record<string, CouncilSessionsList>, session) => {
-        acc[session.id] = session;
-        return acc;
-      },
-      {}
-    );
+    const sessionsIndex = sessions2.reduce((acc: Record<string, CouncilSessionsList>, session) => {
+      acc[session.id] = session;
+      return acc;
+    }, {});
 
     for (const question of questions) {
       const session = sessionsIndex[question.session_id];
       if (!session) {
-        console.warn(
-          "Не найдено заседание по id",
-          question.session_id,
-          question
-        );
+        console.warn("Не найдено заседание по id", question.session_id, question);
         continue;
       }
       session.questions.push(question);

@@ -6,15 +6,10 @@ type StringInputProps = {
   defaultChecked?: boolean | null;
   errors?: Record<string, string[] | undefined>;
   className?: string;
+  disabled?: boolean | undefined;
 };
 
-export default function CheckboxInput({
-  label,
-  id,
-  defaultChecked,
-  errors,
-  className,
-}: StringInputProps) {
+export default function CheckboxInput({ label, id, defaultChecked, errors, className, disabled }: StringInputProps) {
   return (
     <div className={clsx("mb-4", className)}>
       <label htmlFor={id} className="mb-2 block text-sm font-medium">
@@ -25,6 +20,7 @@ export default function CheckboxInput({
           <input
             id={id}
             name={id}
+            disabled={disabled}
             type="checkbox"
             defaultChecked={defaultChecked !== null ? defaultChecked : false}
             className="peer block w-24 h-8 rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"

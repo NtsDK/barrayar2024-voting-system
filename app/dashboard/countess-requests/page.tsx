@@ -9,6 +9,7 @@ import Table from "@/app/ui/countess-requests/table";
 import { fetchPersonsPages } from "@/app/lib/personData";
 import { CreatePerson } from "@/app/ui/persons/buttons";
 import { CreateCountessRequest } from "@/app/ui/countess-requests/buttons";
+import { fetchCountessRequestSessions } from "@/app/lib/sessionData";
 
 export const metadata: Metadata = {
   title: "Заявки графинь",
@@ -26,6 +27,7 @@ export default async function Page({
   const currentPage = Number(searchParams?.page) || 1;
 
   // const totalPages = await fetchPersonsPages(query);
+  const councilSessions = await fetchCountessRequestSessions();
 
   return (
     <div className="w-full">
@@ -34,7 +36,8 @@ export default async function Page({
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         {/* <Search placeholder="Найти персонажа..." /> */}
-        <CreateCountessRequest />
+
+        {councilSessions.length === 0 ? <span>Нет открытых голосований графинь</span> : <CreateCountessRequest />}
       </div>
       <Suspense key={query + currentPage} fallback={<DefaultSkeleton />}>
         <Table query={query} currentPage={currentPage} />

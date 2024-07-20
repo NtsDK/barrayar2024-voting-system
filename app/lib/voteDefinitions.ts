@@ -24,8 +24,6 @@ export type CountessSessionRequestTable = {
   house_social_capital: number;
   // id голосования
   session_id: string;
-  // название голосования
-  session_title: string;
   // время внесения заявки
   timestamp: Date;
   // строковое представление запроса
@@ -45,8 +43,6 @@ export type CountessSessionRequestTable2 = {
   house_social_capital: number;
   // id голосования
   session_id: string;
-  // название голосования
-  session_title: string;
   // время внесения заявки
   timestamp: Date;
   // заявка графини на все вопросы

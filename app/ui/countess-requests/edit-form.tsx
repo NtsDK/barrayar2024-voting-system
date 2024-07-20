@@ -30,11 +30,13 @@ export default function EditCountessRequestForm({
   vorHouses,
   questions,
   socCapCostsSettings,
+  editable,
 }: {
   countessRequest: CountessSessionRequestTable2;
   vorHouses: MinimalVorHouse[];
   questions: SessionQuestion[];
   socCapCostsSettings: SocCapCostsSettings;
+  editable: boolean;
 }) {
   const initialState = { message: null, errors: {} };
   const updateCountessRequestWithId = updateCountessRequest.bind(null, countessRequest.id);
@@ -100,6 +102,7 @@ export default function EditCountessRequestForm({
           valueList={vorHouses2.map((house) => house.id)}
           i18n={houseNameIndex}
           className="mb-8"
+          disabled={!editable}
         />
         <CheckboxInput
           id="should_update_timestamp"
@@ -107,11 +110,12 @@ export default function EditCountessRequestForm({
           defaultChecked={true}
           errors={state.errors}
           className="mb-8"
+          disabled={!editable}
         />
         <CountSection
           questions={questions}
           countInfoList={countInfoList}
-          setCountInfoList={setCountInfoList}
+          setCountInfoList={editable ? setCountInfoList : () => {}}
           socCapCostsSettings={socCapCostsSettings}
         />
       </div>
@@ -123,7 +127,7 @@ export default function EditCountessRequestForm({
         >
           Отмена
         </Link>
-        <Button type="submit" disabled={vorHouseSocCap < requestSocCap}>
+        <Button type="submit" disabled={vorHouseSocCap < requestSocCap || !editable}>
           Изменить заявку
         </Button>
       </div>

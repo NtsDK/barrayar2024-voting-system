@@ -227,14 +227,14 @@ const councilSessions = [
   {
     id: "session1",
     title: "Первое заседание",
-    dateTime: "22 Августа 12:00",
+    dateTime: "22 августа 12:00",
     status: "countessVoting",
   },
   {
     id: "session2",
     title: "Второе заседание",
-    dateTime: "23 Августа 14:00",
-    status: "planned",
+    dateTime: "23 августа 14:00",
+    status: "finished",
   },
 ];
 
@@ -271,6 +271,18 @@ const sessionQuestions = [
     answer1: "Тузик",
     answer1_advocate_id: null,
     answer2: "Бобик",
+    answer2_advocate_id: null,
+    status: "raised",
+    voteLog: "{}",
+  },
+  {
+    id: "question4",
+    session_id: "session2",
+    type: "player",
+    questionText: "ЗВ или Стар Трек?",
+    answer1: "ЗВ",
+    answer1_advocate_id: null,
+    answer2: "Стар Трек",
     answer2_advocate_id: null,
     status: "raised",
     voteLog: "{}",
@@ -345,6 +357,18 @@ const countessSessionRequests = [
       [idMapping("question3")]: {
         affiliatedCounts: ["unaffiliated", "answer1", "forCount"],
         unaffiliatedCounts: ["unaffiliated", "unaffiliated", "unaffiliated"],
+      },
+    }),
+  },
+  {
+    id: "countess_request_3",
+    house_id: "house_vorratier",
+    session_id: "session2",
+    timestamp: new Date("Aug 21 2024 14:17:16"),
+    question_requests: JSON.stringify({
+      [idMapping("question4")]: {
+        affiliatedCounts: ["unaffiliated", "abstain", "forCount"],
+        unaffiliatedCounts: ["unaffiliated", "answer2", "answer1"],
       },
     }),
   },

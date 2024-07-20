@@ -3,70 +3,65 @@ import { formatDateToLocal, formatCurrency } from "@/app/lib/utils";
 import { fetchFilteredPersons } from "@/app/lib/personData";
 import { fetchCountessRequests } from "@/app/lib/countessRequestData";
 import { DeleteCountessRequest, UpdateCountessRequest } from "./buttons";
-// import { DeletePerson, UpdatePerson } from "./buttons";
+import { CountessSessionRequestTable2 } from "@/app/lib/voteDefinitions";
+import * as R from "ramda";
+import { fetchCountessRequestSessions, fetchFilteredCouncilSessions } from "@/app/lib/sessionData";
+import { CouncilSession } from "@/app/lib/definitions2";
+
+type SessionInfo = {
+  session: CouncilSession;
+  date_time: string;
+  countessRequests: CountessSessionRequestTable2[];
+};
 
 export default async function CountessRequestsTable({ query, currentPage }: { query: string; currentPage: number }) {
-  const countessRequests = await fetchCountessRequests();
+  const [countessRequests, sessions] = await Promise.all([fetchCountessRequests(), fetchFilteredCouncilSessions()]);
+  const sessionIndex = R.indexBy(R.prop("id"), sessions);
+
+  // console.log("sessionIndex", sessionIndex);
+  // console.log("countessRequests", countessRequests);
+
+  const sessionInfoIndex = countessRequests.reduce((acc: Record<string, SessionInfo>, request) => {
+    if (!acc[request.session_id]) {
+      acc[request.session_id] = {
+        session: sessionIndex[request.session_id],
+        date_time: sessionIndex[request.session_id].date_time,
+        countessRequests: [],
+      };
+    }
+    acc[request.session_id].countessRequests.push(request);
+    return acc;
+  }, {});
+
+  const sessionInfos = R.sortBy(R.prop("date_time"), R.values(sessionInfoIndex));
 
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
-          {countessRequests.map((countessRequest) => (
-            <div key={countessRequest.id} className="flex m-6">
-              <div className="flex-auto">
-                <div className="text-lg">
-                  <span className="mr-8">{countessRequest.session_title}</span> {countessRequest.house_name}
+          {sessionInfos.map((sessionInfo) => (
+            <div key={sessionInfo.session.id} className="m-6">
+              <div className="text-lg">{sessionInfo.session.title}</div>
+              {sessionInfo.countessRequests.map((countessRequest) => (
+                <div key={countessRequest.id} className="flex ml-8 my-4">
+                  <div className="flex-auto">
+                    <div className="text-lg">{countessRequest.house_name}</div>
+                    <div className="text-gray-600 italic">{countessRequest.timestamp.toLocaleString()}</div>
+                    {/* <pre>{JSON.stringify(countessRequest.question_requests, null, "  ")}</pre> */}
+                  </div>
+                  <div className="flex-grow-0 flex-shrink-0">
+                    <div className="flex justify-end gap-3">
+                      <UpdateCountessRequest
+                        id={countessRequest.id}
+                        editable={sessionInfo.session.status !== "finished"}
+                      />
+                      <DeleteCountessRequest id={countessRequest.id} />
+                    </div>
+                  </div>
                 </div>
-                <div className="text-gray-600 italic">{countessRequest.timestamp.toLocaleString()}</div>
-                {/* <pre>{JSON.stringify(countessRequest.question_requests, null, "  ")}</pre> */}
-              </div>
-              <div className="flex-grow-0 flex-shrink-0">
-                <div className="flex justify-end gap-3">
-                  <UpdateCountessRequest id={countessRequest.id} />
-                  <DeleteCountessRequest id={countessRequest.id} />
-                </div>
-              </div>
+              ))}
             </div>
           ))}
-          {/* <table className="hidden min-w-full text-gray-900 md:table">
-            <thead className="rounded-lg text-left text-sm font-normal">
-              <tr>
-                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  Имя
-                </th>
-                <th scope="col" className="px-3 py-5 font-medium">
-                  Комент
-                </th>
-                <th scope="col" className="relative py-3 pl-6 pr-3">
-                  <span className="sr-only">Edit</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white">
-              {persons?.map((person) => (
-                <tr
-                  key={person.id}
-                  className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
-                >
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    <div className="flex items-center gap-3">
-                      <p>{person.name}</p>
-                    </div>
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {person.comment}
-                  </td>
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    <div className="flex justify-end gap-3">
-                      <UpdatePerson id={person.id} />
-                      <DeletePerson id={person.id} />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table> */}
         </div>
       </div>
     </div>

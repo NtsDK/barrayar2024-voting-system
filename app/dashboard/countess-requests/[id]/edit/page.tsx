@@ -6,8 +6,17 @@ import { fetchCountessRequestById, fetchVorHousesWithoutCountessRequests } from 
 import { fetchCountessRequestQuestions } from "@/app/lib/questionData";
 import { fetchSocCapCosts } from "@/app/lib/socCapCostsData";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: { id: string };
+  searchParams?: {
+    editable?: string;
+  };
+}) {
   const id = params.id;
+  const editable = searchParams?.editable === "true";
 
   const [countessRequest, vorHouses, questions, socCapCostsTable] = await Promise.all([
     fetchCountessRequestById(id),
@@ -36,6 +45,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         vorHouses={vorHouses}
         questions={questions}
         socCapCostsSettings={socCapCostsTable.settings}
+        editable={editable}
       />
     </main>
   );

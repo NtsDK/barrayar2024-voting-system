@@ -7,7 +7,7 @@ import { Card } from "../questions/card";
 import { CreateQuestion } from "../questions/buttons";
 
 export default async function VorHousesTable({ query, currentPage }: { query: string; currentPage: number }) {
-  const sessions = await fetchFilteredCouncilSessions(query, currentPage);
+  const sessions = await fetchFilteredCouncilSessions();
 
   return (
     <div className="mt-6 flow-root">

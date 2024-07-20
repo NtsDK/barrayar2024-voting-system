@@ -19,14 +19,11 @@ export async function fetchCountessRequests(): Promise<CountessSessionRequestTab
         vor_houses.family_name AS house_name,
         vor_houses.social_capital AS house_social_capital,
         csr.session_id,
-        council_sessions.title AS session_title,
         csr.timestamp,
         csr.question_requests
       FROM countess_session_requests as csr
         INNER JOIN vor_houses ON 
           vor_houses.id = csr.house_id
-        INNER JOIN council_sessions ON 
-          council_sessions.id = csr.session_id
       ORDER BY
         csr.timestamp
     `;
@@ -50,14 +47,11 @@ export async function fetchCountessRequestById(id: string): Promise<CountessSess
         vor_houses.family_name AS house_name,
         vor_houses.social_capital AS house_social_capital,
         csr.session_id,
-        council_sessions.title AS session_title,
         csr.timestamp,
         csr.question_requests
       FROM countess_session_requests as csr
         INNER JOIN vor_houses ON 
           vor_houses.id = csr.house_id
-        INNER JOIN council_sessions ON 
-          council_sessions.id = csr.session_id
       WHERE csr.id = ${id};
     `;
 
@@ -78,14 +72,11 @@ export async function fetchCountessRequestsBySessionId(id: string): Promise<Coun
         vor_houses.family_name AS house_name,
         vor_houses.social_capital AS house_social_capital,
         csr.session_id,
-        council_sessions.title AS session_title,
         csr.timestamp,
         csr.question_requests
       FROM countess_session_requests as csr
         INNER JOIN vor_houses ON 
           vor_houses.id = csr.house_id
-        INNER JOIN council_sessions ON 
-          council_sessions.id = csr.session_id
       WHERE csr.session_id = ${id}
       ORDER BY
         csr.timestamp;
