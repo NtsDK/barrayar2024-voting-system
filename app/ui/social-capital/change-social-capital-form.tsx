@@ -2,22 +2,10 @@
 
 import { useFormState } from "react-dom";
 import Link from "next/link";
-import {
-  CheckIcon,
-  ClockIcon,
-  CurrencyDollarIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
+import { CheckIcon, ClockIcon, CurrencyDollarIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/common/button";
-import {
-  createVorHouse,
-  updateVorHouseSocialCapital,
-} from "@/app/lib/vorHouseActions";
-import {
-  Person,
-  PersonWithVorHouseTable,
-  VorHousesTable,
-} from "@/app/lib/definitions2";
+import { createVorHouse, updateVorHouseSocialCapital } from "@/app/lib/vorHouseActions";
+import { Person, PersonWithVorHouseTable, VorHousesTable } from "@/app/lib/definitions2";
 import { SOC_CAP_ROUTE } from "@/routes";
 import PersonSelect from "../common/person-select";
 import StringInput from "../common/string-input";
@@ -28,24 +16,20 @@ import CommonSocialCapitalForm from "../common/common-social-capital-form";
 export default function ChangeSocialCapitalForm({
   persons,
   vorHouses,
+  className,
 }: {
   persons: PersonWithVorHouseTable[];
   vorHouses: VorHousesTable[];
+  className?: string;
 }) {
   const filteredPersons = persons.filter((person) => person.house_id);
   // house_id всегда будет определен
-  const [houseId, setHouseId] = useState<string>(
-    filteredPersons[0].house_id || ""
-  );
+  const [houseId, setHouseId] = useState<string>(filteredPersons[0].house_id || "");
   const house = vorHouses.find((el) => el.id === houseId);
   const baseNumber = house?.social_capital || 0;
-  const updateVorHouseSocialCapitalWithId = updateVorHouseSocialCapital.bind(
-    null,
-    houseId,
-    SOC_CAP_ROUTE
-  );
+  const updateVorHouseSocialCapitalWithId = updateVorHouseSocialCapital.bind(null, houseId, SOC_CAP_ROUTE);
   return (
-    <div>
+    <div className={className}>
       <div className="flex">
         <select
           id="house_id"
@@ -60,10 +44,7 @@ export default function ChangeSocialCapitalForm({
           ))}
         </select>
 
-        <CommonSocialCapitalForm
-          baseNumber={baseNumber}
-          updateFunction={updateVorHouseSocialCapitalWithId}
-        />
+        <CommonSocialCapitalForm baseNumber={baseNumber} updateFunction={updateVorHouseSocialCapitalWithId} />
       </div>
       <div>{`${house?.family_name}: ${baseNumber}`}</div>
     </div>

@@ -130,6 +130,24 @@ export type SocCapCosts = {
   settings: string;
 };
 
+export type SocCapLogItem = {
+  id: string;
+  // источник соц капа - принцессы, ИВА, ПВ, мастер
+  source: string;
+  // фордом, получивший соцкап
+  house_name: string;
+  // получатель соц капа - дом или человек
+  recipient_name: string;
+  // время внесения соцкапа
+  timestamp: Date;
+  // комментарий
+  comment: string;
+  // количество соц капа
+  amount: number;
+  // сколько стало соцкапа по итогу
+  total: number;
+};
+
 export type SocCapCostsSettings = Record<CountessActions, number>;
 
 export type SocCapCostsTable = {

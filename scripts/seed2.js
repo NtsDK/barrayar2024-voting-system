@@ -25,6 +25,7 @@ const bcrypt = require("bcrypt");
   await client.sql`DROP TABLE IF EXISTS house_members`;
   await client.sql`DROP TABLE IF EXISTS countess_session_requests`;
   await client.sql`DROP TABLE IF EXISTS soc_cap_costs`;
+  await client.sql`DROP TABLE IF EXISTS soc_cap_log`;
   await initUuidOssp(client);
   await seedPersons(client);
   await seedVorHouses(client);
@@ -34,6 +35,7 @@ const bcrypt = require("bcrypt");
   await seedHouseMembers(client);
   await seedCountessSessionRequests(client);
   await seedSocCapCosts(client);
+  await seedSocCapLog(client);
 
   await client.end();
 })().catch((err) => {
@@ -417,6 +419,59 @@ async function seedSocCapCosts(client) {
     };
   } catch (error) {
     console.error("Error seeding soc_cap_costs:", error);
+    throw error;
+  }
+}
+
+async function seedSocCapLog(client) {
+  try {
+    // Create the "countess_session_requests" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS soc_cap_log (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        source VARCHAR(255) NOT NULL,
+        house_name VARCHAR(255) NOT NULL,
+        recipient_name VARCHAR(255) NOT NULL,
+        timestamp TIMESTAMPTZ NOT NULL,
+        comment TEXT NOT NULL,
+        amount INT NOT NULL,
+        total INT NOT NULL
+      );
+    `;
+
+    console.log(`Created "soc_cap_log" table`);
+
+    // Insert data into the "soc_cap_costs" table
+    const insertedSocCapLogs = await client.sql`
+        INSERT INTO soc_cap_log (
+          id,
+          source,
+          house_name,
+          recipient_name,
+          timestamp,
+          comment,
+          amount,
+          total
+        )
+        VALUES (
+          ${idMapping("socCapLog")},
+          'мастер',
+          'house_name',
+          'recipient_name',
+          ${new Date()},
+          'comment',
+          20,
+          50
+        )
+      `;
+    console.log(`Seeded soc_cap_log`);
+
+    return {
+      createTable,
+      socCapCosts: insertedSocCapLogs,
+    };
+  } catch (error) {
+    console.error("Error seeding soc_cap_log:", error);
     throw error;
   }
 }
