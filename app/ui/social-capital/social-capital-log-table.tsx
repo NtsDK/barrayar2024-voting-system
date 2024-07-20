@@ -8,7 +8,7 @@ interface SocialCapitalLogTableProps {
 export function SocialCapitalLogTable({ socCapLog, className }: SocialCapitalLogTableProps) {
   return (
     <div className={className}>
-      <table>
+      <table className="w-full">
         <thead>
           <tr>
             <th className="text-left p-2">Время</th>

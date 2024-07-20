@@ -10,7 +10,7 @@ import {
 } from "./voteDefinitions";
 import { assertSocCapCostsSettings } from "./voteValidation";
 
-export async function fetchSocCapLog(): Promise<SocCapLogItem[] | undefined> {
+export async function fetchSocCapLog(query: string): Promise<SocCapLogItem[] | undefined> {
   noStore();
   try {
     const data = await sql<SocCapLogItem[]>`
@@ -25,6 +25,11 @@ export async function fetchSocCapLog(): Promise<SocCapLogItem[] | undefined> {
         soc_cap_log.total
       FROM 
         soc_cap_log
+      WHERE
+        soc_cap_log.source ILIKE ${`%${query}%`} OR
+        soc_cap_log.house_name ILIKE ${`%${query}%`} OR
+        soc_cap_log.recipient_name ILIKE ${`%${query}%`} OR
+        soc_cap_log.comment ILIKE ${`%${query}%`}
       ORDER BY
         soc_cap_log.timestamp DESC;
     `;
