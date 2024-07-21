@@ -66,11 +66,11 @@ async function seedPersons(client) {
 
     // Insert data into the "persons" table
     const insertedPersons = await Promise.all(
-      persons.map(async (person) => {
+      persons.map(async ([id, name, comment]) => {
         // const hashedPassword = await bcrypt.hash(user.password, 10);
         return client.sql`
           INSERT INTO persons (id, name, comment)
-          VALUES (${idMapping(person.id)}, ${person.name}, ${person.comment})
+          VALUES (${idMapping(id)}, ${name}, ${comment || ""})
           ON CONFLICT (id) DO NOTHING;
         `;
       }),

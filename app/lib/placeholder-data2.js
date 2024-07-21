@@ -17,153 +17,145 @@ const idMapping = (function () {
   };
 })();
 
-// const idMapping = {
-//   vorbarra_urii: "6e61eb0b-868b-400e-941d-0a6e68103b98",
-
-//   vorbretten_alan: "d16c9446-7139-4cfd-9767-8e2fc76e9d86",
-//   vorbretten_eliza: "d91e64d2-aaa5-4b5f-abdf-d8906cf17cae",
-//   vorbretten_filipp: "e9edd7c5-a313-4b90-bbe0-387fe12dc97d",
-//   vorbretten_rene: "33bdb7e3-ade2-4477-841a-826dbc2e790a",
-//   vorbretten_estella: "700aa18f-dc0c-4da2-8f07-3c2778edeba2",
-
-//   vordarian_isaak: "44c3b402-1989-442a-8944-7c1f9145a19b",
-//   vordarian_luis: "6227f47c-4bfb-43ed-ae48-f7d825591ed9",
-//   vordarian_ustinia: "97000d24-bfe2-46ea-bd76-73ab5a1dc897",
-
-//   vorvolinkin_arsenii: "1ede04a4-0b02-4df6-8fa3-4fb49230b2e2",
-//   vorvolinkin_esenia: "b1d17eaf-2dac-414c-a8e5-b52916c7151f",
-//   vorvolinkin_olga: "7fb5bfd4-919e-401d-aa53-d228ccd58a0b",
-//   vorvolinkin_filat: "4c989391-b98a-48bb-8efe-fa794e2403a5",
-
-//   house_vorbarra: "bc8518bc-b8a5-4b21-b74c-4045fe67a7ba",
-//   house_vorbretten: "50f1246a-65aa-4f8a-a9b5-018dcff1d58c",
-//   house_vorvolinkin: "586c3352-022c-462b-9ad0-91e37c221bbc",
-//   house_vordarian: "7a0a29a2-d2b3-40c3-8ace-5d48186bf145",
-//   house_vorkosigan: "f1e027e8-0079-4513-ba44-734775285625",
-//   house_vorlakial: "c5fc12b8-0ccb-493b-ab26-0cd2111d42a2",
-//   house_vormuir: "c9665462-ec4d-4e51-8807-0d16473776cd",
-//   house_vorrobio: "c1551982-2ada-4243-917b-a545b5d13f90",
-//   house_vorpatril: "69c274da-e0b0-490b-b633-a4ffd4d8b636",
-//   house_vorpinski: "24bf5326-edf9-42f9-84ee-83c3f604be90",
-//   house_vorratier: "a071052f-02df-4866-9e13-b485ce5100b5",
-//   house_vorsmit: "c0125cc4-d61c-41a2-a3d7-abd6a2243a4f",
-//   house_vortala: "7bd647d1-b52d-43cd-97f1-ee2498b009de",
-//   house_vortein: "b1174bc7-499e-4f1a-ae19-8ce2771b0525",
-//   house_vorhalas: "ad63730a-7d42-4e81-af9d-e8dafe066916",
-//   house_vorhovic: "bef65095-2944-4e7c-b6ba-10fed5259a00",
-
-//   session1: "4535a18c-279d-49e9-b3b0-f856a4e2ddc4",
-//   session2: "9d0037b7-e9ed-433b-b888-74edb46b6210",
-
-//   question1: "dc6004a1-669f-46c1-af1d-3e45b6212037",
-//   question2: "2a6003c5-94c8-4d25-b7c0-8a589f569e92",
-//   question3: "0ab6524e-6949-4b93-9621-38658c33865e",
-//   princess_margaret: "a5433d0d-13c6-4d27-a379-93b4058c6bf4",
-//   princess_beatrice: "6332fa19-c52a-41f0-9f47-a78feb39159e",
-
-//   countess_request_1: "9aba1f9d-a164-4503-a033-ad8c9a69bde3",
-//   countess_request_2: "84ec8afb-f783-4c89-9f13-7fed0671665d",
-// };
-
 const persons = [
-  {
-    id: "vorbarra_urii",
-    name: "Юрий Форбарра",
-    comment: "",
-  },
-
-  {
-    id: "vorbretten_alan",
-    name: "Алан Форбреттен",
-    comment: "",
-  },
-  {
-    id: "vorbretten_eliza",
-    name: "Элиза Форбреттен",
-    comment: "",
-  },
-  {
-    id: "vorbretten_filipp",
-    name: "Филипп Форбреттен",
-    comment: "",
-  },
-  {
-    id: "vorbretten_rene",
-    name: "Рене Форбреттен",
-    comment: "",
-  },
-  {
-    id: "vorbretten_estella",
-    name: "Эстелла Форбреттен",
-    comment: "",
-  },
-
-  {
-    id: "vordarian_isaak",
-    name: "Айзек Фордариан",
-    comment: "",
-  },
-  {
-    id: "vordarian_luis",
-    name: "Луи Фордариан",
-    comment: "",
-  },
-  {
-    id: "vordarian_ustinia",
-    name: "Юстиния Фордариан",
-    comment: "",
-  },
-
-  {
-    id: "vorvolinkin_arsenii",
-    name: "Арсений Форволынкин",
-    comment: "",
-  },
-  {
-    id: "vorvolinkin_esenia",
-    name: "Есения Форволынкина",
-    comment: "",
-  },
-  {
-    id: "vorvolinkin_olga",
-    name: "Ольга Форволынкина",
-    comment: "",
-  },
-  {
-    id: "vorvolinkin_filat",
-    name: "Филат Форволынкин",
-    comment: "",
-  },
+  // Форбарра
+  ["vorbarra_urii_emperor", "Юрий Форбарра", "император Барраяра"],
+  ["vorbarra_margareta_princess", "Маргарета Форбарра", "принцесса, сестра Юрия Форбарры"],
+  ["vorbarra_ksav_prince", "Ксав Форбарра", "принц, сын Дорки Справедливого"],
+  ["vorbarra_beatrice_princess", "Беатрис Форбарра", "принцесса, жена Ксава Форбарра, бетанка"],
+  ["vorbarra_edward", "Эдвард Форбарра", "лорд, сын Ксава Форбарра"],
+  ["vorbarra_tyler_security_service", "Тайлер Форбарра", "фор, СБ"],
+  ["vorbarra_kostas_security_service", "Костас Форбарра", "фор, СБ"],
+  ["vorbarra_lorelin", "Лорелин Форгир", "родственница императора Юрия Форбарры"],
+  // Форбреттен
+  ["vorbretten_alan_count", "Алан Форбреттен", "граф"],
+  ["vorbretten_eliza_countess", "Элиза Форбреттен", "графиня, жена Алана Форбреттена"],
+  ["vorbretten_filipp", "Филипп Форбреттен", "старший сын графа Форбреттена, наследник"],
+  ["vorbretten_rene_iva", "Рене Форбреттен", "младший сын графа Форбреттена, ИВА"],
+  ["vorbretten_estella", "Эстелла Форбреттен", "дочь графа Форбреттена"],
+  // Форволынкин
+  ["vorvolinkin_arsenii_count", "Арсений Форволынкин", "граф"],
+  ["vorvolinkin_esenia_countess", "Есения Форволынкина", "графиня, жена графа Форволынкина"],
+  ["vorvolinkin_olga", "Ольга Форволынкина", "сестра графа Форволынкина"],
+  ["vorvolinkin_filat", "Филат Форволынкин", "лорд, брат графа Форволынкина"],
+  // Фордариан
+  ["vordarian_isaak_count", "Айзек Фордариан", "граф"],
+  ["vordarian_ustinia_countess", "Юстиния Фордариан", "графиня, жена графа Фордариана, урожд. Форбарра"],
+  ["vordarian_luis", "Луи Фордариан", "фор, генерал генштаба"],
+  // Форкосиган
+  ["vorkosigan_peter_count", "Петер Форкосиган", "граф"],
+  ["vorkosigan_olivia_countess", "Оливия Форкосиган", "графиня, жена Форкосигана, урожд. Форбарра"],
+  ["vorkosigan_vadim_iva", "Вадим Форкосиган", "старший сын графа Форкосигана, наследник, ИВА"],
+  ["vorkosigan_rebecca", "Ребекка Форкосиган", "дочь графа Форкосигана"],
+  // Формюир
+  ["vormuir_andre_count", "Андрэ Формюир", "граф"],
+  ["vormuir_diana_countess", "Диана Формюир", "вдовствующая графиня Формюир. урожд. Форлакиал"],
+  ["vormuir_elai", "Элай Формюир", "младший брат графа Формюира, наследник, Политвоспитание"],
+  ["vormuir_brian_iva", "Бриан Формюир", "младший брат графа Формюира, ИВА"],
+  ["vormuir_kermit_iva", "Кермит Форлакиал", "воспитанник графа Формюира, ИВА"],
+  // Форобио
+  ["vorrobio_victor_count", "Виктор Форобио", "граф"],
+  ["vorrobio_elen_countess", "Элен Форобио", "графиня, жена графа Форобио"],
+  ["vorrobio_raul_iva", "Рауль Форобио", "сын графа Форобио, наследник, ИВА"],
+  ["vorrobio_gabril", "Габрил Форобио", "младший брат графа Форобио, Политвоспитание"],
+  ["vorrobio_amelia", "Амелия Форобио", "дочь графа Форобио"],
+  // Форпатрил
+  ["vorpatril_falco_count", "Фалько Форпатрил", "граф"],
+  ["vorpatril_chloe_countess", "Хлоя Форпатрил", "графиня, жена графа Форпатрила"],
+  ["vorpatril_frederik_iva", "Фредерик Форпатрил", "старший сын графа Форпатрила, наследник, ИВА"],
+  ["vorpatril_george_iva", "Джордж Форпатрил", "младший сын графа Форпатрила, ИВА"],
+  ["vorpatril_ivan", "Айвен Форпатрил", "родственник графа Форпатрила по боковой линии"],
+  ["vorpatril_sonya", "Соня Форпатрил", "жена Айвена Форпатрила, урожд. Форбарра"],
+  // Форпински
+  ["vorpinski_grigorii_count", "Григорий Форпински", "граф"],
+  ["vorpinski_sofia_countess", "София Форпински", "графиня, жена графа Форпински"],
+  ["vorpinski_vladislav_iva", "Владислав Форпински", "сын графа Форпински от первого брака, наследник, ИВА"],
+  ["vorpinski_stanislav", "Станислав Форпински", "брат графа Форпински"],
+  // Форратьер
+  ["vorratier_michael_count", "Мишель Форратьер", "граф"],
+  ["vorratier_irin", "Айрин Форратьер", "дочь графа Форратьера"],
+  ["vorratier_pier", "Пьер Форратьер", "старший сын графа Форратьера, наследник"],
+  ["vorratier_dono", "Доно Форратьер", "младший сын графа Форратьера"],
+  ["vorratier_michael_2_iva", "Мишель Форратьер", "внук графа Форратьера, ИВА"],
+  ["vorratier_selin", "Селин Форратьер", "дочь Доно Форратьера"],
+  // Форсмит
+  ["vorsmit_james_count", "Джеймс Форсмит", "граф"],
+  ["vorsmit_eleonora_countess", "Элеонора Форсмит", "графиня, жена Форсмита"],
+  ["vorsmit_dar", "Дар Форсмит", "старший сын графа Форсмита, наследник"],
+  ["vorsmit_deired_iva", "Дейред Форсмит", "младший сын графа Форсмита, ИВА"],
+  // Фортала
+  ["vortala_ervin_count", "Эрвин Фортала", "граф"],
+  ["vortala_victoria_countess", "Виктория Форлакиал", "вдовствующая графиня Фортала, сестра графа"],
+  ["vortala_odri", "Одри Фортала", "старшая дочь графа Фортала"],
+  ["vortala_ekaterina", "Екатерина Фортала", "средняя дочь графа Фортала"],
+  ["vortala_pavla", "Павла Фортала", "младшая дочь графа Фортала"],
+  ["vortala_evelin", "Эвелин Форлакиал", "воспитанница графини Фортала"],
+  // Фортейн
+  ["vortein_nataniel_count", "Натаниэль Фортейн", "граф"],
+  ["vortein_ember_countess", "Эмбер Фортейн", "графиня Фортейн"],
+  // Форхалас
+  ["vorhalas_ivon_count", "Ивон Форхалас", "граф"],
+  ["vorhalas_alice_countess", "Элис Форхалас", "графиня Форхалас"],
+  ["vorhalas_ralf_iva", "Ральф Форхалас", "младший сын графа Форхаласа от первого брака, ИВА"],
+  // Форховиц
+  ["vorhowitz_alex_count", "Алекс Форховиц", "граф"],
+  ["vorhowitz_daria_countess", "Дарья Форховиц", "графиня Форховиц"],
+  ["vorhowitz_andrei", "Андрей Форховиц", "племянник графа Форховица, генерал генштаба"],
+  // семьи форов
+  // Форгорофф
+  ["vorgoroff_lars", "Ларс Форгорофф", "начальник ИВА"],
+  ["vorgoroff_kristina", "Кристина Форкерес", "сестра начальника ИВА, вдова"],
+  ["vorgoroff_andreas_iva", "Андреас Форгорофф", "сын начальника ИВА, ИВА"],
+  ["vorgoroff_emil", "Эмиль Форгорофф", "брат начальника ИВА, начальник мин. политвоспитания"],
+  // Форкрафт
+  ["vorcraft_oberon", "Оберон Форкрафт", "начальник генштаба"],
+  ["vorcraft_antoni_iva", "Энтони Форкрафт", "сын начальника генштаба, ИВА"],
+  // несемейные
+  ["vorlesner_james", "Джеймс Форлеснер", "фор, лорд-хранитель совета графов"],
+  ["vortalon_martin", "Мартин Форталон", "фор, генштаб, брат графини Фортейн"],
+  ["vorkeres_gustav", "Густав Форкерес", "фор, голос графов Форлакиалов"],
+  ["vornei_kristof", "Кристоф Форней", "фор, генерал генштаба"],
+  ["billiot_curt", "Курт Биллиот", "не фор, служит в Генштабе"],
+  ["illeria_john", "Джон Иллерия", "не фор, СБ"],
+  ["stoltides_dimos", "Димос Столтидес", "не фор. СБ"],
+  ["grishnov_dmitrii", "Дмитрий Гришнов", "не фор,министерство политвоспитания"],
+  ["ungari_nicolai", "Николай Унгари", "не фор, сержант, ИВА"],
+  ["jezek_heins", "Хейнс Джезек", "не фор, сержант ИВА"],
 ];
 
 const vorHouses = [
   {
     id: "house_vorbarra",
     familyName: "Форбарра",
+    count_id: "vorbarra_urii_emperor",
     socialCapital: 100,
   },
   {
     id: "house_vorbretten",
     familyName: "Форбреттен",
-    count_id: "vorbretten_alan",
-    countess_id: "vorbretten_eliza",
+    count_id: "vorbretten_alan_count",
+    countess_id: "vorbretten_eliza_countess",
     socialCapital: 100,
   },
   {
     id: "house_vorvolinkin",
     familyName: "Форволынкин",
-    count_id: "vorvolinkin_arsenii",
-    countess_id: "vorvolinkin_esenia",
+    count_id: "vorvolinkin_arsenii_count",
+    countess_id: "vorvolinkin_esenia_countess",
     socialCapital: 100,
   },
   {
     id: "house_vordarian",
     familyName: "Фордариан",
+    count_id: "vordarian_isaak_count",
+    countess_id: "vordarian_ustinia_countess",
     socialCapital: 100,
   },
   {
     id: "house_vorkosigan",
     familyName: "Форкосиган",
+    count_id: "vorkosigan_peter_count",
+    countess_id: "vorkosigan_olivia_countess",
     socialCapital: 100,
   },
   {
@@ -174,51 +166,71 @@ const vorHouses = [
   {
     id: "house_vormuir",
     familyName: "Формюир",
+    count_id: "vormuir_andre_count",
+    countess_id: "vormuir_diana_countess",
     socialCapital: 100,
   },
   {
     id: "house_vorrobio",
     familyName: "Форобио",
+    count_id: "vorrobio_victor_count",
+    countess_id: "vorrobio_elen_countess",
     socialCapital: 100,
   },
   {
     id: "house_vorpatril",
     familyName: "Форпатрил",
+    count_id: "vorpatril_falco_count",
+    countess_id: "vorpatril_chloe_countess",
     socialCapital: 100,
   },
   {
     id: "house_vorpinski",
     familyName: "Форпински",
+    count_id: "vorpinski_grigorii_count",
+    countess_id: "vorpinski_sofia_countess",
     socialCapital: 100,
   },
   {
     id: "house_vorratier",
     familyName: "Форратьер",
+    count_id: "vorratier_michael_count",
+    // countess_id: "vordarian_ustinia_countess",
     socialCapital: 100,
   },
   {
     id: "house_vorsmit",
     familyName: "Форсмит",
+    count_id: "vorsmit_james_count",
+    countess_id: "vorsmit_eleonora_countess",
     socialCapital: 100,
   },
   {
     id: "house_vortala",
     familyName: "Фортала",
+    count_id: "vortala_ervin_count",
+    countess_id: "vortala_victoria_countess",
     socialCapital: 100,
   },
   {
     id: "house_vortein",
     familyName: "Фортейн",
+    count_id: "vortein_nataniel_count",
+    countess_id: "vortein_ember_countess",
     socialCapital: 100,
   },
   {
     id: "house_vorhalas",
     familyName: "Форхалас",
+    count_id: "vorhalas_ivon_count",
+    countess_id: "vorhalas_alice_countess",
     socialCapital: 100,
   },
   {
-    id: "house_vorhovic",
+    id: "house_vorhowitz",
     familyName: "Форховиц",
+    count_id: "vorhowitz_alex_count",
+    countess_id: "vorhowitz_daria_countess",
     socialCapital: 100,
   },
 ];
@@ -245,7 +257,7 @@ const sessionQuestions = [
     type: "player",
     questionText: "1. Должен ли любимый конь императора стать графом?",
     answer1: "Да, с присвоением титула и фамилии граф Форовсов",
-    answer1_advocate_id: "vorbarra_urii",
+    answer1_advocate_id: "vorbarra_urii_emperor",
     answer2: "Да, с присвоением титула и фамилии графиня Форскакунаева",
     answer2_advocate_id: null,
     status: "raised",
@@ -311,7 +323,7 @@ const houseMembers = [
   },
   {
     house_id: "house_vorbretten",
-    person_id: "vorbretten_rene",
+    person_id: "vorbretten_rene_iva",
   },
   {
     house_id: "house_vorvolinkin",
