@@ -119,6 +119,7 @@ export default function VoteOnQuestionForm({
                 <Button
                   key={el}
                   type="button"
+                  disabled={!votingEnabled}
                   onClick={() => {
                     setMasterVote(el);
                     setPrecomputeState(undefined);

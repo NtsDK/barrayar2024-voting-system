@@ -185,24 +185,76 @@ export async function updateQuestionVoteLog(id: string, prevState: State, formDa
       const voteLog: VoteLog = JSON.parse(vote_log);
       assert(voteLog.precomputeVotesResult);
       const { questionStatus, socCapitalExpenses } = voteLog.precomputeVotesResult;
+      const timestamp = new Date();
 
-      const res = await sql.begin((sql) => [
-        sql`
+      const res = await sql.begin(async (sql) => {
+        const questions = await sql<{ question_text: string }[]>`
+          SELECT
+            session_questions.question_text
+          FROM
+            session_questions
+          WHERE id = ${id}
+        `;
+
+        const vorHouses = await sql<{ id: string; social_capital: number }[]>`
+          SELECT
+            vor_houses.id,
+            vor_houses.social_capital
+          FROM
+            vor_houses
+        `;
+
+        const vorHouseIndex = vorHouses.reduce((acc: Record<string, number>, vorHouse) => {
+          acc[vorHouse.id] = vorHouse.social_capital;
+          return acc;
+        }, {});
+
+        const { question_text } = questions[0];
+        await sql`
           UPDATE session_questions
-            SET 
+            SET
               status = ${questionStatus},
               vote_log = ${vote_log}
             WHERE id = ${id}
-        `,
-        ...socCapitalExpenses.map(
-          (record) => sql`
-          UPDATE vor_houses
-            SET 
-              social_capital = social_capital - ${record.totalCountsExpenses}
-            WHERE id = ${record.house_id}
-        `,
-        ),
-      ]);
+        `;
+
+        for (const record of socCapitalExpenses) {
+          await sql`
+            UPDATE vor_houses
+              SET
+                social_capital = social_capital - ${record.totalCountsExpenses}
+              WHERE id = ${record.house_id}
+          `;
+
+          await sql`INSERT INTO soc_cap_log (source, house_name, recipient_name, timestamp, comment, amount, total)
+            VALUES (
+              'Голосование',
+              ${record.house_name},
+              ${record.house_name},
+              ${timestamp},
+              ${`Голосование по вопросу: ${question_text}`},
+              ${-record.totalCountsExpenses},
+              ${vorHouseIndex[record.house_id] - record.totalCountsExpenses}
+            )`;
+        }
+      });
+      // const res = await sql.begin((sql) => [
+      //   sql`
+      //     UPDATE session_questions
+      //       SET
+      //         status = ${questionStatus},
+      //         vote_log = ${vote_log}
+      //       WHERE id = ${id}
+      //   `,
+      //   ...socCapitalExpenses.map(
+      //     (record) => sql`
+      //     UPDATE vor_houses
+      //       SET
+      //         social_capital = social_capital - ${record.totalCountsExpenses}
+      //       WHERE id = ${record.house_id}
+      //   `,
+      //   ),
+      // ]);
       // console.log("apply question votes", res);
     }
   } catch (error) {
