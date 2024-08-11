@@ -73,7 +73,7 @@ const persons = [
   ["vorpinski_stanislav", "Станислав Форпински", "брат графа Форпински"],
   // Форратьер
   ["vorratier_michael_count", "Мишель Форратьер", "граф"],
-  ["vorratier_irin", "Айрин Форратьер", "дочь графа Форратьера"],
+  ["vorratier_irin_countess", "Айрин Форратьер", "дочь графа Форратьера"],
   ["vorratier_pier", "Пьер Форратьер", "старший сын графа Форратьера, наследник"],
   ["vorratier_dono", "Доно Форратьер", "младший сын графа Форратьера"],
   ["vorratier_michael_2_iva", "Мишель Форратьер", "внук графа Форратьера, ИВА"],
@@ -161,6 +161,7 @@ const vorHouses = [
   {
     id: "house_vorlakial",
     familyName: "Форлакиал",
+    countess_id: "vortala_victoria_countess",
     socialCapital: 100,
   },
   {
@@ -195,7 +196,7 @@ const vorHouses = [
     id: "house_vorratier",
     familyName: "Форратьер",
     count_id: "vorratier_michael_count",
-    // countess_id: "vordarian_ustinia_countess",
+    countess_id: "vorratier_irin_countess",
     socialCapital: 100,
   },
   {
