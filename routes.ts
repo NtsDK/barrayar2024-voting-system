@@ -6,3 +6,4 @@ export const PRINCESSES_ROUTE = "/dashboard/princesses";
 export const SOC_CAP_ROUTE = "/dashboard/social-capital";
 export const SOC_CAP_COSTS_ROUTE = "/dashboard/social-capital-costs";
 export const COUNTESS_REQUESTS_ROUTE = "/dashboard/countess-requests";
+export const COUNTESS_FORM_ROUTE = "/dashboard/countess-form";
