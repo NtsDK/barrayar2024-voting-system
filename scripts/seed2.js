@@ -10,6 +10,7 @@ const {
   houseMembers,
   countessSessionRequests,
   socCapCosts,
+  users,
 } = require("../app/lib/placeholder-data2.js");
 const bcrypt = require("bcrypt");
 
@@ -17,6 +18,7 @@ const bcrypt = require("bcrypt");
   const sql = postgres();
   const client = { sql, end: () => sql.end() };
 
+  await client.sql`DROP TABLE IF EXISTS users`;
   await client.sql`DROP TABLE IF EXISTS persons`;
   await client.sql`DROP TABLE IF EXISTS vor_houses`;
   await client.sql`DROP TABLE IF EXISTS council_sessions`;
@@ -27,6 +29,7 @@ const bcrypt = require("bcrypt");
   await client.sql`DROP TABLE IF EXISTS soc_cap_costs`;
   await client.sql`DROP TABLE IF EXISTS soc_cap_log`;
   await initUuidOssp(client);
+  await seedUsers(client);
   await seedPersons(client);
   await seedVorHouses(client);
   await seedCouncilSessions(client);
@@ -47,6 +50,45 @@ async function initUuidOssp(client) {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
   } catch (error) {
     console.error("Error seeding uuid-ossp extension:", error);
+    throw error;
+  }
+}
+
+async function seedUsers(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "invoices" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS users (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL
+      );
+    `;
+
+    console.log(`Created "users" table`);
+
+    // Insert data into the "users" table
+    const insertedUsers = await Promise.all(
+      users.map(async (user) => {
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+        return client.sql`
+        INSERT INTO users (id, name, email, password)
+        VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword})
+        ON CONFLICT (id) DO NOTHING;
+      `;
+      }),
+    );
+
+    console.log(`Seeded ${insertedUsers.length} users`);
+
+    return {
+      createTable,
+      users: insertedUsers,
+    };
+  } catch (error) {
+    console.error("Error seeding users:", error);
     throw error;
   }
 }
