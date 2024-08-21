@@ -3,13 +3,7 @@ import { formatDateToLocal, formatCurrency } from "@/app/lib/utils";
 import { fetchFilteredPersons } from "@/app/lib/personData";
 import { DeletePerson, UpdatePerson } from "./buttons";
 
-export default async function PersonsTable({
-  query,
-  currentPage,
-}: {
-  query: string;
-  currentPage: number;
-}) {
+export default async function PersonsTable({ query, currentPage }: { query: string; currentPage: number }) {
   const persons = await fetchFilteredPersons(query, currentPage);
 
   return (
@@ -41,9 +35,7 @@ export default async function PersonsTable({
                       <p>{person.name}</p>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">
-                    {person.comment}
-                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">{person.comment}</td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
                       {/* <UpdateInvoice id={person.id} /> */}

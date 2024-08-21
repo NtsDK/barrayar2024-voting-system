@@ -2,6 +2,7 @@ import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { deletePerson } from "@/app/lib/personActions";
 import { PERSONS_ROUTE } from "@/routes";
+import { DeleteButtonWrapper } from "../common/delete-button-wrapper";
 
 export function CreatePerson() {
   return (
@@ -26,7 +27,7 @@ export function UpdatePerson({ id }: { id: string }) {
   );
 }
 
-export function DeletePerson({ id }: { id: string }) {
+export function DeletePerson0({ id }: { id: string }) {
   const deletePersonWithId = deletePerson.bind(null, id);
   return (
     <form action={deletePersonWithId}>
@@ -35,5 +36,13 @@ export function DeletePerson({ id }: { id: string }) {
         <TrashIcon className="w-5" />
       </button>
     </form>
+  );
+}
+
+export function DeletePerson({ id }: { id: string }) {
+  return (
+    <DeleteButtonWrapper title="Удалить персонажа">
+      <DeletePerson0 id={id} />
+    </DeleteButtonWrapper>
   );
 }

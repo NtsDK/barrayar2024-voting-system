@@ -3,6 +3,7 @@ import Link from "next/link";
 import { deletePerson } from "@/app/lib/personActions";
 import { COUNTESS_REQUESTS_ROUTE } from "@/routes";
 import { deleteCountessRequest } from "@/app/lib/countessRequestActions";
+import { DeleteButtonWrapper } from "../common/delete-button-wrapper";
 
 export function CreateCountessRequest() {
   return (
@@ -29,7 +30,7 @@ export function UpdateCountessRequest({ id, editable }: { id: string; editable: 
   );
 }
 
-export function DeleteCountessRequest({ id }: { id: string }) {
+export function DeleteCountessRequest0({ id }: { id: string }) {
   const deleteCountessRequestWithId = deleteCountessRequest.bind(null, id);
   return (
     <form action={deleteCountessRequestWithId}>
@@ -38,5 +39,13 @@ export function DeleteCountessRequest({ id }: { id: string }) {
         <TrashIcon className="w-5" />
       </button>
     </form>
+  );
+}
+
+export function DeleteCountessRequest({ id }: { id: string }) {
+  return (
+    <DeleteButtonWrapper title="Удалить заявку графини">
+      <DeleteCountessRequest0 id={id} />
+    </DeleteButtonWrapper>
   );
 }

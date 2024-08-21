@@ -3,6 +3,7 @@ import Link from "next/link";
 import { deleteVorHouse } from "@/app/lib/vorHouseActions";
 import { VORHOUSES_ROUTE } from "@/routes";
 import { deleteVorHouseMember } from "@/app/lib/vorHouseMemberActions";
+import { DeleteButtonWrapper } from "../common/delete-button-wrapper";
 
 export function CreateVorHouse() {
   return (
@@ -39,7 +40,7 @@ export function UpdateVorHouseMembers({ id }: { id: string }) {
   );
 }
 
-export function DeleteVorHouse({ id }: { id: string }) {
+export function DeleteVorHouse0({ id }: { id: string }) {
   const deleteVorHouseWithId = deleteVorHouse.bind(null, id);
   return (
     <form action={deleteVorHouseWithId}>
@@ -51,7 +52,7 @@ export function DeleteVorHouse({ id }: { id: string }) {
   );
 }
 
-export function DeleteVorHouseMember({ id }: { id: string }) {
+export function DeleteVorHouseMember0({ id }: { id: string }) {
   const deleteVorHouseMemberWithId = deleteVorHouseMember.bind(null, id);
   return (
     <form action={deleteVorHouseMemberWithId}>
@@ -60,5 +61,20 @@ export function DeleteVorHouseMember({ id }: { id: string }) {
         <TrashIcon className="w-5" />
       </button>
     </form>
+  );
+}
+
+export function DeleteVorHouse({ id }: { id: string }) {
+  return (
+    <DeleteButtonWrapper title="Удалить фор семью">
+      <DeleteVorHouse0 id={id} />
+    </DeleteButtonWrapper>
+  );
+}
+export function DeleteVorHouseMember({ id }: { id: string }) {
+  return (
+    <DeleteButtonWrapper title="Удалить члена семьи">
+      <DeleteVorHouseMember0 id={id} />
+    </DeleteButtonWrapper>
   );
 }

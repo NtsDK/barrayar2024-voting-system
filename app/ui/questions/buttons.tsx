@@ -10,6 +10,7 @@ import Link from "next/link";
 import { QUESTIONS_ROUTE } from "@/routes";
 import { deleteSession } from "@/app/lib/sessionActions";
 import { deleteQuestion } from "@/app/lib/questionActions";
+import { DeleteButtonWrapper } from "../common/delete-button-wrapper";
 
 export function CreateQuestion({ id }: { id: string }) {
   return (
@@ -23,13 +24,7 @@ export function CreateQuestion({ id }: { id: string }) {
   );
 }
 
-export function UpdateQuestion({
-  sessionId,
-  id,
-}: {
-  sessionId: string;
-  id: string;
-}) {
+export function UpdateQuestion({ sessionId, id }: { sessionId: string; id: string }) {
   return (
     <Link
       href={`${QUESTIONS_ROUTE}/${sessionId}/${id}/edit`}
@@ -41,14 +36,11 @@ export function UpdateQuestion({
   );
 }
 
-export function DeleteQuestion({ id }: { id: string }) {
+export function DeleteQuestion0({ id }: { id: string }) {
   const deleteQuestionWithId = deleteQuestion.bind(null, id);
   return (
     <form action={deleteQuestionWithId}>
-      <button
-        className="rounded-md border p-2 hover:bg-gray-100"
-        title="Удалить вопрос"
-      >
+      <button className="rounded-md border p-2 hover:bg-gray-100" title="Удалить вопрос">
         <span className="sr-only">Удалить</span>
         <TrashIcon className="w-5" />
       </button>
@@ -56,13 +48,15 @@ export function DeleteQuestion({ id }: { id: string }) {
   );
 }
 
-export function VoteOnQuestion({
-  sessionId,
-  id,
-}: {
-  sessionId: string;
-  id: string;
-}) {
+export function DeleteQuestion({ id }: { id: string }) {
+  return (
+    <DeleteButtonWrapper title="Удалить вопрос">
+      <DeleteQuestion0 id={id} />
+    </DeleteButtonWrapper>
+  );
+}
+
+export function VoteOnQuestion({ sessionId, id }: { sessionId: string; id: string }) {
   return (
     <Link
       href={`${QUESTIONS_ROUTE}/${sessionId}/${id}/vote`}

@@ -2,7 +2,7 @@ import { SessionQuestion } from "@/app/lib/definitions2";
 import AffiliatedCountEditor from "./affiliated-count-editor";
 import UnaffiliatedCountEditor from "./unaffiliated-count-editor";
 import { CountessQuestionRequest, SocCapCostsSettings } from "@/app/lib/voteDefinitions";
-import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
 
 export default function CountSection({
   countInfoList,

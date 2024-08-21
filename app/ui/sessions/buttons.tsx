@@ -5,6 +5,7 @@ import Link from "next/link";
 import { SESSIONS_ROUTE } from "@/routes";
 import { deleteSession } from "@/app/lib/sessionActions";
 import { CouncilSessionsList } from "@/app/lib/definitions2";
+import { DeleteButtonWrapper } from "../common/delete-button-wrapper";
 
 export function CreateSession() {
   return (
@@ -29,7 +30,7 @@ export function UpdateSession({ id }: { id: string }) {
   );
 }
 
-export function DeleteSession({ id }: { id: string }) {
+export function DeleteSession0({ id }: { id: string }) {
   const deleteSessionWithId = deleteSession.bind(null, id);
   return (
     <form action={deleteSessionWithId}>
@@ -38,6 +39,14 @@ export function DeleteSession({ id }: { id: string }) {
         <TrashIcon className="w-5" />
       </button>
     </form>
+  );
+}
+
+export function DeleteSession({ id }: { id: string }) {
+  return (
+    <DeleteButtonWrapper title="Удалить заседание">
+      <DeleteSession0 id={id} />
+    </DeleteButtonWrapper>
   );
 }
 
