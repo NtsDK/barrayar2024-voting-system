@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { fetchFilteredCouncilSessions } from "@/app/lib/sessionData";
-import { DeleteSession, UpdateSession } from "./buttons";
+import { CopySessionInfoToClipboard, DeleteSession, UpdateSession } from "./buttons";
 import { COUNCIL_SESSION_STATUS_I18N } from "@/constants";
 import { Card } from "../questions/card";
 import { CreateQuestion } from "../questions/buttons";
@@ -25,6 +25,7 @@ export default async function VorHousesTable({ query, currentPage }: { query: st
                 </div>
                 <div className="flex justify-end gap-3 h-10">
                   <CreateQuestion id={session.id} />
+                  <CopySessionInfoToClipboard session={session} />
                   <UpdateSession id={session.id} />
                   <DeleteSession id={session.id} />
                 </div>

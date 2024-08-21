@@ -1,7 +1,10 @@
-import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+"use client";
+
+import { PencilIcon, PlusIcon, TrashIcon, ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { SESSIONS_ROUTE } from "@/routes";
 import { deleteSession } from "@/app/lib/sessionActions";
+import { CouncilSessionsList } from "@/app/lib/definitions2";
 
 export function CreateSession() {
   return (
@@ -38,4 +41,35 @@ export function DeleteSession({ id }: { id: string }) {
   );
 }
 
-export function CopySessionInfoToClipboard() {}
+export function CopySessionInfoToClipboard({ session }: { session: CouncilSessionsList }) {
+  function onClick() {
+    const arr: string[] = [];
+    arr.push(session.title);
+    arr.push(session.date_time);
+    arr.push("");
+    session.questions.forEach((question) => {
+      arr.push(question.question_text);
+      arr.push("Ответ 1: " + question.answer1);
+      if (question.answer1_advocate_name) {
+        arr.push("Адвокат ответа 1: " + question.answer1_advocate_name);
+      }
+      arr.push("Ответ 2: " + question.answer2);
+      if (question.answer2_advocate_name) {
+        arr.push("Адвокат ответа 2: " + question.answer2_advocate_name);
+      }
+      arr.push("");
+    });
+    navigator.clipboard.writeText(arr.join("\n"));
+  }
+
+  return (
+    <button
+      className="rounded-md border p-2 hover:bg-gray-100"
+      title="Скопировать информацию о заседании"
+      onClick={onClick}
+    >
+      <span className="sr-only">Скопировать информацию о заседании</span>
+      <ClipboardDocumentIcon className="w-5" />
+    </button>
+  );
+}
