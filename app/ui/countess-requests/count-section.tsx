@@ -56,6 +56,7 @@ export default function CountSection({
                   };
                   setCountInfoList(copy);
                 }}
+                title="Добавить графа"
               >
                 <PlusIcon className="w-5" /> <span className="sr-only">Добавить графа</span>
               </button>

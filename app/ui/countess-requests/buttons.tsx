@@ -22,6 +22,7 @@ export function UpdateCountessRequest({ id, editable }: { id: string; editable: 
     <Link
       href={`${COUNTESS_REQUESTS_ROUTE}/${id}/edit?${params.toString()}`}
       className="rounded-md border p-2 hover:bg-gray-100"
+      title={editable ? "Изменить заявку графини" : "Посмотреть заявку графини"}
     >
       {editable ? <PencilIcon className="w-5" /> : <MagnifyingGlassIcon className="w-5" />}
     </Link>
@@ -32,7 +33,7 @@ export function DeleteCountessRequest({ id }: { id: string }) {
   const deleteCountessRequestWithId = deleteCountessRequest.bind(null, id);
   return (
     <form action={deleteCountessRequestWithId}>
-      <button className="rounded-md border p-2 hover:bg-gray-100">
+      <button className="rounded-md border p-2 hover:bg-gray-100" title="Удалить заявку графини">
         <span className="sr-only">Удалить</span>
         <TrashIcon className="w-5" />
       </button>
